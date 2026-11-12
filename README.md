@@ -1,26 +1,35 @@
-# Portfolio
+# eliasalsumairi.dev
 
-Next.js (App Router) + TypeScript + Tailwind CSS + Motion, with live, lazy-loaded demos of my projects.
+Portfolio of Elias Al-Sumairi. Next.js (App Router) + TypeScript + Tailwind CSS v4 + Motion, with lazy-loaded live demos.
 
-## Setup
+## Run locally
 
 ```bash
 npm install
-npm run dev
+cp .env.example .env.local   # optional: add your Formspree form ID
+npm run dev                  # http://localhost:3000
 ```
 
-## Working with Claude Code
+Checks before deploying:
 
-1. Fill in `ABOUT_ME.md`.
-2. Open this folder in Claude Code and tell it to start. It follows `CLAUDE.md`: reads your info, interviews you, presents a plan, then builds.
+```bash
+npm run lint
+npm run build
+```
 
-## Structure
+## Where things live
 
-- `app/` pages (home, `projects/[slug]`)
-- `components/DemoFrame.tsx` poster first, iframe loads on click
-- `components/DeviceFrame.tsx` phone / browser mockups
-- `data/projects.ts` project content (all `TODO` for now)
+- `data/site.ts`: name, pitch, links, resume/headshot/logo paths
+- `data/profile.ts`: skills, leadership, education, certifications
+- `data/projects.ts`: all project content, demo URLs, posters, videos, screenshots
+- `components/DemoFrame.tsx`: poster first; iframe loads only on "Launch live demo" (desktop) or in a full-screen view (mobile)
+- `components/DeviceFrame.tsx`: browser and phone mockups
+- `public/`: logo, resume, headshot, project images (`public/projects/<slug>/...`)
 
-## Deploy
+Search the code for `TODO` to find every missing asset or link.
 
-Push to GitHub, import the repo in Vercel, deploy.
+## Deploy (Vercel)
+
+1. Push to GitHub, then import the repo at vercel.com/new (framework: Next.js, defaults are fine).
+2. Add the `NEXT_PUBLIC_FORMSPREE_ID` environment variable in Project → Settings → Environment Variables.
+3. Domain: Project → Settings → Domains → add `eliasalsumairi.dev` (and `www.eliasalsumairi.dev`, redirecting to the apex). Set the DNS records Vercel shows at your registrar.

@@ -1,53 +1,152 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
+import type { Project } from "@/data/projects";
 import { DeviceFrame } from "./DeviceFrame";
-import type { DemoType } from "@/data/projects";
+import { FullscreenDemo } from "./FullscreenDemo";
+import { Placeholder } from "./Placeholder";
 
-interface Props {
-  url: string;
-  poster: string;
-  title: string;
-  type: DemoType;
-}
+type Mode = "poster" | "live" | "video";
 
-export function DemoFrame({ url, poster, title, type }: Props) {
-  const [live, setLive] = useState(false);
+const SANDBOX = "allow-scripts allow-same-origin allow-forms allow-popups";
 
-  if (!url) {
-    return <p className="text-sm opacity-70">Demo URL not set yet (TODO).</p>;
-  }
+const btn =
+  "inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition";
+
+/**
+ * Poster first. The iframe only loads after "Launch live demo" is clicked (desktop),
+ * or inside a full-screen view (small screens). An "Open in new tab" link and the
+ * recording, when available, are always offered as fallbacks.
+ */
+export function DemoFrame({ project }: { project: Project }) {
+  const { demo, title } = project;
+  const [mode, setMode] = useState<Mode>("poster");
+  const [fullscreen, setFullscreen] = useState(false);
+
+  if (demo.type === "none") return null;
+
+  const src = project.links.guest ?? demo.url;
+  const frameType = demo.type;
+  const host = src ? new URL(src).host : undefined;
+
+  const screen = (() => {
+    if (mode === "live" && src) {
+      return (
+        <iframe
+          src={src}
+          title={`${title}: live demo`}
+          className="absolute inset-0 h-full w-full bg-white"
+          sandbox={SANDBOX}
+          referrerPolicy="strict-origin-when-cross-origin"
+        />
+      );
+    }
+    if (mode === "video" && demo.video) {
+      return (
+        <video
+          src={demo.video}
+          poster={demo.poster}
+          controls
+          playsInline
+          preload="metadata"
+          className="absolute inset-0 h-full w-full bg-black object-contain"
+          aria-label={`${title}: screen recording`}
+        />
+      );
+    }
+    if (demo.poster) {
+      return (
+        <Image
+          src={demo.poster}
+          alt={`${title} screenshot`}
+          fill
+          sizes={frameType === "phone" ? "300px" : "(min-width: 1024px) 960px, 100vw"}
+          className="object-cover object-top"
+        />
+      );
+    }
+    return <Placeholder label={`${title} poster image`} className="absolute inset-0 rounded-none border-0" />;
+  })();
 
   return (
-    <div className="space-y-3">
-      <DeviceFrame type={type}>
-        {live ? (
-          <iframe
-            src={url}
-            title={`${title} live demo`}
-            className="h-full w-full"
-            loading="lazy"
-            sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-          />
-        ) : (
+    <div className="space-y-5">
+      <DeviceFrame type={frameType} address={host}>
+        {screen}
+      </DeviceFrame>
+
+      <div className="flex flex-wrap items-center justify-center gap-3">
+        {src && mode !== "live" ? (
           <button
             type="button"
-            onClick={() => setLive(true)}
-            className="group relative block h-full w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            onClick={() => setMode("live")}
+            className={`${btn} hidden bg-accent text-accent-ink hover:brightness-110 md:inline-flex`}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={poster} alt={`${title} preview`} className="h-full w-full object-cover" />
-            <span className="absolute inset-0 grid place-items-center bg-black/40 font-medium text-white opacity-0 transition group-hover:opacity-100 group-focus-visible:opacity-100">
-              Launch live demo
-            </span>
+            ▶ Launch live demo
           </button>
-        )}
-      </DeviceFrame>
-      <p className="text-center text-sm">
-        <a href={url} target="_blank" rel="noopener noreferrer" className="underline">
-          Open in new tab
-        </a>
-      </p>
+        ) : null}
+        {src ? (
+          <button
+            type="button"
+            onClick={() => setFullscreen(true)}
+            className={`${btn} bg-accent text-accent-ink hover:brightness-110 md:border md:border-line md:bg-transparent md:text-fg md:hover:border-accent md:hover:text-accent`}
+          >
+            Open full screen
+          </button>
+        ) : null}
+        {demo.video && mode !== "video" ? (
+          <button
+            type="button"
+            onClick={() => setMode("video")}
+            className={`${btn} border border-line hover:border-accent hover:text-accent`}
+          >
+            Watch recording
+          </button>
+        ) : null}
+        {mode !== "poster" ? (
+          <button
+            type="button"
+            onClick={() => setMode("poster")}
+            className={`${btn} border border-line text-muted hover:text-fg`}
+          >
+            Close demo
+          </button>
+        ) : null}
+        {src ? (
+          <a
+            href={src}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-muted underline underline-offset-4 hover:text-accent"
+          >
+            Open in new tab ↗
+          </a>
+        ) : null}
+      </div>
+
+      {!src ? (
+        <p className="text-center text-sm text-muted">
+          {project.status === "in-development"
+            ? "A browser demo isn't available yet; screenshots and a recording show the app below."
+            : "Live demo link coming soon."}
+        </p>
+      ) : null}
+      {mode === "live" ? (
+        <p className="text-center text-xs text-muted">
+          Blank frame? The site may block embedding. Open it in a new tab
+          {demo.video ? " or watch the recording" : ""} instead.
+        </p>
+      ) : null}
+
+      {src ? (
+        <FullscreenDemo
+          open={fullscreen}
+          onClose={() => setFullscreen(false)}
+          src={src}
+          title={`${title}: live demo`}
+          sandbox={SANDBOX}
+        />
+      ) : null}
     </div>
   );
 }
