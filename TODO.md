@@ -9,7 +9,6 @@ Everything still missing before (or after) launch. Search the code for `TODO` to
 
 ## Files to add in `public/`
 - [ ] `resume.pdf`: the download buttons return 404 until it exists
-- [ ] `headshot.jpg`: then set `headshot: "/headshot.jpg"` in `data/site.ts`
 
 ## Voluntree (`public/projects/voluntree/`)
 - [ ] Poster image (`poster.png`)

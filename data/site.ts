@@ -12,10 +12,6 @@ export const site = {
   email: "eliassumairi@gmail.com",
   // TODO: add public/resume.pdf (your latest resume).
   resume: "/resume.pdf",
-  // TODO: add public/headshot.jpg, then set this to "/headshot.jpg".
-  headshot: null as string | null,
-  // TODO: add your logo as public/logo.svg, then set this to "/logo.svg". Until then the "EA" text mark is used.
-  logo: null as string | null,
   // Set NEXT_PUBLIC_FORMSPREE_ID in .env.local / Vercel. The form is hidden until it is set.
   formspreeId: process.env.NEXT_PUBLIC_FORMSPREE_ID ?? "",
 } as const;

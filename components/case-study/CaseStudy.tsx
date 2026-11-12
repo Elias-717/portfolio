@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ButtonLink } from "@/components/ButtonLink";
 import { DemoFrame } from "@/components/DemoFrame";
 import { ProjectList } from "@/components/ProjectList";
-import { Reveal } from "@/components/Reveal";
 import { ScreenGallery } from "@/components/ScreenGallery";
 import { Tag } from "@/components/Tag";
 import type { Project } from "@/data/projects";
