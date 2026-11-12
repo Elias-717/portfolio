@@ -1,7 +1,11 @@
 import { projects, statusLabel } from "@/data/projects";
+import { ProjectCards } from "./ProjectCards";
 import { ProjectTape, type TapeItem } from "./ProjectTape";
 
-/** Home-page projects: the scroll-driven spiral tape, one project at a time. */
+/**
+ * Home-page projects. Large screens with motion allowed get the scroll-driven paper
+ * ribbon; small screens and reduced-motion visitors get simple cards instead.
+ */
 export function ProjectsSection() {
   const items: TapeItem[] = projects.map((p) => {
     const external = !p.caseStudy;
@@ -19,5 +23,10 @@ export function ProjectsSection() {
     };
   });
 
-  return <ProjectTape items={items} />;
+  return (
+    <section id="projects" aria-label="Selected work" className="bg-black">
+      <ProjectTape items={items} className="hidden lg:block motion-reduce:lg:hidden" />
+      <ProjectCards items={items} className="lg:hidden motion-reduce:lg:block" />
+    </section>
+  );
 }

@@ -7,7 +7,7 @@ import { NavLinks } from "./NavLinks";
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 h-16">
-      <div className="mx-auto grid h-full max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 sm:grid-cols-[1fr_auto_1fr] sm:px-6">
+      <div className="mx-auto grid h-full max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-2 px-3 sm:grid-cols-[1fr_auto_1fr] sm:px-6">
         <Link
           href="/"
           className="flex items-center gap-2.5 justify-self-start rounded-full"
@@ -20,7 +20,7 @@ export function SiteHeader() {
         <a
           href={site.resume}
           download=""
-          className="inline-flex items-center gap-1.5 justify-self-end rounded-full bg-accent px-4 py-2 text-sm font-medium text-accent-ink shadow-[0_8px_30px_rgb(110_226_106/0.25)] transition hover:brightness-110"
+          className="inline-flex items-center gap-1.5 justify-self-end rounded-full bg-accent px-3 py-1.5 text-[13px] font-medium sm:px-4 sm:py-2 sm:text-sm text-accent-ink shadow-[0_8px_30px_rgb(110_226_106/0.25)] transition hover:brightness-110"
         >
           Resume
           <span aria-hidden>↓</span>

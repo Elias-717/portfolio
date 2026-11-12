@@ -64,37 +64,38 @@ body {
   filter: blur(48px);
 }
 
-/* Hero banner: green letters with a white band sweeping through them. */
-/* Quick flash (first 15% of the cycle), then a pause before the next one. */
+/* Hero banner: green letters with a golden band sweeping through them. */
+/* The golden band crosses in the first 40% of the cycle (~1.8s), then pauses. */
 @keyframes glint {
   0% {
     background-position: 100% 0;
   }
-  15%,
+  40%,
   100% {
     background-position: 0% 0;
   }
 }
-.glint {
+/* Applied per name copy (not the whole track) so the band moves at a readable speed. */
+.glint .banner-name {
   color: transparent;
   background-image: linear-gradient(
     100deg,
     #6ee26a 0%,
-    #6ee26a 42%,
-    #d9f5d6 48%,
-    #f4f7f4 50%,
-    #d9f5d6 52%,
-    #6ee26a 58%,
+    #6ee26a 34%,
+    #c8961e 42%,
+    #ffd66b 50%,
+    #c8961e 58%,
+    #6ee26a 66%,
     #6ee26a 100%
   );
   background-size: 300% 100%;
   background-clip: text;
   -webkit-background-clip: text;
-  animation: glint 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation: glint 4.5s cubic-bezier(0.45, 0, 0.25, 1) infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .glint,
+  .glint .banner-name,
   .halo {
     animation: none !important;
   }

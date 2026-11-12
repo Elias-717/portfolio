@@ -53,7 +53,7 @@ export function NavLinks() {
               <Link
                 href={`/#${l.id}`}
                 aria-current={isActive ? "true" : undefined}
-                className={`relative block rounded-full px-3 py-1.5 text-sm transition-colors sm:px-4 ${
+                className={`relative block rounded-full px-2.5 py-1.5 text-[13px] transition-colors sm:px-4 sm:text-sm ${
                   isActive ? "text-fg" : "text-fg/65 hover:text-fg"
                 }`}
               >

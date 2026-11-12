@@ -11,7 +11,7 @@ function BannerRun() {
   return (
     <span className="flex shrink-0 items-center">
       {[0, 1, 2].map((i) => (
-        <span key={i} className="flex items-center whitespace-nowrap pr-[0.35em]">
+        <span key={i} className="banner-name flex items-center whitespace-nowrap pr-[0.35em]">
           {site.name}
           <span className="pl-[0.35em]">—</span>
         </span>
@@ -51,7 +51,7 @@ export function Hero() {
           {/*
             The moving banner, two layers moving together:
             1. off-white with mix-blend-difference, so the letters invert over the face;
-            2. green (with a white band sweeping through) using mix-blend-color, which tints
+            2. green (with a golden band sweeping through) using mix-blend-color, which tints
                layer 1 green without changing its lightness.
             No transform on this wrapper: it would isolate the blend modes from the photo.
           */}
