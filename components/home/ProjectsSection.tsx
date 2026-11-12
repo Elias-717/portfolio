@@ -20,6 +20,7 @@ export function ProjectsSection() {
       href: external ? (p.links.live ?? p.links.code ?? "/projects") : `/projects/${p.slug}`,
       external,
       cta: external ? "Visit the site" : "View case study",
+      demoUrl: p.demo.type === "none" ? undefined : (p.links.guest ?? p.demo.url),
     };
   });
 

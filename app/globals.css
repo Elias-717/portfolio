@@ -101,6 +101,21 @@ body {
   }
 }
 
+/* Pop-up demo window entrance. */
+@keyframes window-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+dialog[open].window-in {
+  animation: window-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
 dialog::backdrop {
   background: rgb(0 0 0 / 0.8);
 }

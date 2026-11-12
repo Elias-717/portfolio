@@ -3,6 +3,7 @@
 import { motion, useMotionValueEvent, useScroll, useSpring, useTransform } from "motion/react";
 import Link from "next/link";
 import { useRef, useState } from "react";
+import { DemoWindow } from "./DemoWindow";
 
 export interface TapeItem {
   slug: string;
@@ -15,6 +16,8 @@ export interface TapeItem {
   href: string;
   external: boolean;
   cta: string;
+  /** Live demo to open in the pop-up window, if the project has one. */
+  demoUrl?: string;
 }
 
 // Paper-ribbon geometry (px / degrees). Each project's cover runs across SEGS_PER_ITEM slices,
@@ -91,6 +94,15 @@ export function ProjectTape({ items, className = "" }: { items: TapeItem[]; clas
     setActive((prev) => (prev === next ? prev : next));
   });
 
+  // The front segment is highlighted (and clickable) only once the tape has settled on a project.
+  const [settled, setSettled] = useState(true);
+  const [open, setOpen] = useState<TapeItem | null>(null);
+  useMotionValueEvent(rotation, "change", (r) => {
+    const nearest = Math.min(n - 1, Math.max(0, Math.round((r / STEP - (SEGS_PER_ITEM - 1) / 2) / SEGS_PER_ITEM)));
+    const isSettled = Math.abs(r - angleFor(nearest)) < STEP * 0.4;
+    setSettled((prev) => (prev === isSettled ? prev : isSettled));
+  });
+
   const jumpTo = (i: number) => {
     const el = ref.current;
     if (!el) return;
@@ -133,6 +145,24 @@ export function ProjectTape({ items, className = "" }: { items: TapeItem[]; clas
           {/* Paper shading, drawn once: the curve darkens towards its sides. */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_42%_70%_at_50%_50%,transparent_60%,rgb(0_0_0/0.7)_100%)]" />
         </div>
+
+        {/* The front segment: highlighted and clickable once the tape settles. Opens the demo window. */}
+        <button
+          type="button"
+          onClick={() => setOpen(current)}
+          aria-label={current.demoUrl ? `Try the ${current.title} live demo` : `Take a closer look at ${current.title}`}
+          className={`group absolute left-1/2 top-1/2 z-10 h-[355px] w-[578px] -translate-x-1/2 -translate-y-[44%] rounded-2xl transition duration-500 xl:h-[400px] xl:w-[650px] ${
+            settled
+              ? "opacity-100 ring-2 ring-accent/70 shadow-[0_0_60px_-10px_rgb(110_226_106/0.55)] hover:ring-accent hover:shadow-[0_0_90px_-10px_rgb(110_226_106/0.8)]"
+              : "pointer-events-none opacity-0"
+          }`}
+        >
+          <span className="absolute bottom-5 left-1/2 inline-flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-black/70 px-4 py-2 text-sm font-medium text-fg ring-1 ring-white/15 backdrop-blur transition group-hover:bg-accent group-hover:text-accent-ink">
+            <span aria-hidden className="h-2 w-2 animate-pulse rounded-full bg-accent group-hover:bg-accent-ink" />
+            {current.demoUrl ? "Try the live demo" : "Take a closer look"}
+          </span>
+        </button>
+        <DemoWindow item={open} onClose={() => setOpen(null)} />
 
         <div className="relative mx-auto grid w-full max-w-6xl flex-1 grid-cols-[14rem_1fr_16rem] items-center px-6">
           <dl className="space-y-6 text-sm">
