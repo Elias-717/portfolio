@@ -51,12 +51,21 @@ export function Hero() {
             className="absolute inset-x-0 bottom-0 -z-10 h-1/3 bg-gradient-to-t from-bg to-transparent"
           />
 
-          {/* The moving banner. */}
+          {/*
+            The moving banner, two layers moving together:
+            1. off-white with mix-blend-difference, so the letters invert over the face;
+            2. green (with a white band sweeping through) using mix-blend-color, which tints
+               layer 1 green without changing its lightness.
+            No transform on this wrapper: it would isolate the blend modes from the photo.
+          */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-[38%] -translate-y-1/2 overflow-hidden py-[0.2em] mix-blend-difference sm:top-[42%]"
+            className="pointer-events-none absolute inset-x-0 top-[29%] overflow-hidden py-[0.2em] sm:top-[27%]"
           >
-            <VelocityMarquee className="text-[#e8ece8] text-[24vw] font-medium leading-none tracking-[-0.05em] sm:text-[clamp(4.5rem,15vw,14rem)]">
+            <VelocityMarquee
+              className="text-[24vw] font-medium leading-none tracking-[-0.05em] sm:text-[clamp(4.5rem,15vw,14rem)]"
+              layers={["mix-blend-difference text-[#e8ece8]", "mix-blend-color glint"]}
+            >
               <BannerRun />
             </VelocityMarquee>
           </div>

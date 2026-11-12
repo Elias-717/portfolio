@@ -22,15 +22,20 @@ const wrap = (min: number, max: number, v: number) => {
  * Horizontal banner that drifts slowly to the left and speeds up with scroll
  * velocity (scrolling up or down). The children are rendered twice; moving the
  * track by half its width loops it. Stays still for reduced-motion visitors.
+ *
+ * `layers` renders the same text several times on top of each other, moving
+ * together, so each copy can use its own colour or blend mode.
  */
 export function VelocityMarquee({
   children,
   className = "",
+  layers = [""],
   /** Base drift in percent of the track per second. 1 ≈ one loop every 50s. */
   speed = 1,
 }: {
   children: ReactNode;
   className?: string;
+  layers?: string[];
   speed?: number;
 }) {
   const reduce = useReducedMotion();
@@ -49,9 +54,17 @@ export function VelocityMarquee({
   });
 
   return (
-    <motion.div style={{ x }} className={`flex w-max ${className}`}>
-      {children}
-      {children}
-    </motion.div>
+    <div className={`relative ${className}`}>
+      {layers.map((layer, i) => (
+        <motion.div
+          key={i}
+          style={{ x }}
+          className={`flex w-max ${i > 0 ? "absolute left-0 top-0" : ""} ${layer}`}
+        >
+          {children}
+          {children}
+        </motion.div>
+      ))}
+    </div>
   );
 }

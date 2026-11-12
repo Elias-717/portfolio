@@ -64,7 +64,35 @@ body {
   filter: blur(48px);
 }
 
+/* Hero banner: green letters with a white band sweeping through them. */
+@keyframes glint {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0% 0;
+  }
+}
+.glint {
+  color: transparent;
+  background-image: linear-gradient(
+    100deg,
+    #6ee26a 0%,
+    #6ee26a 42%,
+    #d9f5d6 48%,
+    #f4f7f4 50%,
+    #d9f5d6 52%,
+    #6ee26a 58%,
+    #6ee26a 100%
+  );
+  background-size: 300% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: glint 7s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .glint,
   .halo {
     animation: none !important;
   }
