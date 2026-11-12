@@ -24,6 +24,8 @@ export interface Project {
   awardShort?: string;
   /** One short, factual proof point shown on cards and in the hero. */
   highlight: string;
+  /** Wide image used on the home-page project tape. */
+  cover: string;
   problem: string;
   solution: string;
   features: string[];
@@ -50,6 +52,7 @@ export const statusLabel: Record<Status, string> = {
 export const projects: Project[] = [
   {
     slug: "voluntree",
+    cover: "/projects/voluntree/cover.webp",
     highlight: "2nd Place · MMC Upstart 2026",
     title: "Voluntree",
     oneLine: "A campus volunteering platform that fills event slots fairly.",
@@ -112,8 +115,8 @@ export const projects: Project[] = [
     demo: {
       type: "browser",
       url: "https://joinvoluntree.vercel.app",
-      // TODO: add public/projects/voluntree/poster.png and set poster: "/projects/voluntree/poster.png".
-      poster: undefined,
+      // Homepage capture; replace with a curated screenshot if you like.
+      poster: "/projects/voluntree/cover.webp",
       // TODO: add public/projects/voluntree/demo.mp4 (core journey recording) and set video.
       video: undefined,
     },
@@ -122,6 +125,7 @@ export const projects: Project[] = [
   },
   {
     slug: "insightly",
+    cover: "/projects/insightly/cover.webp",
     highlight: "Your files never leave the browser",
     title: "Insightly",
     oneLine: "Drop in a CSV and get the story, without the file ever leaving your browser.",
@@ -160,7 +164,7 @@ export const projects: Project[] = [
       type: "browser",
       // Embedding needs frame-ancestors for eliasalsumairi.dev in Insightly's CSP (currently DENY); new-tab fallback works meanwhile.
       url: "https://tryinsightly.vercel.app",
-      poster: undefined, // TODO: public/projects/insightly/poster.png
+      poster: "/projects/insightly/cover.webp", // Homepage capture; TODO: curated screenshot optional
       video: undefined, // TODO: public/projects/insightly/demo.mp4 (drop a sample CSV, read the result)
     },
     // TODO: screenshots — upload, overview with quality score, column profile, charts + heatmap, Whispers, cleaning before/after, dark mode, mobile view.
@@ -168,6 +172,7 @@ export const projects: Project[] = [
   },
   {
     slug: "brokely",
+    cover: "/projects/brokely/cover.webp",
     highlight: "Offline-first Android app · v0.1 in testing",
     title: "Brokely",
     oneLine: "A student-first expenditure planner for Android, with a broccoli mascot that grows from good money habits.",
@@ -234,6 +239,7 @@ export const projects: Project[] = [
   },
   {
     slug: "sanaa-house",
+    cover: "/projects/sanaa-house/cover.webp",
     highlight: "Arabic and English, true right-to-left",
     title: "Sana'a House",
     oneLine:

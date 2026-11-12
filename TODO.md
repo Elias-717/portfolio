@@ -11,7 +11,7 @@ Everything still missing before (or after) launch. Search the code for `TODO` to
 - [ ] `resume.pdf`: the download buttons return 404 until it exists
 
 ## Voluntree (`public/projects/voluntree/`)
-- [ ] Poster image (`poster.png`)
+- [x] Poster: homepage capture added (`cover.webp`); swap for a curated screenshot if you like
 - [ ] Screenshots: landing, student home with watering gauge, "Why recommended", AI draft, QR attendance, admin fairness chart
 - [ ] Screen recording of the core journey (`demo.mp4`)
 - [ ] One-click guest URL in the Voluntree app; then set `links.guest`
@@ -19,7 +19,8 @@ Everything still missing before (or after) launch. Search the code for `TODO` to
 - [ ] If login fails inside the embed: set Supabase auth cookies to `SameSite=None; Secure`
 
 ## Insightly (`public/projects/insightly/`)
-- [ ] Poster image, screenshots (upload, quality score, column profile, charts + heatmap, Whispers, cleaning before/after, dark mode, mobile)
+- [x] Poster: homepage capture added (`cover.webp`)
+- [ ] Screenshots (upload, quality score, column profile, charts + heatmap, Whispers, cleaning before/after, dark mode, mobile)
 - [ ] Screen recording of dropping a sample CSV (`demo.mp4`)
 - [ ] In Insightly: change CSP to `frame-ancestors https://eliasalsumairi.dev` and remove `X-Frame-Options: DENY` (the embed is blank until then)
 

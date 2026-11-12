@@ -1,41 +1,31 @@
 import Link from "next/link";
 import { site } from "@/data/site";
 import { Logo } from "./Logo";
+import { NavLinks } from "./NavLinks";
 
-const nav = [
-  { href: "/#projects", label: "Projects" },
-  { href: "/#about", label: "About" },
-  { href: "/#experience", label: "Experience", hideOnMobile: true },
-  { href: "/#contact", label: "Contact" },
-];
-
+/** Floating header: logo left, glass pill nav centred, resume right. Overlays the hero. */
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-line/60 bg-bg/80 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-        <Link href="/" className="flex items-center gap-2.5 rounded-full" aria-label={`${site.name}, home`}>
+    <header className="sticky top-0 z-50 h-16">
+      <div className="mx-auto grid h-full max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 sm:grid-cols-[1fr_auto_1fr] sm:px-6">
+        <Link
+          href="/"
+          className="flex items-center gap-2.5 justify-self-start rounded-full"
+          aria-label={`${site.name}, home`}
+        >
           <Logo size={36} priority />
-          <span className="hidden font-medium tracking-tight sm:inline">{site.name}</span>
+          <span className="hidden font-medium tracking-tight drop-shadow md:inline">{site.name}</span>
         </Link>
-        <nav aria-label="Main" className="flex items-center gap-4 text-sm sm:gap-6">
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`text-muted transition hover:text-fg ${item.hideOnMobile ? "hidden md:inline" : ""}`}
-            >
-              {item.label}
-            </Link>
-          ))}
-          <a
-            href={site.resume}
-            download=""
-            className="rounded-full border border-accent/60 px-3 py-1.5 text-accent transition hover:bg-accent hover:text-accent-ink"
-          >
-            Resume
-            <span className="sr-only"> (PDF download)</span>
-          </a>
-        </nav>
+        <NavLinks />
+        <a
+          href={site.resume}
+          download=""
+          className="inline-flex items-center gap-1.5 justify-self-end rounded-full bg-accent px-4 py-2 text-sm font-medium text-accent-ink shadow-[0_8px_30px_rgb(110_226_106/0.25)] transition hover:brightness-110"
+        >
+          Resume
+          <span aria-hidden>↓</span>
+          <span className="sr-only"> (PDF download)</span>
+        </a>
       </div>
     </header>
   );

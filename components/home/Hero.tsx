@@ -33,7 +33,7 @@ export function Hero() {
         {site.name}, {site.title}
       </h1>
 
-      <div className="relative h-[calc(100svh-61px)] max-h-[60rem] min-h-[34rem] overflow-hidden">
+      <div className="relative -mt-16 h-svh max-h-[64rem] min-h-[36rem] overflow-hidden">
         <SliceOnScroll>
           <Image
             src="/elias-hero.png"
