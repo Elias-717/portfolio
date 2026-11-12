@@ -64,11 +64,6 @@ body {
   filter: blur(48px);
 }
 
-/* Darker green for the hero banner, with a faint glow. Used with mix-blend-screen. */
-.neon {
-  color: #23a03a;
-  text-shadow: 0 0 24px rgb(35 160 58 / 0.35);
-}
 @media (prefers-reduced-motion: reduce) {
   .halo {
     animation: none !important;

@@ -24,7 +24,7 @@ function BannerRun() {
 
 /**
  * Full-bleed portrait with the name scrolling across it as a giant banner.
- * The banner is green with mix-blend-screen, so the face shows through the letters,
+ * The banner uses mix-blend-difference, so the letters invert where they cross the face,
  * and it speeds up with scroll velocity.
  * Socials sit bottom-left, titles bottom-right.
  */
@@ -49,9 +49,9 @@ export function Hero() {
         {/* The moving banner. */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-[38%] -translate-y-1/2 overflow-hidden py-[0.2em] mix-blend-screen sm:top-[42%]"
+          className="pointer-events-none absolute inset-x-0 top-[38%] -translate-y-1/2 overflow-hidden py-[0.2em] mix-blend-difference sm:top-[42%]"
         >
-          <VelocityMarquee className="neon text-[24vw] font-medium leading-none tracking-[-0.05em] sm:text-[clamp(4.5rem,15vw,14rem)]">
+          <VelocityMarquee className="text-[#e8ece8] text-[24vw] font-medium leading-none tracking-[-0.05em] sm:text-[clamp(4.5rem,15vw,14rem)]">
             <BannerRun />
           </VelocityMarquee>
         </div>
