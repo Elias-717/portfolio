@@ -14,7 +14,7 @@ function Slice({ index, count, progress }: { index: number; count: number; progr
     <motion.div
       aria-hidden
       style={{ top: `${(index / count) * 100}%`, height: `${100 / count + 0.5}%`, scaleY }}
-      className="pointer-events-none absolute inset-x-0 z-10 bg-bg"
+      className="pointer-events-none absolute inset-x-0 z-10 bg-black"
     />
   );
 }

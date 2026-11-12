@@ -1,10 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
-import { ButtonLink } from "@/components/ButtonLink";
 import { SocialIcon } from "@/components/SocialIcon";
 import { SliceOnScroll } from "@/components/SliceOnScroll";
 import { VelocityMarquee } from "@/components/VelocityMarquee";
-import { featuredProjects } from "@/data/projects";
 import { site, socials } from "@/data/site";
 
 const delay = (ms: number) => ({ animationDelay: `${ms}ms` });
@@ -48,7 +45,7 @@ export function Hero() {
           />
           <div
             aria-hidden
-            className="absolute inset-x-0 bottom-0 -z-10 h-1/3 bg-gradient-to-t from-bg to-transparent"
+            className="absolute inset-x-0 bottom-0 -z-10 h-1/3 bg-gradient-to-t from-black to-transparent"
           />
 
           {/*
@@ -68,19 +65,6 @@ export function Hero() {
             >
               <BannerRun />
             </VelocityMarquee>
-          </div>
-
-          {/* Top-left availability. */}
-          <div className="absolute inset-x-0 top-0">
-            <div className="mx-auto max-w-6xl px-4 pt-6 sm:px-6">
-              <p
-                className="rise inline-flex items-center gap-2 rounded-full border border-fg/15 bg-bg/50 px-3 py-1 text-xs text-fg/85 backdrop-blur"
-                style={delay(0)}
-              >
-                <span aria-hidden className="h-2 w-2 animate-pulse rounded-full bg-accent" />
-                {site.availability}
-              </p>
-            </div>
           </div>
 
           {/* Bottom row: socials left, titles right. */}
@@ -111,38 +95,6 @@ export function Hero() {
             </div>
           </div>
         </SliceOnScroll>
-      </div>
-
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="rise flex flex-col gap-6 pt-8 sm:flex-row sm:items-end sm:justify-between" style={delay(320)}>
-          <p className="max-w-md text-lg leading-relaxed text-muted">{site.pitch}</p>
-          <div className="flex flex-wrap gap-3">
-            <ButtonLink href="/#projects">See my work</ButtonLink>
-            <ButtonLink href={site.resume} variant="ghost" download>
-              Download resume
-            </ButtonLink>
-          </div>
-        </div>
-
-        {/* Proof strip: the three featured projects, one fact each. */}
-        <ul className="rise mt-14 grid border-t border-line sm:grid-cols-3" style={delay(420)}>
-          {featuredProjects.map((p) => (
-            <li
-              key={p.slug}
-              className="border-b border-line sm:border-b-0 sm:border-r sm:px-5 sm:first:pl-0 sm:last:border-r-0 sm:last:pr-0"
-            >
-              <Link href={`/projects/${p.slug}`} className="group flex h-full items-start justify-between gap-4 py-5">
-                <span>
-                  <span className="block font-medium transition group-hover:text-accent">{p.title}</span>
-                  <span className="mt-1 block text-sm text-muted">{p.highlight}</span>
-                </span>
-                <span aria-hidden className="text-muted transition group-hover:translate-x-1 group-hover:text-accent">
-                  →
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
       </div>
     </section>
   );
