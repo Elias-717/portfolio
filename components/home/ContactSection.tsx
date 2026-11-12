@@ -1,7 +1,7 @@
 import { ButtonLink } from "@/components/ButtonLink";
 import { ContactForm } from "@/components/ContactForm";
 import { Reveal } from "@/components/Reveal";
-import { site } from "@/data/site";
+import { site, socials } from "@/data/site";
 import { Section } from "./Section";
 
 export function ContactSection() {
@@ -20,16 +20,13 @@ export function ContactSection() {
             {site.email}
           </a>
           <ul className="mt-8 flex flex-wrap gap-3">
-            <li>
-              <ButtonLink href={site.links.linkedin} variant="ghost" external>
-                LinkedIn ↗
-              </ButtonLink>
-            </li>
-            <li>
-              <ButtonLink href={site.links.github} variant="ghost" external>
-                GitHub ↗
-              </ButtonLink>
-            </li>
+            {socials.map((s) => (
+              <li key={s.label}>
+                <ButtonLink href={s.href} variant="ghost" external>
+                  {s.label} ↗
+                </ButtonLink>
+              </li>
+            ))}
             <li>
               <ButtonLink href={site.resume} download>
                 Download resume

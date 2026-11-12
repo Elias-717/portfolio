@@ -1,4 +1,4 @@
-import { site } from "@/data/site";
+import { site, socials } from "@/data/site";
 
 export function SiteFooter() {
   return (
@@ -13,16 +13,13 @@ export function SiteFooter() {
               Email
             </a>
           </li>
-          <li>
-            <a href={site.links.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-fg">
-              LinkedIn
-            </a>
-          </li>
-          <li>
-            <a href={site.links.github} target="_blank" rel="noopener noreferrer" className="hover:text-fg">
-              GitHub
-            </a>
-          </li>
+          {socials.map((s) => (
+            <li key={s.label}>
+              <a href={s.href} target="_blank" rel="noopener noreferrer" className="hover:text-fg">
+                {s.label}
+              </a>
+            </li>
+          ))}
           <li>
             <a href={site.resume} download="" className="hover:text-fg">
               Resume (PDF)

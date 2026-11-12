@@ -149,14 +149,13 @@ export const projects: Project[] = [
     ],
     stack: ["Next.js 14 (static export)", "TypeScript", "Tailwind CSS", "Recharts", "Papaparse", "jsPDF", "Vitest", "Playwright"],
     links: {
-      // TODO: Insightly live URL.
-      live: undefined,
+      live: "https://tryinsightly.vercel.app",
       code: "https://github.com/Elias-717/insightly",
     },
     demo: {
       type: "browser",
-      // TODO: same as links.live once known.
-      url: undefined,
+      // Embedding needs frame-ancestors for eliasalsumairi.dev in Insightly's CSP (currently DENY); new-tab fallback works meanwhile.
+      url: "https://tryinsightly.vercel.app",
       poster: undefined, // TODO: public/projects/insightly/poster.png
       video: undefined, // TODO: public/projects/insightly/demo.mp4 (drop a sample CSV, read the result)
     },

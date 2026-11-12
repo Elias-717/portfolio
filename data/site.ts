@@ -10,10 +10,6 @@ export const site = {
   location: "Alor Setar, Kedah, Malaysia",
   url: "https://eliasalsumairi.dev",
   email: "eliassumairi@gmail.com",
-  links: {
-    linkedin: "https://www.linkedin.com/in/elias-al-sumairi-1b55b5324",
-    github: "https://github.com/Elias-717",
-  },
   // TODO: add public/resume.pdf (your latest resume).
   resume: "/resume.pdf",
   // TODO: add public/headshot.jpg, then set this to "/headshot.jpg".
@@ -23,6 +19,23 @@ export const site = {
   // Set NEXT_PUBLIC_FORMSPREE_ID in .env.local / Vercel. The form is hidden until it is set.
   formspreeId: process.env.NEXT_PUBLIC_FORMSPREE_ID ?? "",
 } as const;
+
+export interface Social {
+  label: string;
+  href: string;
+}
+
+// Shown in the contact section and footer, in this order. Entries with an empty href are hidden.
+const allSocials: Social[] = [
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/elias-al-sumairi-1b55b5324" },
+  { label: "GitHub", href: "https://github.com/Elias-717" },
+  { label: "Instagram", href: "https://instagram.com/elias__717" },
+  { label: "Facebook", href: "https://facebook.com/Elias-Al-Sumairi" },
+  { label: "TikTok", href: "https://tiktok.com/@elias__717" },
+  { label: "X (Twitter)", href: "" }, // TODO: X / Twitter profile URL
+];
+
+export const socials = allSocials.filter((s) => s.href);
 
 export const bio: string[] = [
   "I'm a Computer Science (Data Science) student at Universiti Antarabangsa Albukhary (AIU) in Malaysia, graduating in 2027. I like taking an idea from first concept to a working product, and learning the engineering decisions along the way.",
