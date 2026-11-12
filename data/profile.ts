@@ -3,7 +3,7 @@
 export const skillGroups: { level: string; items: string[] }[] = [
   {
     level: "Strong",
-    items: ["TypeScript", "JavaScript", "React", "Next.js", "Node.js", "PostgreSQL", "Supabase", "SQL", "Git"],
+    items: ["TypeScript", "JavaScript", "Python", "React", "Next.js", "Node.js", "PostgreSQL", "Supabase", "SQL", "Git"],
   },
   {
     level: "Working knowledge",
@@ -24,7 +24,7 @@ export const skillGroups: { level: string; items: string[] }[] = [
   },
   {
     level: "Familiar",
-    items: ["Python", "Data mining", "Docker", "Azure Container Apps"],
+    items: ["Docker", "Azure Container Apps"],
   },
 ];
 

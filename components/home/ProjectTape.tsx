@@ -17,46 +17,56 @@ export interface TapeItem {
   cta: string;
 }
 
-// Tape geometry (px / degrees). Each project's cover is sliced across SEGS_PER_ITEM panels.
-const SEG_W = 150;
-const SEG_H = 210;
-const SEGS_PER_ITEM = 4;
-const SEGS_PER_TURN = 14;
-const STEP = 360 / SEGS_PER_TURN; // degrees between panels
+// Paper-ribbon geometry (px / degrees). Many thin slices make one smooth, continuous strip;
+// each project's cover runs across SEGS_PER_ITEM slices, and one full turn holds all four.
+const SEG_W = 56;
+const SEG_H = 300;
+const SEGS_PER_ITEM = 10;
+const SEGS_PER_TURN = 40;
+const STEP = 360 / SEGS_PER_TURN; // degrees between slices
 const RADIUS = SEG_W / (2 * Math.tan((STEP / 2) * (Math.PI / 180)));
-const DROP = (SEG_H + 170) / SEGS_PER_TURN; // vertical drop per panel, so the tape spirals
-const EXTRA = 5; // extra panels before and after so the tape looks endless
+const DROP = (SEG_H + 90) / SEGS_PER_TURN; // vertical drop per slice, so the ribbon spirals
+const EXTRA = 20; // half a turn of extra ribbon before and after
+// Slant each slice to follow the spiral, so the ribbon's edges are smooth lines, not steps.
+const SLANT = (Math.atan(DROP / SEG_W) * 180) / Math.PI;
 
 /** Rotation (deg) that brings the middle of item `i` to the front. */
 const angleFor = (i: number) => (i * SEGS_PER_ITEM + (SEGS_PER_ITEM - 1) / 2) * STEP;
 
-function Panel({ index, items, rotation }: { index: number; items: TapeItem[]; rotation: MotionValue<number> }) {
+function Slice({ index, items, rotation }: { index: number; items: TapeItem[]; rotation: MotionValue<number> }) {
   const n = items.length;
-  const itemIndex = (((Math.floor(index / SEGS_PER_ITEM) % n) + n) % n) as number;
+  const itemIndex = ((Math.floor(index / SEGS_PER_ITEM) % n) + n) % n;
   const slice = ((index % SEGS_PER_ITEM) + SEGS_PER_ITEM) % SEGS_PER_ITEM;
   const own = index * STEP;
-  // Panels facing the viewer are bright; ones turned away fade back.
-  const opacity = useTransform(rotation, (r) => {
-    const facing = Math.cos(((own - r) * Math.PI) / 180);
-    return 0.06 + 0.94 * Math.max(0, facing) ** 2.2;
+  const facingOf = (r: number) => Math.cos(((own - r) * Math.PI) / 180);
+
+  // Paper shading: bright where it faces you, darker as it curves away,
+  // and the back of the ribbon reads as a faded grey print.
+  const filter = useTransform(rotation, (r) => {
+    const f = facingOf(r);
+    return f >= 0 ? `brightness(${0.32 + 0.68 * f ** 0.8})` : "grayscale(1) brightness(1.1)";
   });
+  const opacity = useTransform(rotation, (r) => (facingOf(r) >= 0 ? 1 : 0.14));
 
   return (
     <motion.div
       style={{
+        filter,
         opacity,
-        width: SEG_W + 1,
+        width: SEG_W + 0.75, // slight overlap hides hairline seams between slices
         height: SEG_H,
         marginLeft: -SEG_W / 2,
         marginTop: -SEG_H / 2,
-        transform: `rotateY(${own}deg) translateZ(${RADIUS}px) translateY(${index * DROP}px)`,
+        transform: `rotateY(${own}deg) translateZ(${RADIUS}px) translateY(${index * DROP}px) skewY(${SLANT}deg)`,
         backgroundImage: `url(${items[itemIndex].cover})`,
         backgroundSize: `${SEG_W * SEGS_PER_ITEM}px auto`,
         backgroundPosition: `${-slice * SEG_W}px center`,
+        // Thin light paper edges top and bottom; a soft crease where one print meets the next.
+        boxShadow: `inset 0 1px 0 rgb(255 255 255 / 0.18), inset 0 -1px 0 rgb(255 255 255 / 0.1)${
+          slice === 0 ? ", inset 3px 0 6px -2px rgb(0 0 0 / 0.55)" : ""
+        }`,
       }}
-      className={`absolute left-1/2 top-1/2 border-y border-white/10 bg-surface bg-no-repeat ${
-        slice === 0 ? "rounded-l-2xl" : slice === SEGS_PER_ITEM - 1 ? "rounded-r-2xl" : ""
-      }`}
+      className="absolute left-1/2 top-1/2 bg-[#e9ebe7] bg-no-repeat [backface-visibility:visible]"
     />
   );
 }
@@ -120,7 +130,7 @@ export function ProjectTape({ items }: { items: TapeItem[] }) {
 
         {/* The tape. Decorative: the same information is in the text around it. */}
         <div aria-hidden className="pointer-events-none absolute inset-0 grid place-items-center">
-          <div className="scale-[0.7] sm:scale-90 lg:scale-100" style={{ perspective: "2600px" }}>
+          <div className="scale-[0.62] sm:scale-[0.8] lg:scale-[0.88]" style={{ perspective: "2600px" }}>
             {/* Tilt so the spiral's slant is visible. */}
             <div style={{ transform: "rotateX(-14deg) rotateZ(-7deg)", transformStyle: "preserve-3d" }}>
               <motion.div
@@ -128,7 +138,7 @@ export function ProjectTape({ items }: { items: TapeItem[] }) {
                 className="relative h-0 w-0 [transform-style:preserve-3d]"
               >
                 {panels.map((k) => (
-                  <Panel key={k} index={k} items={items} rotation={rotation} />
+                  <Slice key={k} index={k} items={items} rotation={rotation} />
                 ))}
               </motion.div>
             </div>
