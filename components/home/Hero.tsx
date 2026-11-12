@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ButtonLink } from "@/components/ButtonLink";
 import { SocialIcon } from "@/components/SocialIcon";
+import { SliceOnScroll } from "@/components/SliceOnScroll";
 import { VelocityMarquee } from "@/components/VelocityMarquee";
 import { featuredProjects } from "@/data/projects";
 import { site, socials } from "@/data/site";
@@ -36,66 +37,71 @@ export function Hero() {
       </h1>
 
       <div className="relative h-[calc(100svh-61px)] max-h-[60rem] min-h-[34rem] overflow-hidden">
-        <Image
-          src="/elias-hero.png"
-          alt={`Portrait of ${site.name}`}
-          fill
-          priority
-          sizes="100vw"
-          className="-z-10 object-cover object-[58%_30%]"
-        />
-        <div aria-hidden className="absolute inset-x-0 bottom-0 -z-10 h-1/3 bg-gradient-to-t from-bg to-transparent" />
+        <SliceOnScroll>
+          <Image
+            src="/elias-hero.png"
+            alt={`Portrait of ${site.name}`}
+            fill
+            priority
+            sizes="100vw"
+            className="-z-10 object-cover object-[58%_30%]"
+          />
+          <div
+            aria-hidden
+            className="absolute inset-x-0 bottom-0 -z-10 h-1/3 bg-gradient-to-t from-bg to-transparent"
+          />
 
-        {/* The moving banner. */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-[38%] -translate-y-1/2 overflow-hidden py-[0.2em] mix-blend-difference sm:top-[42%]"
-        >
-          <VelocityMarquee className="text-[#e8ece8] text-[24vw] font-medium leading-none tracking-[-0.05em] sm:text-[clamp(4.5rem,15vw,14rem)]">
-            <BannerRun />
-          </VelocityMarquee>
-        </div>
-
-        {/* Top-left availability. */}
-        <div className="absolute inset-x-0 top-0">
-          <div className="mx-auto max-w-6xl px-4 pt-6 sm:px-6">
-            <p
-              className="rise inline-flex items-center gap-2 rounded-full border border-fg/15 bg-bg/50 px-3 py-1 text-xs text-fg/85 backdrop-blur"
-              style={delay(0)}
-            >
-              <span aria-hidden className="h-2 w-2 animate-pulse rounded-full bg-accent" />
-              {site.availability}
-            </p>
+          {/* The moving banner. */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-[38%] -translate-y-1/2 overflow-hidden py-[0.2em] mix-blend-difference sm:top-[42%]"
+          >
+            <VelocityMarquee className="text-[#e8ece8] text-[24vw] font-medium leading-none tracking-[-0.05em] sm:text-[clamp(4.5rem,15vw,14rem)]">
+              <BannerRun />
+            </VelocityMarquee>
           </div>
-        </div>
 
-        {/* Bottom row: socials left, titles right. */}
-        <div className="absolute inset-x-0 bottom-0">
-          <div className="mx-auto flex max-w-6xl items-end justify-between gap-6 px-4 pb-8 sm:px-6 sm:pb-10">
-            <ul className="rise hidden space-y-2.5 sm:block" style={delay(200)} aria-label="Social links">
-              {socials.map((s) => (
-                <li key={s.label}>
-                  <a
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 text-sm text-fg/85 transition hover:text-accent"
-                  >
-                    <SocialIcon label={s.label} />
-                    {s.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <p
-              className="rise ml-auto text-right text-[clamp(2rem,4.6vw,4rem)] font-semibold leading-[0.95] tracking-[-0.045em]"
-              style={delay(120)}
-            >
-              <span className="block text-accent">{site.title}</span>
-              <span className="block">CS student, Data & AI</span>
-            </p>
+          {/* Top-left availability. */}
+          <div className="absolute inset-x-0 top-0">
+            <div className="mx-auto max-w-6xl px-4 pt-6 sm:px-6">
+              <p
+                className="rise inline-flex items-center gap-2 rounded-full border border-fg/15 bg-bg/50 px-3 py-1 text-xs text-fg/85 backdrop-blur"
+                style={delay(0)}
+              >
+                <span aria-hidden className="h-2 w-2 animate-pulse rounded-full bg-accent" />
+                {site.availability}
+              </p>
+            </div>
           </div>
-        </div>
+
+          {/* Bottom row: socials left, titles right. */}
+          <div className="absolute inset-x-0 bottom-0">
+            <div className="mx-auto flex max-w-6xl items-end justify-between gap-6 px-4 pb-8 sm:px-6 sm:pb-10">
+              <ul className="rise hidden space-y-2.5 sm:block" style={delay(200)} aria-label="Social links">
+                {socials.map((s) => (
+                  <li key={s.label}>
+                    <a
+                      href={s.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 text-sm text-fg/85 transition hover:text-accent"
+                    >
+                      <SocialIcon label={s.label} />
+                      {s.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <p
+                className="rise ml-auto text-right text-[clamp(2rem,4.6vw,4rem)] font-semibold leading-[0.95] tracking-[-0.045em]"
+                style={delay(120)}
+              >
+                <span className="block text-accent">{site.title}</span>
+                <span className="block">CS student, Data & AI</span>
+              </p>
+            </div>
+          </div>
+        </SliceOnScroll>
       </div>
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
