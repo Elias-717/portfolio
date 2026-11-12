@@ -247,7 +247,7 @@ export const projects: Project[] = [
     decisions: [],
     stack: ["React 19", "Vite", "Plain CSS", "OpenStreetMap", "Formspree", "Netlify"],
     links: {
-      live: undefined, // TODO: Sana'a House Netlify URL.
+      live: "https://sanaahouse.netlify.app",
       code: "https://github.com/Elias-717/sanaa_house",
     },
     demo: { type: "none" },
