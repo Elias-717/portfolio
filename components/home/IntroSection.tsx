@@ -11,7 +11,7 @@ const statement: TextSegment[] = [
 ];
 
 const detail =
-  "From a volunteering platform that won 2nd place at MMC Upstart 2026 to an offline-first money app for students, I work across the whole stack: database, API and interface.";
+  "From a platform that shares campus volunteering fairly to an offline-first money app for students, I work across the whole stack: database, API and interface.";
 
 /** Black full-screen intro that follows the hero: big statement, small detail, actions. */
 export function IntroSection() {
