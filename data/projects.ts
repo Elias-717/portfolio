@@ -22,6 +22,8 @@ export interface Project {
   caseStudy: boolean;
   award?: string;
   awardShort?: string;
+  /** One short, factual proof point shown on cards and in the hero. */
+  highlight: string;
   problem: string;
   solution: string;
   features: string[];
@@ -48,6 +50,7 @@ export const statusLabel: Record<Status, string> = {
 export const projects: Project[] = [
   {
     slug: "voluntree",
+    highlight: "2nd Place · MMC Upstart 2026",
     title: "Voluntree",
     oneLine: "A campus volunteering platform that fills event slots fairly.",
     year: "2026",
@@ -119,6 +122,7 @@ export const projects: Project[] = [
   },
   {
     slug: "insightly",
+    highlight: "Your files never leave the browser",
     title: "Insightly",
     oneLine: "Drop in a CSV and get the story, without the file ever leaving your browser.",
     year: "2026",
@@ -164,6 +168,7 @@ export const projects: Project[] = [
   },
   {
     slug: "brokely",
+    highlight: "Offline-first Android app · v0.1 in testing",
     title: "Brokely",
     oneLine: "A student-first expenditure planner for Android, with a broccoli mascot that grows from good money habits.",
     year: "2026 – present",
@@ -229,6 +234,7 @@ export const projects: Project[] = [
   },
   {
     slug: "sanaa-house",
+    highlight: "Arabic and English, true right-to-left",
     title: "Sana'a House",
     oneLine:
       "A bilingual Arabic and English showcase site for a fictional Yemeni artisan atelier, built to demonstrate right-to-left design.",

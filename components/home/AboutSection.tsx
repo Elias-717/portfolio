@@ -6,7 +6,7 @@ import { Section } from "./Section";
 
 export function AboutSection() {
   return (
-    <Section id="about" index="01" label="About" title="Idea to working product.">
+    <Section id="about" label="About" title="From first idea to working product.">
       <div className="grid gap-12 md:grid-cols-[minmax(0,18rem)_1fr]">
         <Reveal>
           {site.headshot ? (

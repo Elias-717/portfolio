@@ -1,57 +1,84 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ButtonLink } from "@/components/ButtonLink";
-import { Reveal } from "@/components/Reveal";
+import { featuredProjects } from "@/data/projects";
 import { site } from "@/data/site";
+
+const delay = (ms: number) => ({ animationDelay: `${ms}ms` });
 
 export function Hero() {
   return (
     <section aria-labelledby="hero-title" className="relative overflow-hidden">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-40 -top-40 h-[36rem] w-[36rem] rounded-full bg-accent/10 blur-3xl"
-      />
-      <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 pb-20 pt-16 sm:px-6 sm:pb-28 sm:pt-24 lg:grid-cols-[1fr_auto]">
+      <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 pt-12 sm:px-6 sm:pt-20 lg:grid-cols-[1.25fr_1fr] lg:gap-6">
         <div>
-          <Reveal>
-            <p className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 text-xs text-muted">
-              <span aria-hidden className="h-2 w-2 rounded-full bg-accent" />
-              {site.availability}
-            </p>
-          </Reveal>
-          <Reveal delay={0.05}>
-            <h1 id="hero-title" className="mt-6 text-5xl font-semibold leading-[0.95] tracking-tighter sm:text-7xl lg:text-8xl">
-              {site.name}
-            </h1>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <p className="mt-3 text-4xl font-semibold leading-none tracking-tighter text-accent sm:text-6xl lg:text-7xl">
-              {site.title}
-            </p>
-          </Reveal>
-          <Reveal delay={0.15}>
-            <p className="mt-8 max-w-xl text-lg text-muted">{site.pitch}</p>
-            <p className="mt-2 text-sm text-muted">Based in {site.location}</p>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <div className="mt-10 flex flex-wrap gap-3">
-              <ButtonLink href="/#projects">View projects</ButtonLink>
-              <ButtonLink href={site.resume} variant="ghost" download>
-                Download resume
-              </ButtonLink>
-            </div>
-          </Reveal>
+          <p
+            className="rise inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 text-xs text-muted"
+            style={delay(0)}
+          >
+            <span aria-hidden className="h-2 w-2 animate-pulse rounded-full bg-accent" />
+            {site.availability}
+          </p>
+          <h1
+            id="hero-title"
+            className="rise mt-7 text-[clamp(3.25rem,9vw,7.5rem)] font-semibold leading-[0.88] tracking-[-0.055em]"
+            style={delay(80)}
+          >
+            Elias
+            <br />
+            Al-Sumairi
+          </h1>
+          <p
+            className="rise mt-5 text-[clamp(1.75rem,4vw,3rem)] font-light leading-none tracking-[-0.03em] text-accent"
+            style={delay(160)}
+          >
+            {site.title}
+          </p>
+          <p className="rise mt-8 max-w-md text-lg leading-relaxed text-muted" style={delay(240)}>
+            {site.pitch}
+          </p>
+          <div className="rise mt-9 flex flex-wrap gap-3" style={delay(320)}>
+            <ButtonLink href="/#projects">See my work</ButtonLink>
+            <ButtonLink href={site.resume} variant="ghost" download>
+              Download resume
+            </ButtonLink>
+          </div>
         </div>
-        <Reveal delay={0.1} className="hidden lg:block">
+
+        {/* Signature: the emblem with a slow halo. */}
+        <div className="rise relative mx-auto w-[min(78vw,26rem)] lg:w-full lg:max-w-[28rem]" style={delay(200)}>
+          <div aria-hidden className="halo absolute -inset-10 rounded-full" />
           <Image
             src="/logo.png"
             alt=""
-            width={340}
-            height={340}
+            width={448}
+            height={448}
             priority
-            sizes="340px"
-            className="rounded-full shadow-[0_0_120px_-20px] shadow-accent/40"
+            sizes="(min-width: 1024px) 448px, 78vw"
+            className="relative w-full rounded-full ring-1 ring-accent/20"
           />
-        </Reveal>
+        </div>
+      </div>
+
+      {/* Proof strip: the three featured projects, one fact each. */}
+      <div className="mx-auto mt-16 max-w-6xl px-4 pb-6 sm:mt-24 sm:px-6">
+        <ul className="rise grid border-t border-line sm:grid-cols-3" style={delay(420)}>
+          {featuredProjects.map((p) => (
+            <li key={p.slug} className="border-b border-line sm:border-b-0 sm:border-r sm:px-5 sm:first:pl-0 sm:last:border-r-0 sm:last:pr-0">
+              <Link
+                href={`/projects/${p.slug}`}
+                className="group flex h-full items-start justify-between gap-4 py-5"
+              >
+                <span>
+                  <span className="block font-medium transition group-hover:text-accent">{p.title}</span>
+                  <span className="mt-1 block text-sm text-muted">{p.highlight}</span>
+                </span>
+                <span aria-hidden className="text-muted transition group-hover:translate-x-1 group-hover:text-accent">
+                  →
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

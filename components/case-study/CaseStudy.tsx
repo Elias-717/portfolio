@@ -59,11 +59,11 @@ export function CaseStudy({ project: p }: { project: Project }) {
       </section>
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <Block index="01" title="The problem">
+        <Block title="The problem">
           <p>{p.problem}</p>
         </Block>
 
-        <Block index="02" title="The solution">
+        <Block title="The solution">
           <p>{p.solution}</p>
           <ul className="mt-6 space-y-3">
             {p.features.map((f) => (
@@ -75,11 +75,11 @@ export function CaseStudy({ project: p }: { project: Project }) {
           </ul>
         </Block>
 
-        <Block index="03" title="Key screens" wide>
+        <Block title="Key screens" wide>
           <ScreenGallery project={p} />
         </Block>
 
-        <Block index="04" title="Technical decisions">
+        <Block title="Technical decisions">
           <div className="space-y-8">
             {p.decisions.map((d) => (
               <div key={d.title}>
@@ -91,7 +91,7 @@ export function CaseStudy({ project: p }: { project: Project }) {
         </Block>
 
         {p.results ? (
-          <Block index="05" title={p.results.title}>
+          <Block title={p.results.title}>
             <div className="space-y-4">
               {p.results.body.map((r) => (
                 <p key={r}>{r}</p>
@@ -105,7 +105,7 @@ export function CaseStudy({ project: p }: { project: Project }) {
           </Block>
         ) : null}
 
-        <Block index={p.results ? "06" : "05"} title="Stack & credits">
+        <Block title="Stack & credits">
           <ul className="flex flex-wrap gap-2">
             {p.stack.map((s) => (
               <li key={s}>

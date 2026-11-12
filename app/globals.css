@@ -7,7 +7,7 @@
   --color-surface-2: #161a17;
   --color-line: #232824;
   --color-fg: #eef2ee;
-  --color-muted: #9aa39c;
+  --color-muted: #a3ada5;
   --color-accent: #6ee26a;
   --color-accent-ink: #062b0c;
 
@@ -35,6 +35,33 @@ body {
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;
   border-radius: 4px;
+}
+
+/* Page-load entrance that runs without JavaScript (used above the fold). */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+/* Slow halo behind the emblem. */
+@keyframes halo {
+  to {
+    transform: rotate(1turn);
+  }
+}
+.halo {
+  background: conic-gradient(from 0deg, transparent 0turn, rgb(110 226 106 / 0.35) 0.15turn, transparent 0.35turn, rgb(15 95 42 / 0.5) 0.6turn, transparent 0.85turn);
+  animation: halo 24s linear infinite;
+  filter: blur(48px);
 }
 
 dialog::backdrop {

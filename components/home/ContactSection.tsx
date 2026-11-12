@@ -6,7 +6,7 @@ import { Section } from "./Section";
 
 export function ContactSection() {
   return (
-    <Section id="contact" index="05" label="Contact" title="Let's build something.">
+    <Section id="contact" label="Contact" title="Let's build something.">
       <div className="grid gap-12 lg:grid-cols-2">
         <Reveal>
           <p className="text-lg text-muted">

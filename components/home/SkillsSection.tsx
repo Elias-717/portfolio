@@ -4,24 +4,30 @@ import { Section } from "./Section";
 
 export function SkillsSection() {
   return (
-    <Section id="skills" index="02" label="Skills" title="What I work with.">
-      <div className="grid gap-12 md:grid-cols-3">
-        {skillGroups.map((group, gi) => (
-          <Reveal key={group.level} delay={gi * 0.05}>
-            <h3 className="border-b border-line pb-4 text-xl font-semibold">{group.level}</h3>
-            <ol className="mt-4 space-y-2">
-              {group.items.map((item, i) => (
-                <li key={item} className="flex gap-4">
-                  <span className="w-6 font-mono text-xs leading-7 text-accent">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span className="text-fg/90">{item}</span>
-                </li>
-              ))}
-            </ol>
+    <Section id="skills" label="Skills" title="What I work with.">
+      <dl className="border-t border-line">
+        {skillGroups.map((group) => (
+          <Reveal key={group.level}>
+            <div className="grid gap-3 border-b border-line py-7 md:grid-cols-[14rem_1fr] md:gap-10">
+              <dt className="font-mono text-xs uppercase tracking-[0.18em] text-muted md:pt-2">{group.level}</dt>
+              <dd>
+                <ul className="flex flex-wrap gap-x-2 gap-y-1 text-xl leading-relaxed sm:text-2xl">
+                  {group.items.map((item, i) => (
+                    <li key={item} className="whitespace-nowrap">
+                      {item}
+                      {i < group.items.length - 1 ? (
+                        <span aria-hidden className="pl-2 text-accent/60">
+                          /
+                        </span>
+                      ) : null}
+                    </li>
+                  ))}
+                </ul>
+              </dd>
+            </div>
           </Reveal>
         ))}
-      </div>
+      </dl>
     </Section>
   );
 }

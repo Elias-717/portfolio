@@ -21,7 +21,7 @@ function Entry({ title, org, dates, points }: { title: string; org: string; date
 
 export function ExperienceSection() {
   return (
-    <Section id="experience" index="04" label="Experience" title="Leadership & education.">
+    <Section id="experience" label="Experience" title="Leadership & education.">
       <div className="space-y-16">
         <Reveal>
           <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-muted">Leadership</h3>

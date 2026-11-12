@@ -1,21 +1,9 @@
-/** Numbered section label + heading, e.g. "01 / Projects". */
-export function SectionHeading({
-  index,
-  label,
-  title,
-  id,
-}: {
-  index: string;
-  label: string;
-  title: string;
-  id?: string;
-}) {
+/** Section label + heading. */
+export function SectionHeading({ label, title, id }: { label: string; title: string; id?: string }) {
   return (
     <div className="mb-10 sm:mb-14">
-      <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
-        {index} / {label}
-      </p>
-      <h2 id={id} className="mt-3 text-3xl font-semibold tracking-tight sm:text-5xl">
+      <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">{label}</p>
+      <h2 id={id} className="mt-3 text-[clamp(2rem,5vw,3.5rem)] font-semibold leading-[1] tracking-[-0.04em]">
         {title}
       </h2>
     </div>
