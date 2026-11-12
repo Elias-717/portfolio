@@ -27,7 +27,7 @@ export function IntroSection() {
 
         <ScrollRevealText
           segments={statement}
-          className="mt-14 indent-[18%] text-[clamp(2rem,5.2vw,4.75rem)] font-semibold leading-[1.02] tracking-[-0.045em] sm:mt-20"
+          className="mt-14 indent-[18%] text-[clamp(1.6rem,3.6vw,3.25rem)] font-semibold leading-[1.08] tracking-[-0.045em] sm:mt-20"
         />
 
         <Reveal className="mt-14 flex flex-col gap-8 sm:ml-auto sm:mt-20 sm:max-w-md">
