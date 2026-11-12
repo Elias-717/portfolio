@@ -18,14 +18,14 @@ export function CaseStudy({ project: p }: { project: Project }) {
         <Link href="/#projects" className="text-sm text-muted hover:text-accent">
           ← Back to projects
         </Link>
-        <Reveal>
+        <div className="rise">
           <h1 className="mt-8 text-5xl font-semibold tracking-tighter sm:text-7xl">{p.title}</h1>
           <p className="mt-4 max-w-2xl text-xl text-muted">{p.oneLine}</p>
           <div className="mt-6 flex flex-wrap gap-2">
             <Tag accent>{statusLabel[p.status]}</Tag>
             {p.award ? <Tag accent>{p.award}</Tag> : null}
           </div>
-        </Reveal>
+        </div>
         <dl className="mt-10 grid gap-6 border-y border-line py-6 text-sm sm:grid-cols-3">
           <div>
             <dt className="text-muted">Year</dt>
