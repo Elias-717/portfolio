@@ -36,7 +36,7 @@ export function Hero() {
       <div className="relative -mt-16 h-svh max-h-[64rem] min-h-[36rem] overflow-hidden">
         <SliceOnScroll>
           <Image
-            src="/elias-hero.png"
+            src="/elias_hero.png"
             alt={`Portrait of ${site.name}`}
             fill
             priority

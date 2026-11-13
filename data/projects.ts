@@ -8,6 +8,8 @@ export interface Screen {
   src: string;
   alt: string;
   caption?: string;
+  /** Phone-sized capture, shown in a portrait frame. */
+  mobile?: boolean;
 }
 
 export interface Project {
@@ -69,7 +71,7 @@ export const projects: Project[] = [
       "Voluntree replaces the race with a transparent process. It recommends students who have had fewer opportunities, lets the database enforce capacity, and closes the loop with verified attendance and a certificate. It was built for the MMC Upstart 2026 Catalyst (Focus Area 02, Smart Campus and Institutional Systems).",
     features: [
       "AI drafts a mission from a pasted event announcement; a person always edits and publishes it.",
-      "A transparent score recommends students with fewer past opportunities and explains why (\"Why recommended\").",
+      'A transparent score recommends students with fewer past opportunities and explains why ("Why recommended").',
       "Capacity is enforced by the database, so there is no race for slots.",
       "QR check-in and organizer-approved attendance, then a PDF certificate and growth of the student's private date palm.",
       "Admin view with a fairness chart, a dean-approval queue and logged revocations.",
@@ -93,8 +95,7 @@ export const projects: Project[] = [
       ],
       note: "The evaluation uses synthetic data, not real students.",
     },
-    credits:
-      "Built by a team of four. The matching, certificate and evaluation modules were built by my co-developer.",
+    credits: "Built by a team of four. The matching, certificate and evaluation modules were built by my co-developer.",
     stack: [
       "Next.js (App Router)",
       "TypeScript",
@@ -120,8 +121,35 @@ export const projects: Project[] = [
       // TODO: add public/projects/voluntree/demo.mp4 (core journey recording) and set video.
       video: undefined,
     },
-    // TODO: screenshots — landing, student home with watering gauge, "Why recommended", AI draft, QR attendance, admin fairness chart.
-    screens: [],
+    // Captured from the live site. TODO (optional): add in-app screens (student home, QR attendance, admin fairness chart).
+    screens: [
+      {
+        src: "/projects/voluntree/screen-landing.webp",
+        alt: "Voluntree landing page",
+        caption: "Landing page: fair volunteering at AIU.",
+      },
+      {
+        src: "/projects/voluntree/screen-tree.webp",
+        alt: "Voluntree tree seen from above",
+        caption: "Each leaf on the tree is a mission a student showed up for.",
+      },
+      {
+        src: "/projects/voluntree/screen-ai-draft.webp",
+        alt: "An event announcement next to the mission AI drafted from it",
+        caption: "AI drafts the mission from an announcement; the organizer checks every field before publishing.",
+      },
+      {
+        src: "/projects/voluntree/screen-matching.webp",
+        alt: "Three students with recommendation bars and reasons",
+        caption: "Fair matching, with reasons: every recommendation says why.",
+      },
+      {
+        src: "/projects/voluntree/screen-mobile.webp",
+        alt: "Voluntree landing page on a phone",
+        caption: "Mobile.",
+        mobile: true,
+      },
+    ],
   },
   {
     slug: "insightly",
@@ -142,7 +170,7 @@ export const projects: Project[] = [
       "Detects the delimiter and column types, with manual override.",
       "Gives a 0 to 100 data quality score with a transparent breakdown.",
       "Per-column statistics, histograms, category bars, time series, scatter plots, a correlation heatmap and box plots.",
-      "Writes 8 to 12 ranked plain-English insights (\"Whispers\"), each a pure function in its own file.",
+      'Writes 8 to 12 ranked plain-English insights ("Whispers"), each a pure function in its own file.',
       "Cleaning helpers with a before and after score, a virtualised table for 50,000+ rows, and PDF, HTML and Markdown export.",
     ],
     decisions: [
@@ -155,7 +183,16 @@ export const projects: Project[] = [
         body: "163 unit and component tests, plus 12 Playwright end-to-end and accessibility tests on desktop and a 375px mobile viewport. Strict TypeScript and GitHub Actions CI on every change.",
       },
     ],
-    stack: ["Next.js 14 (static export)", "TypeScript", "Tailwind CSS", "Recharts", "Papaparse", "jsPDF", "Vitest", "Playwright"],
+    stack: [
+      "Next.js 14 (static export)",
+      "TypeScript",
+      "Tailwind CSS",
+      "Recharts",
+      "Papaparse",
+      "jsPDF",
+      "Vitest",
+      "Playwright",
+    ],
     links: {
       live: "https://tryinsightly.vercel.app",
       code: "https://github.com/Elias-717/insightly",
@@ -167,15 +204,28 @@ export const projects: Project[] = [
       poster: "/projects/insightly/cover.webp", // Homepage capture; TODO: curated screenshot optional
       video: undefined, // TODO: public/projects/insightly/demo.mp4 (drop a sample CSV, read the result)
     },
-    // TODO: screenshots — upload, overview with quality score, column profile, charts + heatmap, Whispers, cleaning before/after, dark mode, mobile view.
-    screens: [],
+    // Captured from the live site. TODO (optional): charts, heatmap, cleaning before/after.
+    screens: [
+      {
+        src: "/projects/insightly/screen-report.webp",
+        alt: "Insightly example report with a quality score of 92 and ranked findings",
+        caption: "Example report: quality score, column profile and ranked findings.",
+      },
+      {
+        src: "/projects/insightly/screen-mobile.webp",
+        alt: "Insightly upload screen on a phone",
+        caption: "Mobile: drop a CSV or open a sample.",
+        mobile: true,
+      },
+    ],
   },
   {
     slug: "brokely",
     cover: "/projects/brokely/cover.webp",
-    highlight: "Offline-first Android app · v0.1 in testing",
+    highlight: "Plans student spending, essentials first, and tracks money owed between friends",
     title: "Brokely",
-    oneLine: "A student-first expenditure planner for Android, with a broccoli mascot that grows from good money habits.",
+    oneLine:
+      "A student-first expenditure planner for Android, with a broccoli mascot that grows from good money habits.",
     year: "2026 – present",
     role: "Solo developer and product owner",
     status: "in-development",
@@ -231,7 +281,7 @@ export const projects: Project[] = [
       type: "phone",
       // TODO: Expo web build URL, if `npx expo export -p web` works. Otherwise leave undefined (screenshots + video only).
       url: undefined,
-      poster: undefined, // TODO: public/projects/brokely/poster.png (phone screenshot, synthetic data)
+      poster: "/projects/brokely/poster.webp", // Illustrative poster; TODO: real phone screenshot (synthetic data)
       video: undefined, // TODO: public/projects/brokely/demo.mp4 (log a purchase offline, then sync)
     },
     // TODO: screenshots (synthetic data) — Home with mascot, quick add, Insights, Bills, sync status; mascot stages; architecture diagram.

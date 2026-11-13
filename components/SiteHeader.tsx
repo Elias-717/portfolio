@@ -6,7 +6,7 @@ import { NavLinks } from "./NavLinks";
 /** Floating header: logo left, glass pill nav centred, resume right. Overlays the hero. */
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 h-16">
+    <header className="sticky top-0 z-50 h-16 bg-gradient-to-b from-black/85 via-black/45 to-transparent">
       <div className="mx-auto grid h-full max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-2 px-3 sm:grid-cols-[1fr_auto_1fr] sm:px-6">
         <Link
           href="/"

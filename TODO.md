@@ -35,6 +35,11 @@ Everything still missing before (or after) launch. Search the code for `TODO` to
 ## Sana'a House
 - [ ] Confirm the year (currently 2026)
 
+## Experience section
+- [ ] Evidence photos for the Experience section: Team United campaigns and Maybank #Mbassador events (only photos you have permission to publish, especially ones showing other people)
+- [ ] Selection letter or programme page link for Maybank #Mbassador (optional proof)
+- [ ] Add your most important certifications with issuer, date and credential link (`data/profile.ts`)
+
 ## Content
 - [ ] X / Twitter profile URL (`data/site.ts`)
 - [ ] Confirm the LinkedIn URL (brief: `/in/elias-al-sumairi-1b55b5324`; GitHub README: `/in/Elias-Al-Sumairi`)

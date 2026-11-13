@@ -38,12 +38,22 @@ export function CaseStudy({ project: p }: { project: Project }) {
             <dt className="text-muted">Links</dt>
             <dd className="mt-1 flex flex-wrap gap-x-4">
               {p.links.live ? (
-                <a href={p.links.live} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-accent">
+                <a
+                  href={p.links.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline underline-offset-4 hover:text-accent"
+                >
                   Live site ↗
                 </a>
               ) : null}
               {p.links.code ? (
-                <a href={p.links.code} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-accent">
+                <a
+                  href={p.links.code}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline underline-offset-4 hover:text-accent"
+                >
                   Code on GitHub ↗
                 </a>
               ) : null}
@@ -74,9 +84,11 @@ export function CaseStudy({ project: p }: { project: Project }) {
           </ul>
         </Block>
 
-        <Block title="Key screens" wide>
-          <ScreenGallery project={p} />
-        </Block>
+        {p.screens.length > 0 ? (
+          <Block title="Key screens" wide>
+            <ScreenGallery project={p} />
+          </Block>
+        ) : null}
 
         <Block title="Technical decisions">
           <div className="space-y-8">

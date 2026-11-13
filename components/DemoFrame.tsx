@@ -127,7 +127,7 @@ export function DemoFrame({ project }: { project: Project }) {
       {!src ? (
         <p className="text-center text-sm text-muted">
           {project.status === "in-development"
-            ? "A browser demo isn't available yet; screenshots and a recording show the app below."
+            ? "No browser demo yet: Brokely is an Android app, with release 0.1 in testing."
             : "Live demo link coming soon."}
         </p>
       ) : null}

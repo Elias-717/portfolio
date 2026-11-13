@@ -95,12 +95,21 @@ function PopCard({
   const scale = useTransform(nearness, [0, 1], [0.9, 1]);
   const pointerEvents = useTransform(nearness, (v) => (v > 0.6 ? "auto" : "none"));
 
-  const label = item.teaser ? "Say hello" : item.demoUrl ? "Try the live demo" : "Take a closer look";
+  const opensSite = !item.teaser && !item.demoUrl && item.external;
+  const label = item.teaser
+    ? "Say hello"
+    : item.demoUrl
+      ? "Try the live demo"
+      : opensSite
+        ? "Visit the live site ↗"
+        : "Take a closer look";
   const aria = item.teaser
     ? "Say hello: go to the contact section"
     : item.demoUrl
       ? `Try the ${item.title} live demo`
-      : `Take a closer look at ${item.title}`;
+      : opensSite
+        ? `Visit the ${item.title} live site (opens in a new tab)`
+        : `Take a closer look at ${item.title}`;
 
   return (
     <motion.button
@@ -152,8 +161,12 @@ export function ProjectTape({ items, className = "" }: { items: TapeItem[]; clas
   });
 
   const [open, setOpen] = useState<TapeItem | null>(null);
-  const openItem = (item: TapeItem) =>
-    item.teaser ? document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }) : setOpen(item);
+  const openItem = (item: TapeItem) => {
+    if (item.teaser) document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+    // Sites that refuse to be embedded (no demoUrl) open for real in a new tab.
+    else if (!item.demoUrl && item.external) window.open(item.href, "_blank", "noopener,noreferrer");
+    else setOpen(item);
+  };
 
   const jumpTo = (i: number) => {
     const el = ref.current;
