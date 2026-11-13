@@ -10,6 +10,8 @@ export interface Screen {
   caption?: string;
   /** Phone-sized capture, shown in a portrait frame. */
   mobile?: boolean;
+  /** Tall 4:5 desktop capture, shown uncropped in its own grid. */
+  portrait?: boolean;
 }
 
 export interface Project {
@@ -204,12 +206,60 @@ export const projects: Project[] = [
       poster: "/projects/insightly/cover.webp", // Homepage capture; TODO: curated screenshot optional
       video: undefined, // TODO: public/projects/insightly/demo.mp4 (drop a sample CSV, read the result)
     },
-    // Captured from the live site. TODO (optional): charts, heatmap, cleaning before/after.
+    // Captured from the live site.
     screens: [
       {
         src: "/projects/insightly/screen-report.webp",
         alt: "Insightly example report with a quality score of 92 and ranked findings",
         caption: "Example report: quality score, column profile and ranked findings.",
+      },
+      {
+        src: "/projects/insightly/07-landing-dark.webp",
+        alt: "Insightly landing page in dark mode with a CSV drop zone, three sample files and an example report table highlighting inconsistent values",
+        caption: "Landing page in dark mode: drop a CSV or open a sample.",
+        portrait: true,
+      },
+      {
+        src: "/projects/insightly/01-overview.webp",
+        alt: "Insightly overview tab for messy-customers.csv showing a quality score of 92, Grade A, 15% missing cells and the top findings",
+        caption: "Overview: quality score with its breakdown and the top findings.",
+        portrait: true,
+      },
+      {
+        src: "/projects/insightly/02-whispers.webp",
+        alt: "Insightly Whispers tab listing 12 plain-English insights ranked by importance, including missing values, outliers and inconsistent casing",
+        caption: "Whispers: 12 plain-English insights, ranked by importance.",
+        portrait: true,
+      },
+      {
+        src: "/projects/insightly/03b-charts-time-series.webp",
+        alt: "Insightly Charts tab for ecommerce-sales.csv with a monthly time-series line chart and a correlation heatmap",
+        caption: "Charts: time series by month and a correlation heatmap.",
+        portrait: true,
+      },
+      {
+        src: "/projects/insightly/03-charts-heatmap.webp",
+        alt: "Insightly correlation heatmap across three numeric columns, a scatter plot of quantity against unit price and a histogram of quantity",
+        caption: "Correlation heatmap, scatter plot and distribution histogram.",
+        portrait: true,
+      },
+      {
+        src: "/projects/insightly/04-clean.webp",
+        alt: "Insightly Clean tab showing the quality score rising from 91.6 to 95.3 after one-click cleaning actions",
+        caption: "Clean: one-click fixes with a before and after score (91.6 to 95.3).",
+        portrait: true,
+      },
+      {
+        src: "/projects/insightly/05-privacy-proof.webp",
+        alt: "Privacy proof: a file opened, analysed and exported with 0 requests to other sites, 0 uploads and 0 requests containing file data",
+        caption: "Privacy, measured: zero uploads or third-party requests, recorded with Playwright.",
+        portrait: true,
+      },
+      {
+        src: "/projects/insightly/06-offline.webp",
+        alt: "Offline proof: with the network off, the page reloads from the local cache and the file is still parsed and analysed",
+        caption: "Works offline: network off, page reloaded, file analysed anyway.",
+        portrait: true,
       },
       {
         src: "/projects/insightly/screen-mobile.webp",
