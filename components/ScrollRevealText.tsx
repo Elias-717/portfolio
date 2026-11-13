@@ -31,10 +31,26 @@ function Word({
  * Large statement whose words light up one by one as it scrolls into view.
  * Screen readers get the plain sentence; reduced-motion visitors see it fully lit.
  */
-export function ScrollRevealText({ segments, className = "" }: { segments: TextSegment[]; className?: string }) {
+export function ScrollRevealText({
+  segments,
+  className = "",
+  progress,
+  range = [0, 1],
+}: {
+  segments: TextSegment[];
+  className?: string;
+  /** Drive the highlight from an outside scroll progress (e.g. a pinned section) instead of this text's position. */
+  progress?: MotionValue<number>;
+  /** The part of `progress` over which the words light up. */
+  range?: [number, number];
+}) {
   const ref = useRef<HTMLParagraphElement>(null);
   const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.85", "end 0.45"] });
+  const { scrollYProgress: own } = useScroll({ target: ref, offset: ["start 0.85", "end 0.45"] });
+  const outside = useTransform(progress ?? own, (p) =>
+    Math.min(1, Math.max(0, (p - range[0]) / (range[1] - range[0]))),
+  );
+  const scrollYProgress = progress ? outside : own;
 
   const words = segments.flatMap((s) =>
     s.text

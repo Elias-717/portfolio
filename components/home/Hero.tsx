@@ -89,7 +89,7 @@ export function Hero() {
 
           {/* Bottom row: socials left, titles right. */}
           <div className="absolute inset-x-0 bottom-0">
-            <div className="mx-auto flex max-w-[1600px] items-end justify-between gap-6 px-4 pb-28 sm:px-6 sm:pb-14 lg:px-10">
+            <div className="mx-auto flex max-w-[1600px] items-end justify-between gap-6 px-4 pb-40 sm:px-6 sm:pb-14 lg:px-10">
               <ul className="rise hidden space-y-2.5 sm:block" style={delay(200)} aria-label="Social links">
                 {socials.map((s) => (
                   <li key={s.label}>

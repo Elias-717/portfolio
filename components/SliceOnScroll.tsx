@@ -1,7 +1,10 @@
 "use client";
 
 import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { createContext, useEffect, useRef, useState, type ReactNode } from "react";
+
+/** Scroll progress (0 to 1) of the pinned block, for content revealed inside it. */
+export const PinProgressContext = createContext<MotionValue<number> | null>(null);
 
 /** Space kept between the end of the revealed content and whatever follows the pinned block. */
 const AFTER_GAP = 8;
@@ -81,7 +84,7 @@ export function SliceOnScroll({
     return () => observer.disconnect();
   }, [reduce]);
 
-  // Extra scroll room (60svh) for the pin comes from a spacer element after the frame: a sticky
+  // Extra scroll room (90svh) for the pin comes from a spacer element after the frame: a sticky
   // element can only travel within its parent's content box, so padding would not work. It is a
   // CSS class rather than a JS check, so the server-rendered page already has it; reduced-motion
   // visitors get no pin.
@@ -102,11 +105,11 @@ export function SliceOnScroll({
             style={{ opacity: revealOpacity, y: revealY, pointerEvents: revealPointer }}
             className="absolute inset-0 z-20 motion-reduce:hidden"
           >
-            {reveal}
+            <PinProgressContext.Provider value={scrollYProgress}>{reveal}</PinProgressContext.Provider>
           </motion.div>
         ) : null}
       </div>
-      <div aria-hidden className="h-[60svh] motion-reduce:hidden" />
+      <div aria-hidden className="h-[90svh] motion-reduce:hidden" />
       {revealReduced ? <div className="hidden motion-reduce:block">{revealReduced}</div> : null}
     </div>
   );
