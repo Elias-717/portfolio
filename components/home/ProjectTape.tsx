@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useMotionValueEvent, useScroll, useSpring, useTransform } from "motion/react";
+import { motion, useMotionValueEvent, useScroll, useSpring, useTransform, type MotionValue } from "motion/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { DemoWindow } from "./DemoWindow";
@@ -18,6 +19,8 @@ export interface TapeItem {
   cta: string;
   /** Live demo to open in the pop-up window, if the project has one. */
   demoUrl?: string;
+  /** The closing "and more are coming" stop: not a project, links to contact. */
+  teaser?: boolean;
 }
 
 // Paper-ribbon geometry (px / degrees). Each project's cover runs across SEGS_PER_ITEM slices,
@@ -66,6 +69,60 @@ function Slice({ index, items }: { index: number; items: TapeItem[] }) {
 const pad = (v: number) => String(v).padStart(2, "0");
 
 /**
+ * Flat, readable card for one project that rises off the tape as that project turns to
+ * the front and dissolves as it turns away. Driven frame-by-frame by the tape's rotation
+ * (opacity and transform only), so it is part of the scroll rather than a separate animation.
+ */
+function PopCard({
+  item,
+  index,
+  rotation,
+  isActive,
+  onOpen,
+}: {
+  item: TapeItem;
+  index: number;
+  rotation: MotionValue<number>;
+  isActive: boolean;
+  onOpen: () => void;
+}) {
+  // 1 when this project is exactly at the front, 0 once it is ~1.5 slices away.
+  const nearness = useTransform(rotation, (r) => {
+    const v = 1 - Math.abs(r - angleFor(index)) / (STEP * 1.5);
+    const c = Math.min(1, Math.max(0, v));
+    return c * c * (3 - 2 * c); // smoothstep
+  });
+  const scale = useTransform(nearness, [0, 1], [0.9, 1]);
+  const pointerEvents = useTransform(nearness, (v) => (v > 0.6 ? "auto" : "none"));
+
+  const label = item.teaser ? "Say hello" : item.demoUrl ? "Try the live demo" : "Take a closer look";
+  const aria = item.teaser
+    ? "Say hello: go to the contact section"
+    : item.demoUrl
+      ? `Try the ${item.title} live demo`
+      : `Take a closer look at ${item.title}`;
+
+  return (
+    <motion.button
+      type="button"
+      onClick={onOpen}
+      aria-label={aria}
+      tabIndex={isActive ? 0 : -1}
+      aria-hidden={!isActive}
+      style={{ opacity: nearness, scale, pointerEvents }}
+      className="group absolute inset-0 overflow-hidden rounded-2xl ring-2 ring-accent/70 shadow-[0_0_60px_-10px_rgb(110_226_106/0.55)] transition-shadow duration-300 hover:ring-accent hover:shadow-[0_0_90px_-10px_rgb(110_226_106/0.8)]"
+    >
+      <Image src={item.cover} alt="" fill sizes="650px" loading="eager" className="object-cover object-top" />
+      <span aria-hidden className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent" />
+      <span className="absolute bottom-5 left-1/2 inline-flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-black/70 px-4 py-2 text-sm font-medium text-fg ring-1 ring-white/15 backdrop-blur transition group-hover:bg-accent group-hover:text-accent-ink">
+        <span aria-hidden className="h-2 w-2 animate-pulse rounded-full bg-accent group-hover:bg-accent-ink" />
+        {label}
+      </span>
+    </motion.button>
+  );
+}
+
+/**
  * Pinned section (desktop, motion allowed): a paper ribbon of project covers that
  * turns as you scroll, bringing one project to the front at a time.
  */
@@ -94,14 +151,9 @@ export function ProjectTape({ items, className = "" }: { items: TapeItem[]; clas
     setActive((prev) => (prev === next ? prev : next));
   });
 
-  // The front segment is highlighted (and clickable) only once the tape has settled on a project.
-  const [settled, setSettled] = useState(true);
   const [open, setOpen] = useState<TapeItem | null>(null);
-  useMotionValueEvent(rotation, "change", (r) => {
-    const nearest = Math.min(n - 1, Math.max(0, Math.round((r / STEP - (SEGS_PER_ITEM - 1) / 2) / SEGS_PER_ITEM)));
-    const isSettled = Math.abs(r - angleFor(nearest)) < STEP * 0.4;
-    setSettled((prev) => (prev === isSettled ? prev : isSettled));
-  });
+  const openItem = (item: TapeItem) =>
+    item.teaser ? document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }) : setOpen(item);
 
   const jumpTo = (i: number) => {
     const el = ref.current;
@@ -113,6 +165,7 @@ export function ProjectTape({ items, className = "" }: { items: TapeItem[]; clas
   };
 
   const current = items[active];
+  const projectCount = items.filter((it) => !it.teaser).length;
   const slices = Array.from({ length: n * SEGS_PER_ITEM + EXTRA * 2 }, (_, k) => k - EXTRA);
 
   return (
@@ -146,22 +199,19 @@ export function ProjectTape({ items, className = "" }: { items: TapeItem[]; clas
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_42%_70%_at_50%_50%,transparent_60%,rgb(0_0_0/0.7)_100%)]" />
         </div>
 
-        {/* The front segment: highlighted and clickable once the tape settles. Opens the demo window. */}
-        <button
-          type="button"
-          onClick={() => setOpen(current)}
-          aria-label={current.demoUrl ? `Try the ${current.title} live demo` : `Take a closer look at ${current.title}`}
-          className={`group absolute left-1/2 top-1/2 z-10 h-[355px] w-[578px] -translate-x-1/2 -translate-y-[44%] rounded-2xl transition duration-500 xl:h-[400px] xl:w-[650px] ${
-            settled
-              ? "opacity-100 ring-2 ring-accent/70 shadow-[0_0_60px_-10px_rgb(110_226_106/0.55)] hover:ring-accent hover:shadow-[0_0_90px_-10px_rgb(110_226_106/0.8)]"
-              : "pointer-events-none opacity-0"
-          }`}
-        >
-          <span className="absolute bottom-5 left-1/2 inline-flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-black/70 px-4 py-2 text-sm font-medium text-fg ring-1 ring-white/15 backdrop-blur transition group-hover:bg-accent group-hover:text-accent-ink">
-            <span aria-hidden className="h-2 w-2 animate-pulse rounded-full bg-accent group-hover:bg-accent-ink" />
-            {current.demoUrl ? "Try the live demo" : "Take a closer look"}
-          </span>
-        </button>
+        {/* One flat card per project, faded and scaled continuously by how close it is to the front. */}
+        <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 h-[355px] w-[578px] -translate-x-1/2 -translate-y-[44%] xl:h-[400px] xl:w-[650px]">
+          {items.map((item, i) => (
+            <PopCard
+              key={item.slug}
+              item={item}
+              index={i}
+              rotation={rotation}
+              isActive={i === active}
+              onOpen={() => openItem(item)}
+            />
+          ))}
+        </div>
         <DemoWindow item={open} onClose={() => setOpen(null)} />
 
         <div className="relative mx-auto grid w-full max-w-6xl flex-1 grid-cols-[14rem_1fr_16rem] items-center px-6">
@@ -206,8 +256,8 @@ export function ProjectTape({ items, className = "" }: { items: TapeItem[]; clas
             <div>
               <p className="text-xs text-muted">Selected work</p>
               <p className="font-semibold leading-none tracking-[-0.05em]" aria-live="polite">
-                <span className="text-7xl text-accent">{pad(active + 1)}</span>
-                <span className="text-xl text-muted"> /{pad(n)}</span>
+                <span className="text-7xl text-accent">{current.teaser ? "+" : pad(active + 1)}</span>
+                <span className="text-xl text-muted"> /{pad(projectCount)}</span>
                 <span className="sr-only">: {current.title}</span>
               </p>
             </div>

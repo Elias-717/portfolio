@@ -24,6 +24,21 @@ export function ProjectsSection() {
     };
   });
 
+  // Closing stop on the tape: more work is on the way.
+  items.push({
+    slug: "more",
+    title: "More soon",
+    year: "Soon",
+    role: "Next project",
+    status: "In the works",
+    highlight: "And more are coming.",
+    cover: "/projects/more/cover.webp",
+    href: "/#contact",
+    external: false,
+    cta: "Say hello",
+    teaser: true,
+  });
+
   return (
     <section id="projects" aria-label="Selected work" className="bg-black">
       <ProjectTape items={items} className="hidden lg:block motion-reduce:lg:hidden" />
