@@ -105,7 +105,7 @@ export function Hero() {
                   </li>
                 ))}
               </ul>
-              <div className="ml-auto flex flex-col items-end gap-5">
+              <div className="mx-auto flex flex-col items-center gap-5 sm:mx-0 sm:ml-auto sm:items-end">
                 {/* Phones: socials as an icon row above the titles. */}
                 <ul className="rise flex gap-5 sm:hidden" style={delay(200)} aria-label="Social links">
                   {socials.map((s) => (
@@ -123,7 +123,7 @@ export function Hero() {
                   ))}
                 </ul>
                 <p
-                  className="rise text-right text-[clamp(2rem,4.6vw,4rem)] font-semibold leading-[0.95] tracking-[-0.045em]"
+                  className="rise text-center text-[clamp(2rem,4.6vw,4rem)] sm:text-right font-semibold leading-[0.95] tracking-[-0.045em]"
                   style={delay(120)}
                 >
                   <span className="block text-accent">{site.title}</span>
