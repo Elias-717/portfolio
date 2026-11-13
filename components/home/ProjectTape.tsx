@@ -184,7 +184,7 @@ export function ProjectTape({ items, className = "" }: { items: TapeItem[]; clas
   return (
     <div ref={ref} className={`relative ${className}`} style={{ height: `${n * 70}svh` }}>
       <div className="sticky top-0 flex h-svh flex-col overflow-hidden">
-        <div className="relative z-10 mx-auto w-full max-w-[1600px] px-6 pt-24 lg:px-10">
+        <div className="relative z-10 mx-auto w-full max-w-[1600px] px-6 pt-20 lg:px-10">
           <h2 id="projects-title" className="font-mono text-sm text-accent">
             <span aria-hidden className="text-accent/60">
               {"// "}

@@ -19,7 +19,7 @@ const detail =
 export function IntroSection({ labelId = "intro-label" }: { labelId?: string }) {
   return (
     <section aria-labelledby={labelId} className="flex h-full items-center bg-black">
-      <div className="mx-auto flex w-full max-w-[1600px] flex-col px-4 py-20 sm:px-6 lg:px-10">
+      <div data-reveal-content className="mx-auto flex w-full max-w-[1600px] flex-col px-4 pb-2 pt-20 sm:px-6 lg:px-10">
         <p id={labelId} className="font-mono text-sm text-accent">
           <span aria-hidden className="text-accent/60">
             {"// "}

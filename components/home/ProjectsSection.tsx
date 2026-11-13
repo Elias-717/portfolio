@@ -40,7 +40,7 @@ export function ProjectsSection() {
   });
 
   return (
-    <section id="projects" aria-label="Selected work" className="bg-black">
+    <section id="projects" aria-label="Selected work" className="relative bg-black">
       <ProjectTape items={items} className="hidden lg:block motion-reduce:lg:hidden" />
       <ProjectCards items={items} className="lg:hidden motion-reduce:lg:block" />
     </section>

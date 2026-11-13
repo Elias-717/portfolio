@@ -180,7 +180,7 @@ export const projects: Project[] = [
       },
       {
         title: "Tested like a product",
-        body: "163 unit and component tests, plus 12 Playwright end-to-end and accessibility tests on desktop and a 375px mobile viewport. Strict TypeScript and GitHub Actions CI on every change.",
+        body: "226 unit and component tests, plus 8 Playwright end-to-end and accessibility tests, each run on desktop and a 375px mobile viewport. Strict TypeScript and GitHub Actions CI on every change.",
       },
     ],
     stack: [

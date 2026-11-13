@@ -5,7 +5,7 @@ import type { TapeItem } from "./ProjectTape";
 /** Simple, static project cards: used on small screens and for reduced-motion visitors. */
 export function ProjectCards({ items, className = "" }: { items: TapeItem[]; className?: string }) {
   return (
-    <div className={`mx-auto max-w-[1600px] px-4 py-20 sm:px-6 lg:px-10 ${className}`}>
+    <div className={`mx-auto max-w-[1600px] px-4 pb-20 pt-16 sm:px-6 lg:px-10 ${className}`}>
       <h2 className="font-mono text-sm text-accent">
         <span aria-hidden className="text-accent/60">
           {"// "}
