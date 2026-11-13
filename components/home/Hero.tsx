@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { SocialIcon } from "@/components/SocialIcon";
 import { SliceOnScroll } from "@/components/SliceOnScroll";
+import { IntroSection } from "./IntroSection";
 import { VelocityMarquee } from "@/components/VelocityMarquee";
 import { site, socials } from "@/data/site";
 
@@ -34,7 +35,11 @@ export function Hero() {
       </h1>
 
       <div className="relative -mt-16">
-        <SliceOnScroll frameClassName="h-svh min-h-[36rem]">
+        <SliceOnScroll
+          frameClassName="h-svh min-h-[36rem]"
+          reveal={<IntroSection />}
+          revealReduced={<IntroSection labelId="intro-label-static" />}
+        >
           <Image
             src="/elias_hero.png"
             alt={`Portrait of ${site.name}`}
