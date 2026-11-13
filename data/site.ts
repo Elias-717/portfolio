@@ -33,7 +33,7 @@ const allSocials: Social[] = [
 export const socials = allSocials.filter((s) => s.href);
 
 export const bio: string[] = [
-  "I'm a Computer Science (Data Science) student at Universiti Antarabangsa Albukhary (AIU) in Malaysia, graduating in 2027. I like taking an idea from first concept to a working product, and learning the engineering decisions along the way.",
+  "I'm a Computer Science student at Universiti Antarabangsa Albukhary (AIU) in Malaysia, graduating in 2027. I like taking an idea from first concept to a working product, and learning the engineering decisions along the way.",
   "My focus is full-stack development, with a growing interest in backend systems, data, AI and automation. I led a four-person team to a 2nd Place Prize at MMC Upstart 2026 with Voluntree, and I'm building Brokely, an offline-first Android app.",
   "Outside code I teach, speak in public, make music and do creative design.",
 ];
