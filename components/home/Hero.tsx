@@ -77,7 +77,7 @@ export function Hero() {
           */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-[13%] overflow-hidden py-[0.2em] sm:top-[27%]"
+            className="pointer-events-none absolute inset-x-0 top-[33%] overflow-hidden py-[0.2em] sm:top-[27%]"
           >
             <VelocityMarquee
               className="text-[24vw] font-medium leading-none tracking-[-0.05em] sm:text-[clamp(4.5rem,15vw,14rem)]"
