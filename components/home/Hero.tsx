@@ -40,14 +40,29 @@ export function Hero() {
           reveal={<IntroSection />}
           revealReduced={<IntroSection labelId="intro-label-static" />}
         >
+          {/* Desktop: the photo fills the frame. */}
           <Image
             src="/elias_hero.png"
             alt={`Portrait of ${site.name}`}
             fill
             priority
             sizes="100vw"
-            className="-z-10 object-cover object-[58%_30%]"
+            className="-z-10 hidden object-cover object-[58%_30%] sm:block"
           />
+          {/* Phones: the landscape photo would be cropped to a tight, enlarged strip if it filled
+              the tall frame, so it sits in a shorter band (head and shoulders, much less zoom)
+              that fades into a background matching the photo's own. */}
+          <div aria-hidden className="absolute inset-0 -z-20 bg-[#161d15] sm:hidden" />
+          <div className="absolute inset-x-0 top-[11%] -z-10 h-[56%] [mask-image:linear-gradient(to_bottom,transparent,black_14%,black_78%,transparent)] sm:hidden">
+            <Image
+              src="/elias_hero.png"
+              alt={`Portrait of ${site.name}`}
+              fill
+              priority
+              sizes="(max-width: 640px) 220vw, 1px"
+              className="object-cover object-[54%_30%]"
+            />
+          </div>
           <div
             aria-hidden
             className="absolute inset-x-0 bottom-0 -z-10 h-1/3 bg-gradient-to-t from-black to-transparent"
@@ -62,7 +77,7 @@ export function Hero() {
           */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-[29%] overflow-hidden py-[0.2em] sm:top-[27%]"
+            className="pointer-events-none absolute inset-x-0 top-[13%] overflow-hidden py-[0.2em] sm:top-[27%]"
           >
             <VelocityMarquee
               className="text-[24vw] font-medium leading-none tracking-[-0.05em] sm:text-[clamp(4.5rem,15vw,14rem)]"
@@ -74,7 +89,7 @@ export function Hero() {
 
           {/* Bottom row: socials left, titles right. */}
           <div className="absolute inset-x-0 bottom-0">
-            <div className="mx-auto flex max-w-[1600px] items-end justify-between gap-6 px-4 pb-8 sm:px-6 lg:px-10 sm:pb-10">
+            <div className="mx-auto flex max-w-[1600px] items-end justify-between gap-6 px-4 pb-14 sm:px-6 sm:pb-14 lg:px-10">
               <ul className="rise hidden space-y-2.5 sm:block" style={delay(200)} aria-label="Social links">
                 {socials.map((s) => (
                   <li key={s.label}>
@@ -90,15 +105,46 @@ export function Hero() {
                   </li>
                 ))}
               </ul>
-              <p
-                className="rise ml-auto text-right text-[clamp(2rem,4.6vw,4rem)] font-semibold leading-[0.95] tracking-[-0.045em]"
-                style={delay(120)}
-              >
-                <span className="block text-accent">{site.title}</span>
-                <span className="block">CS student, Data & AI</span>
-              </p>
+              <div className="ml-auto flex flex-col items-end gap-5">
+                {/* Phones: socials as an icon row above the titles. */}
+                <ul className="rise flex gap-5 sm:hidden" style={delay(200)} aria-label="Social links">
+                  {socials.map((s) => (
+                    <li key={s.label}>
+                      <a
+                        href={s.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={s.label}
+                        className="block p-1 text-fg/85 transition hover:text-accent"
+                      >
+                        <SocialIcon label={s.label} className="h-5 w-5" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+                <p
+                  className="rise text-right text-[clamp(2rem,4.6vw,4rem)] font-semibold leading-[0.95] tracking-[-0.045em]"
+                  style={delay(120)}
+                >
+                  <span className="block text-accent">{site.title}</span>
+                  <span className="block">CS student, Data & AI</span>
+                </p>
+              </div>
             </div>
           </div>
+
+          {/* Scroll cue. */}
+          <a
+            href="#intro-label"
+            aria-label="Scroll to the introduction"
+            className="rise absolute bottom-2 left-1/2 flex -translate-x-1/2 flex-col items-center gap-1 text-[11px] uppercase tracking-[0.2em] text-fg/55 transition hover:text-accent sm:bottom-4"
+            style={delay(600)}
+          >
+            Scroll
+            <span aria-hidden className="animate-bounce text-base leading-none motion-reduce:animate-none">
+              ↓
+            </span>
+          </a>
         </SliceOnScroll>
       </div>
     </section>

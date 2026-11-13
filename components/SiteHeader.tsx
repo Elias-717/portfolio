@@ -22,9 +22,10 @@ export function SiteHeader() {
           download=""
           className="inline-flex items-center gap-1.5 justify-self-end rounded-full bg-accent px-3 py-1.5 text-[13px] font-medium sm:px-4 sm:py-2 sm:text-sm text-accent-ink shadow-[0_8px_30px_rgb(110_226_106/0.25)] transition hover:brightness-110"
         >
-          Resume
+          <span className="sm:hidden">CV</span>
+          <span className="hidden sm:inline">Resume</span>
           <span aria-hidden>↓</span>
-          <span className="sr-only"> (PDF download)</span>
+          <span className="sr-only"> (resume PDF download)</span>
         </a>
       </div>
     </header>

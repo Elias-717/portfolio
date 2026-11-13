@@ -96,27 +96,27 @@ export const LimelightNav = ({
   return (
     <nav
       aria-label="Main"
-      className={`relative inline-flex h-12 items-center rounded-full border border-white/10 bg-black/40 px-1.5 text-fg backdrop-blur-xl ${className}`}
+      className={`relative inline-flex h-14 items-center rounded-full md:h-12 border border-white/10 bg-black/40 px-1.5 text-fg backdrop-blur-xl ${className}`}
     >
       {items.map(({ id, icon, label, href, onClick }, index) => {
         const isActive = activeIndex === index;
         const content = (
           <>
             {cloneElement(icon, {
-              className: `h-[18px] w-[18px] shrink-0 transition-opacity duration-200 ${
+              className: `h-4 w-4 shrink-0 md:h-[18px] md:w-[18px] transition-opacity duration-200 ${
                 isActive ? "opacity-100" : "opacity-50"
               } ${icon.props.className ?? ""} ${iconClassName}`,
             })}
             {showLabels ? (
               <span
-                className={`hidden text-sm transition-colors duration-200 md:inline ${isActive ? "text-fg" : "text-fg/60"}`}
+                className={`text-[10px] leading-none transition-colors duration-200 md:text-sm md:leading-normal ${isActive ? "text-fg" : "text-fg/60"}`}
               >
                 {label}
               </span>
             ) : null}
           </>
         );
-        const cls = `relative z-20 flex h-full items-center justify-center gap-2 rounded-full px-3.5 text-fg/80 hover:text-fg sm:px-4 ${iconContainerClassName}`;
+        const cls = `relative z-20 flex h-full flex-col items-center justify-center gap-1 rounded-full px-2 text-fg/80 hover:text-fg sm:px-3 md:flex-row md:gap-2 md:px-4 ${iconContainerClassName}`;
         const setRef = (el: HTMLElement | null) => {
           navItemRefs.current[index] = el;
         };
@@ -131,7 +131,6 @@ export const LimelightNav = ({
             className={cls}
           >
             {content}
-            {showLabels ? <span className="sr-only md:hidden">{label}</span> : null}
           </Link>
         ) : (
           <button
