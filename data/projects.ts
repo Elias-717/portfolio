@@ -222,7 +222,7 @@ export const projects: Project[] = [
   {
     slug: "brokely",
     cover: "/projects/brokely/cover.webp",
-    highlight: "Plans student spending, essentials first, and tracks money owed between friends",
+    highlight: "Student spending planner, essentials first",
     title: "Brokely",
     oneLine:
       "A student-first expenditure planner for Android, with a broccoli mascot that grows from good money habits.",
