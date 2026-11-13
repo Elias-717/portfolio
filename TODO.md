@@ -21,7 +21,7 @@ Everything still missing before (or after) launch. Search the code for `TODO` to
 
 ## Insightly (`public/projects/insightly/`)
 - [x] Poster: homepage capture added (`cover.webp`)
-- [ ] Screenshots (upload, quality score, column profile, charts + heatmap, Whispers, cleaning before/after, dark mode, mobile)
+- [x] Screenshots added (overview, Whispers, charts + heatmap, cleaning before/after, privacy and offline proof, dark mode, mobile)
 - [ ] Screen recording of dropping a sample CSV (`demo.mp4`)
 - [x] Insightly now allows embedding by the portfolio (insightly PR #9, merged)
 
@@ -35,6 +35,9 @@ Everything still missing before (or after) launch. Search the code for `TODO` to
 ## Sana'a House
 - [x] Sana'a House now allows embedding by the portfolio (sanaa_house PR #1, merged)
 - [ ] Confirm the year (currently 2026)
+
+## About section
+- [ ] Add extracurricular activities: music, public speaking, AIU Shop design, identity, AIU VC character, logo, jersey (send details, photos or links for each)
 
 ## Experience section
 - [ ] Evidence photos for the Experience section: Team United campaigns and Maybank #Mbassador events (only photos you have permission to publish, especially ones showing other people)
