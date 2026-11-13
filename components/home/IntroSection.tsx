@@ -19,7 +19,7 @@ const detail =
 export function IntroSection({ labelId = "intro-label" }: { labelId?: string }) {
   return (
     <section aria-labelledby={labelId} className="flex h-full items-center bg-black">
-      <div className="mx-auto flex w-full max-w-6xl flex-col px-4 py-20 sm:px-6">
+      <div className="mx-auto flex w-full max-w-[1600px] flex-col px-4 py-20 sm:px-6 lg:px-10">
         <p id={labelId} className="font-mono text-sm text-accent">
           <span aria-hidden className="text-accent/60">
             {"// "}
@@ -27,13 +27,13 @@ export function IntroSection({ labelId = "intro-label" }: { labelId?: string }) 
           Intro
         </p>
 
-        <p className="mt-10 indent-[18%] text-[clamp(1.6rem,3.6vw,3.25rem)] font-semibold leading-[1.08] tracking-[-0.045em] sm:mt-14">
+        <p className="mt-10 indent-[18%] text-[clamp(1.6rem,3.4vw,4.5rem)] font-semibold leading-[1.08] tracking-[-0.045em] sm:mt-14">
           {statement.before}
           <span className="text-accent">{statement.accent}</span>
           {statement.after}
         </p>
 
-        <div className="mt-10 flex flex-col gap-8 sm:ml-auto sm:mt-14 sm:max-w-md">
+        <div className="mt-10 flex flex-col gap-8 sm:ml-auto sm:mt-14 sm:max-w-md 2xl:max-w-xl 2xl:text-xl">
           <p className="text-lg leading-relaxed text-muted">{detail}</p>
           <div className="flex flex-wrap gap-3">
             <ButtonLink href="/#projects">See my work</ButtonLink>

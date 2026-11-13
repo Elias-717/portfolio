@@ -7,7 +7,7 @@ import { NavLinks } from "./NavLinks";
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 h-16 bg-gradient-to-b from-black/85 via-black/45 to-transparent">
-      <div className="mx-auto grid h-full max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-2 px-3 sm:grid-cols-[1fr_auto_1fr] sm:px-6">
+      <div className="mx-auto grid h-full max-w-[1600px] grid-cols-[auto_1fr_auto] items-center gap-2 px-3 sm:grid-cols-[1fr_auto_1fr] sm:px-6 lg:px-10">
         <Link
           href="/"
           className="flex items-center gap-2.5 justify-self-start rounded-full"

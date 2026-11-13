@@ -184,7 +184,7 @@ export function ProjectTape({ items, className = "" }: { items: TapeItem[]; clas
   return (
     <div ref={ref} className={`relative ${className}`} style={{ height: `${n * 70}svh` }}>
       <div className="sticky top-0 flex h-svh flex-col overflow-hidden">
-        <div className="relative z-10 mx-auto w-full max-w-6xl px-6 pt-24">
+        <div className="relative z-10 mx-auto w-full max-w-[1600px] px-6 pt-24 lg:px-10">
           <h2 id="projects-title" className="font-mono text-sm text-accent">
             <span aria-hidden className="text-accent/60">
               {"// "}
@@ -195,7 +195,7 @@ export function ProjectTape({ items, className = "" }: { items: TapeItem[]; clas
 
         {/* The ribbon. Decorative: the same information is in the text around it. */}
         <div aria-hidden className="pointer-events-none absolute inset-0 grid place-items-center">
-          <div className="scale-[0.8] xl:scale-90" style={{ perspective: "2400px" }}>
+          <div className="scale-[0.8] xl:scale-90 2xl:scale-[1.12] min-[1900px]:scale-[1.3]" style={{ perspective: "2400px" }}>
             {/* Gentle tilt so the spiral reads without distorting the front project. */}
             <div style={{ transform: "rotateX(-10deg) rotateZ(-4deg)", transformStyle: "preserve-3d" }}>
               <motion.div
@@ -213,7 +213,7 @@ export function ProjectTape({ items, className = "" }: { items: TapeItem[]; clas
         </div>
 
         {/* One flat card per project, faded and scaled continuously by how close it is to the front. */}
-        <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 h-[355px] w-[578px] -translate-x-1/2 -translate-y-[44%] xl:h-[400px] xl:w-[650px]">
+        <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 h-[355px] w-[578px] -translate-x-1/2 -translate-y-[44%] xl:h-[400px] xl:w-[650px] 2xl:h-[497px] 2xl:w-[810px] min-[1900px]:h-[577px] min-[1900px]:w-[940px]">
           {items.map((item, i) => (
             <PopCard
               key={item.slug}
@@ -227,7 +227,7 @@ export function ProjectTape({ items, className = "" }: { items: TapeItem[]; clas
         </div>
         <DemoWindow item={open} onClose={() => setOpen(null)} />
 
-        <div className="relative mx-auto grid w-full max-w-6xl flex-1 grid-cols-[14rem_1fr_16rem] items-center px-6">
+        <div className="relative mx-auto grid w-full max-w-[1600px] flex-1 grid-cols-[14rem_1fr_16rem] items-center px-6 lg:px-10 2xl:grid-cols-[17rem_1fr_19rem]">
           <dl className="space-y-6 text-sm">
             <div className="grid grid-cols-[5rem_1fr] gap-3">
               <dt className="text-muted">Role</dt>
@@ -253,7 +253,7 @@ export function ProjectTape({ items, className = "" }: { items: TapeItem[]; clas
                   onClick={() => jumpTo(i)}
                   aria-current={i === active ? "true" : undefined}
                   className={`ml-auto block text-right uppercase tracking-[-0.02em] transition-all duration-300 ${
-                    i === active ? "text-3xl font-semibold text-fg" : "text-lg text-muted/60 hover:text-fg"
+                    i === active ? "text-3xl font-semibold text-fg 2xl:text-4xl" : "text-lg text-muted/60 hover:text-fg 2xl:text-xl"
                   }`}
                 >
                   {item.title}
@@ -264,7 +264,7 @@ export function ProjectTape({ items, className = "" }: { items: TapeItem[]; clas
           </ol>
         </div>
 
-        <div className="relative mx-auto flex w-full max-w-6xl items-end justify-between gap-6 px-6 pb-10">
+        <div className="relative mx-auto flex w-full max-w-[1600px] items-end justify-between gap-6 px-6 pb-10 lg:px-10">
           <div className="flex items-end gap-6">
             <div>
               <p className="text-xs text-muted">Selected work</p>

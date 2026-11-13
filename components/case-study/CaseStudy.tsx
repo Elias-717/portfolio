@@ -13,7 +13,7 @@ export function CaseStudy({ project: p }: { project: Project }) {
 
   return (
     <main>
-      <header className="mx-auto max-w-6xl px-4 pb-12 pt-12 sm:px-6 sm:pt-20">
+      <header className="mx-auto max-w-[1600px] px-4 pb-12 pt-12 sm:px-6 lg:px-10 sm:pt-20">
         <Link href="/#projects" className="text-sm text-muted hover:text-accent">
           ← Back to projects
         </Link>
@@ -63,11 +63,11 @@ export function CaseStudy({ project: p }: { project: Project }) {
         {p.statusNote ? <p className="mt-4 text-sm text-muted">{p.statusNote}</p> : null}
       </header>
 
-      <section aria-label={`${p.title} live demo`} className="mx-auto max-w-5xl px-4 pb-8 sm:px-6">
+      <section aria-label={`${p.title} live demo`} className="mx-auto max-w-5xl px-4 pb-8 sm:px-6 lg:px-10">
         <DemoFrame project={p} />
       </section>
 
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+      <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-10">
         <Block title="The problem">
           <p>{p.problem}</p>
         </Block>

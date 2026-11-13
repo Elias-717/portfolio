@@ -15,7 +15,7 @@ export function Section({
 }) {
   return (
     <section id={id} aria-labelledby={`${id}-title`}>
-      <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
+      <div className="mx-auto max-w-[1600px] px-4 py-20 sm:px-6 lg:px-10 sm:py-28">
         <SectionHeading id={`${id}-title`} label={label} title={title} />
         {children}
       </div>
