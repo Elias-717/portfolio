@@ -1,35 +1,85 @@
 "use client";
 
-import { motion } from "motion/react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type SVGProps } from "react";
+import { LimelightNav, type NavItem } from "./ui/limelight-nav";
 
-const links = [
-  { id: "projects", label: "Projects" },
-  { id: "about", label: "About" },
-  { id: "experience", label: "Experience", hideOnMobile: true },
-  { id: "contact", label: "Contact" },
+const icon = (children: React.ReactNode) =>
+  function Icon(props: SVGProps<SVGSVGElement>) {
+    return (
+      <svg
+        {...props}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden
+      >
+        {children}
+      </svg>
+    );
+  };
+
+const GridIcon = icon(
+  <>
+    <rect x="3" y="3" width="7" height="7" rx="1" />
+    <rect x="14" y="3" width="7" height="7" rx="1" />
+    <rect x="14" y="14" width="7" height="7" rx="1" />
+    <rect x="3" y="14" width="7" height="7" rx="1" />
+  </>,
+);
+const UserIcon = icon(
+  <>
+    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
+  </>,
+);
+const BriefcaseIcon = icon(
+  <>
+    <rect x="2" y="7" width="20" height="14" rx="2" />
+    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+  </>,
+);
+const MailIcon = icon(
+  <>
+    <rect x="2" y="4" width="20" height="16" rx="2" />
+    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+  </>,
+);
+
+const sections = ["projects", "about", "experience", "contact"] as const;
+
+const items: NavItem[] = [
+  { id: "projects", icon: <GridIcon />, label: "Projects", href: "/#projects" },
+  { id: "about", icon: <UserIcon />, label: "About", href: "/#about" },
+  { id: "experience", icon: <BriefcaseIcon />, label: "Experience", href: "/#experience" },
+  { id: "contact", icon: <MailIcon />, label: "Contact", href: "/#contact" },
 ];
 
-/** Centred glass pill. On the home page, the link for the section in view gets a sliding highlight. */
+/** Main nav: the limelight follows the section in view on the home page. */
 export function NavLinks() {
   const pathname = usePathname();
-  const [active, setActive] = useState<string | null>(null);
+  const [active, setActive] = useState<number | null>(null);
 
   useEffect(() => {
     if (pathname !== "/") {
-      setActive(pathname.startsWith("/projects") ? "projects" : null);
+      setActive(pathname.startsWith("/projects") ? 0 : null);
       return;
     }
     const observer = new IntersectionObserver(
       (entries) => {
-        for (const e of entries) if (e.isIntersecting) setActive(e.target.id);
+        for (const e of entries) {
+          if (e.isIntersecting) setActive(sections.indexOf(e.target.id as (typeof sections)[number]));
+        }
       },
       { rootMargin: "-45% 0px -50% 0px" },
     );
-    const els = links.map((l) => document.getElementById(l.id)).filter((el): el is HTMLElement => !!el);
-    els.forEach((el) => observer.observe(el));
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
     const onTop = () => {
       if (window.scrollY < window.innerHeight * 0.5) setActive(null);
     };
@@ -41,35 +91,12 @@ export function NavLinks() {
   }, [pathname]);
 
   return (
-    <nav
-      aria-label="Main"
-      className="justify-self-center rounded-full border border-white/10 bg-black/40 p-1 shadow-[0_8px_30px_rgb(0_0_0/0.35)] backdrop-blur-xl"
-    >
-      <ul className="flex items-center">
-        {links.map((l) => {
-          const isActive = active === l.id;
-          return (
-            <li key={l.id} className={l.hideOnMobile ? "hidden md:block" : undefined}>
-              <Link
-                href={`/#${l.id}`}
-                aria-current={isActive ? "true" : undefined}
-                className={`relative block rounded-full px-2.5 py-1.5 text-[13px] transition-colors sm:px-4 sm:text-sm ${
-                  isActive ? "text-fg" : "text-fg/65 hover:text-fg"
-                }`}
-              >
-                {isActive ? (
-                  <motion.span
-                    layoutId="nav-pill"
-                    transition={{ type: "spring", stiffness: 400, damping: 34 }}
-                    className="absolute inset-0 -z-10 rounded-full bg-white/12"
-                  />
-                ) : null}
-                {l.label}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
+    <LimelightNav
+      items={items}
+      activeIndex={active}
+      onTabChange={setActive}
+      showLabels
+      className="justify-self-center shadow-[0_8px_30px_rgb(0_0_0/0.35)]"
+    />
   );
 }
