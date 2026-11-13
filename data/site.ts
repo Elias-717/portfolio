@@ -10,8 +10,7 @@ export const site = {
   location: "Alor Setar, Kedah, Malaysia",
   url: "https://eliasalsumairi.dev",
   email: "eliassumairi@gmail.com",
-  // TODO: add public/resume.pdf (your latest resume).
-  resume: "/resume.pdf",
+  resume: "/Elias-Al-Sumairi-Resume.pdf",
   // Set NEXT_PUBLIC_FORMSPREE_ID in .env.local / Vercel. The form is hidden until it is set.
   formspreeId: process.env.NEXT_PUBLIC_FORMSPREE_ID ?? "",
 } as const;

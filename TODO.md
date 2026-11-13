@@ -9,7 +9,7 @@ Everything still missing before (or after) launch. Search the code for `TODO` to
 - [ ] Add `NEXT_PUBLIC_FORMSPREE_ID=xaeonpqk` in Vercel → Settings → Environment Variables before deploying
 
 ## Files to add in `public/`
-- [ ] `resume.pdf`: the download buttons return 404 until it exists
+- [x] Resume added (`public/Elias-Al-Sumairi-Resume.pdf`); download tested
 
 ## Voluntree (`public/projects/voluntree/`)
 - [x] Poster: homepage capture added (`cover.webp`); swap for a curated screenshot if you like
