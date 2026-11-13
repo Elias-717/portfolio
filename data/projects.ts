@@ -312,7 +312,8 @@ export const projects: Project[] = [
       live: "https://sanaahouse.netlify.app",
       code: "https://github.com/Elias-717/sanaa_house",
     },
-    demo: { type: "none" },
+    // Embeddable once the sanaa_house PR (frame-ancestors allow-list) is merged and deployed.
+    demo: { type: "browser", url: "https://sanaahouse.netlify.app" },
     screens: [],
   },
 ];
