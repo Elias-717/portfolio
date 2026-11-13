@@ -34,16 +34,16 @@ export function ContactForm({ formspreeId, email }: { formspreeId: string; email
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block space-y-2">
           <span className="text-sm text-muted">Name</span>
-          <input name="name" required autoComplete="name" className={field} />
+          <input name="name" required maxLength={100} autoComplete="name" className={field} />
         </label>
         <label className="block space-y-2">
           <span className="text-sm text-muted">Email</span>
-          <input name="email" type="email" required autoComplete="email" className={field} />
+          <input name="email" type="email" required maxLength={254} autoComplete="email" className={field} />
         </label>
       </div>
       <label className="block space-y-2">
         <span className="text-sm text-muted">Message</span>
-        <textarea name="message" required rows={5} className={field} />
+        <textarea name="message" required minLength={10} maxLength={5000} rows={5} className={field} />
       </label>
       <input type="text" name="_gotcha" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
       <div className="flex flex-wrap items-center gap-4">
