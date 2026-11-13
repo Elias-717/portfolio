@@ -23,7 +23,7 @@ Everything still missing before (or after) launch. Search the code for `TODO` to
 - [x] Poster: homepage capture added (`cover.webp`)
 - [ ] Screenshots (upload, quality score, column profile, charts + heatmap, Whispers, cleaning before/after, dark mode, mobile)
 - [ ] Screen recording of dropping a sample CSV (`demo.mp4`)
-- [ ] In Insightly: change CSP to `frame-ancestors https://eliasalsumairi.dev` and remove `X-Frame-Options: DENY` (the embed is blank until then)
+- [x] Insightly now allows embedding by the portfolio (insightly PR #9, merged)
 
 ## Brokely (`public/projects/brokely/`)
 - [ ] Poster (phone screenshot, synthetic data only)
@@ -33,6 +33,7 @@ Everything still missing before (or after) launch. Search the code for `TODO` to
 - [ ] Try `npx expo export -p web`; if it works, deploy and set `demo.url`
 
 ## Sana'a House
+- [x] Sana'a House now allows embedding by the portfolio (sanaa_house PR #1, merged)
 - [ ] Confirm the year (currently 2026)
 
 ## Experience section
