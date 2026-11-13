@@ -5,7 +5,8 @@ Everything still missing before (or after) launch. Search the code for `TODO` to
 ## Launch
 - [ ] Push to GitHub and import the repo in Vercel
 - [ ] Add the domain `eliasalsumairi.dev` (plus `www`) in Vercel and set the DNS records at the registrar
-- [ ] Create a Formspree form and set `NEXT_PUBLIC_FORMSPREE_ID` in Vercel (the contact form stays hidden until it is set)
+- [x] Formspree form created (ID `xaeonpqk`, saved in `.env.local`)
+- [ ] Add `NEXT_PUBLIC_FORMSPREE_ID=xaeonpqk` in Vercel → Settings → Environment Variables before deploying
 
 ## Files to add in `public/`
 - [ ] `resume.pdf`: the download buttons return 404 until it exists
