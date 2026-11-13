@@ -20,27 +20,43 @@ function Slice({ index, count, progress }: { index: number; count: number; progr
 }
 
 /**
- * As the block scrolls out of view, its content shrinks and dims while
- * horizontal bars grow across it, so it looks like it's slicing apart.
- * Disabled for reduced-motion visitors.
+ * Pins its content for a short stretch of scrolling. While pinned, the content shrinks
+ * and dims and horizontal bars grow across it until it's fully sliced away, so the
+ * effect plays on screen in both scroll directions. `frameClassName` sizes the pinned
+ * frame (e.g. "h-svh"). Reduced-motion visitors get the content without pinning or bars.
  */
-export function SliceOnScroll({ children, slices = 10 }: { children: ReactNode; slices?: number }) {
+export function SliceOnScroll({
+  children,
+  slices = 10,
+  frameClassName = "h-svh",
+}: {
+  children: ReactNode;
+  slices?: number;
+  frameClassName?: string;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.82]);
   const opacity = useTransform(scrollYProgress, [0, 0.9], [1, 0.3]);
 
+  // Extra scroll room (80svh) for the pin comes from a spacer element after the frame: a sticky
+  // element can only travel within its parent's content box, so padding would not work. It is a
+  // CSS class rather than a JS check, so the server-rendered page already has it; reduced-motion
+  // visitors get no pin.
   return (
-    <div ref={ref} className="relative h-full overflow-hidden">
-      <motion.div style={reduce ? undefined : { scale, opacity }} className="absolute inset-0 isolate origin-top">
-        {children}
-      </motion.div>
-      {reduce
-        ? null
-        : Array.from({ length: slices }, (_, i) => (
-            <Slice key={i} index={i} count={slices} progress={scrollYProgress} />
-          ))}
+    <div ref={ref} className="relative">
+      <div className={`sticky top-0 overflow-hidden bg-black ${frameClassName}`}>
+        <motion.div style={reduce ? undefined : { scale, opacity }} className="absolute inset-0 isolate origin-top">
+          {children}
+        </motion.div>
+        {reduce
+          ? null
+          : Array.from({ length: slices }, (_, i) => (
+              <Slice key={i} index={i} count={slices} progress={scrollYProgress} />
+            ))}
+      </div>
+      <div aria-hidden className="h-[80svh] motion-reduce:hidden" />
     </div>
   );
 }

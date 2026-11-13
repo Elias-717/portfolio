@@ -33,8 +33,8 @@ export function Hero() {
         {site.name}, {site.title}
       </h1>
 
-      <div className="relative -mt-16 h-svh max-h-[64rem] min-h-[36rem] overflow-hidden">
-        <SliceOnScroll>
+      <div className="relative -mt-16">
+        <SliceOnScroll frameClassName="h-svh min-h-[36rem]">
           <Image
             src="/elias_hero.png"
             alt={`Portrait of ${site.name}`}
