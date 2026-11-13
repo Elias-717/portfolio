@@ -16,8 +16,12 @@ const detail =
 /** Black full-screen intro that follows the hero: big statement, small detail, actions. */
 export function IntroSection() {
   return (
-    <section aria-labelledby="intro-label" className="bg-black">
-      <div className="mx-auto flex min-h-svh max-w-6xl flex-col justify-center px-4 py-24 sm:px-6">
+    <section
+      aria-labelledby="intro-label"
+      // Slides up over the last part of the pinned hero, so there is no empty black screen in between.
+      className="relative z-10 -mt-[48svh] bg-black motion-reduce:mt-0"
+    >
+      <div className="mx-auto flex max-w-6xl flex-col px-4 pb-28 pt-10 sm:px-6 sm:pt-12">
         <p id="intro-label" className="font-mono text-sm text-accent">
           <span aria-hidden className="text-accent/60">
             {"// "}

@@ -5,11 +5,12 @@ import { useRef, type ReactNode } from "react";
 
 // When each slice starts closing, as a fraction of the scroll through the block.
 // Uneven on purpose so the bars don't close in lockstep.
-const STARTS = [0.18, 0.05, 0.3, 0.12, 0.38, 0.0, 0.24, 0.1, 0.34, 0.2];
+const STARTS = [0.12, 0.03, 0.2, 0.08, 0.26, 0.0, 0.16, 0.06, 0.23, 0.13];
 
 function Slice({ index, count, progress }: { index: number; count: number; progress: MotionValue<number> }) {
   const start = STARTS[index % STARTS.length];
-  const scaleY = useTransform(progress, [start, start + 0.5], [0, 1]);
+  // Every bar is closed by ~70% of the pinned stretch, so the frame is black just as the next section arrives.
+  const scaleY = useTransform(progress, [start, start + 0.42], [0, 1]);
   return (
     <motion.div
       aria-hidden
@@ -40,7 +41,7 @@ export function SliceOnScroll({
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.82]);
   const opacity = useTransform(scrollYProgress, [0, 0.9], [1, 0.3]);
 
-  // Extra scroll room (80svh) for the pin comes from a spacer element after the frame: a sticky
+  // Extra scroll room (60svh) for the pin comes from a spacer element after the frame: a sticky
   // element can only travel within its parent's content box, so padding would not work. It is a
   // CSS class rather than a JS check, so the server-rendered page already has it; reduced-motion
   // visitors get no pin.
@@ -56,7 +57,7 @@ export function SliceOnScroll({
               <Slice key={i} index={i} count={slices} progress={scrollYProgress} />
             ))}
       </div>
-      <div aria-hidden className="h-[80svh] motion-reduce:hidden" />
+      <div aria-hidden className="h-[60svh] motion-reduce:hidden" />
     </div>
   );
 }
