@@ -10,9 +10,10 @@ export const PinProgressContext = createContext<MotionValue<number> | null>(null
 const AFTER_GAP = 8;
 
 // Blinds close top to bottom, one after another. The first starts at FIRST, each next one
-// STAGGER later, and each takes DURATION. All are closed by ~0.5 of the pinned stretch,
-// just as the next section starts fading in.
-const FIRST = 0;
+// STAGGER later, and each takes DURATION. FIRST is a short beat where the hero just shrinks,
+// so the blinds don't fire on the very first scroll tick. All are closed by ~0.56 of the
+// pinned stretch, as the next section fades in.
+const FIRST = 0.06;
 const STAGGER = 0.04;
 const DURATION = 0.3;
 
