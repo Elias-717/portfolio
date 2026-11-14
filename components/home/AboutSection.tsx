@@ -1,13 +1,30 @@
 import Image from "next/image";
+import { CountUp } from "@/components/CountUp";
 import { Reveal } from "@/components/Reveal";
-import { bio, languages, site } from "@/data/site";
+import { bio, languages, proofStats, site } from "@/data/site";
 import { Section } from "./Section";
 
 export function AboutSection() {
   return (
     <Section id="about" label="About" title="From first idea to working product.">
+      {/* Proof strip: the facts a recruiter should see in five seconds. */}
+      <Reveal>
+        {/* 1px gaps over a line-coloured background draw the dividers at any column count. */}
+        <dl className="mb-16 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-3">
+          {proofStats.map((s) => (
+            <div key={s.label} className="flex flex-col-reverse justify-end gap-3 bg-bg p-5 sm:p-7">
+              <dt className="text-sm text-muted">{s.label}</dt>
+              <dd className="text-5xl font-semibold leading-none tracking-[-0.04em] text-accent sm:text-6xl">
+                <CountUp value={s.value} decimals={s.decimals} />
+                {s.suffix ? <span className="text-3xl sm:text-4xl">{s.suffix}</span> : null}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </Reveal>
       <div className="grid items-center gap-12 md:grid-cols-[minmax(0,20rem)_1fr] md:gap-16">
-        {/* The emblem, with its slow halo. */}
+        {/* TODO: replace the emblem with a candid photo of Elias (e.g. presenting or at an event),
+            different from the hero shot. Drop it in public/ and swap src/alt below. */}
         <Reveal className="relative mx-auto w-[min(70vw,20rem)] md:w-full">
           <div aria-hidden className="halo absolute -inset-8 rounded-full" />
           <Image

@@ -38,6 +38,16 @@ export const bio: string[] = [
   "Outside code I teach, speak in public, make music and do creative design.",
 ];
 
+/**
+ * Headline facts for the About section's proof strip. Every number comes from the resume or
+ * the project data: keep them in sync if those change.
+ */
+export const proofStats: { value: number; decimals?: number; suffix?: string; label: string }[] = [
+  { value: 2, suffix: "nd", label: "Place at MMC Upstart 2026, leading a team of four" },
+  { value: 3.83, decimals: 2, label: "CGPA out of 4.00" },
+  { value: 3, label: "Projects live on the web" },
+];
+
 export const languages = [
   { name: "Arabic", level: "Native" },
   { name: "English", level: "Full professional" },
