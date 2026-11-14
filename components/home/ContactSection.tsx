@@ -3,7 +3,10 @@ import { ContactForm } from "@/components/ContactForm";
 import { CopyEmail } from "@/components/CopyEmail";
 import { Reveal } from "@/components/Reveal";
 import { site, socials } from "@/data/site";
+import { SocialRing } from "@/components/SocialRing";
 import { Section } from "./Section";
+
+const isPrimary = (label: string) => label === "LinkedIn" || label === "GitHub";
 
 export function ContactSection() {
   return (
@@ -15,20 +18,21 @@ export function ContactSection() {
             or send a message.
           </p>
           <CopyEmail email={site.email} />
-          <ul className="mt-8 flex flex-wrap gap-3">
-            {socials.map((s) => (
-              <li key={s.label}>
-                <ButtonLink href={s.href} variant="ghost" external>
-                  {s.label} ↗
-                </ButtonLink>
-              </li>
-            ))}
-            <li>
-              <ButtonLink href={site.resume} download>
-                Download resume
-              </ButtonLink>
-            </li>
+          {/* LinkedIn and GitHub first and larger: they're what recruiters check. */}
+          <ul className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-4" aria-label="Social profiles">
+            {[...socials]
+              .sort((a, b) => Number(isPrimary(b.label)) - Number(isPrimary(a.label)))
+              .map((s) => (
+                <li key={s.label}>
+                  <SocialRing label={s.label} href={s.href} size={isPrimary(s.label) ? "lg" : "md"} />
+                </li>
+              ))}
           </ul>
+          <div className="mt-10">
+            <ButtonLink href={site.resume} download>
+              Download resume
+            </ButtonLink>
+          </div>
         </Reveal>
         <Reveal delay={0.05}>
           {site.formspreeId ? (
