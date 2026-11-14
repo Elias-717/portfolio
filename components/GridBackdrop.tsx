@@ -3,34 +3,82 @@
 import { useEffect, useRef, useState } from "react";
 
 /*
- * Site-wide backdrop after the hero: a faint perspective grid floor that glides toward you as
- * you scroll, sparse drifting dust, and faint binary/hex bytes that float past in the side
- * gutters at different speeds (parallax), with the odd bit flipping. A quieter cousin of the intro's <CodeField> (no glyph),
- * so it never competes with section content. Fixed behind everything; sections with their own
- * black background (hero, projects) simply cover it.
+ * Site-wide backdrop after the hero, in the same glowing-dot style as the intro's <CodeField>:
+ * - a faint perspective grid floor that glides toward you as you scroll, with drifting dust;
+ * - 3D dot shapes (sphere, cube, ring, helix, wave) anchored down the page at the right edge,
+ *   each with its own motion, passing by as you move between sections.
+ * Fixed behind everything; sections with their own black background (hero, projects) cover it.
  *
- * Cost control: hidden and paused while the hero is on screen or the tab is hidden; one still
- * frame with prefers-reduced-motion.
+ * Cost control: shape points are built once; only shapes on screen are drawn (at most ~1k dots a
+ * frame, half on phones); hidden and paused while the hero is on screen or the tab is hidden.
+ * With prefers-reduced-motion nothing animates: the scene is redrawn only when you scroll.
  */
 
 const CAM_Z = 10;
 const FLOOR_Y = -2.6;
 const GRID_ALPHA = 0.12; // keep this faint: content sits on top
 const DUST_ALPHA = 0.35;
-const CODE_ALPHA = 0.16; // floating bytes: decoration, never competing with content
+const SHAPE_ALPHA = 0.55; // overall brightness of the dot shapes
+const SHAPE_SPACING = 950; // page pixels between shapes
+const PARALLAX = 0.85; // shapes scroll a little slower than the page
 
-/** A random fragment of data: binary bytes, hex bytes, or a single 0x value. */
-function makeBytes(): string {
-  const byte = () => Math.floor(Math.random() * 256);
-  const bin = (n: number) => n.toString(2).padStart(8, "0");
-  const hex = (n: number) => n.toString(16).toUpperCase().padStart(2, "0");
-  const kind = Math.random();
-  const count = 1 + Math.floor(Math.random() * 3);
-  if (kind < 0.45) return Array.from({ length: count }, () => bin(byte())).join(" ");
-  if (kind < 0.85) return Array.from({ length: count + 2 }, () => hex(byte())).join(" ");
-  return `0x${hex(byte())}${hex(byte())}`;
+type Shape = "sphere" | "cube" | "ring" | "helix" | "wave";
+const ORDER: Shape[] = ["sphere", "cube", "ring", "helix", "wave"];
+
+/* Point clouds, roughly within a unit sphere, as flat [x, y, z, x, y, z, …] arrays. */
+function build(shape: Shape): Float32Array {
+  const pts: number[] = [];
+  const push = (x: number, y: number, z: number) => pts.push(x, y, z);
+  if (shape === "sphere") {
+    // Even spread over a sphere (Fibonacci lattice).
+    const n = 420;
+    for (let i = 0; i < n; i++) {
+      const y = 1 - (2 * (i + 0.5)) / n;
+      const r = Math.sqrt(1 - y * y);
+      const a = i * 2.39996;
+      push(Math.cos(a) * r, y, Math.sin(a) * r);
+    }
+  } else if (shape === "cube") {
+    // Dotted edges of a cube.
+    const s = 0.62;
+    const corners = [-s, s];
+    for (const a of corners)
+      for (const b of corners)
+        for (let k = 0; k <= 28; k++) {
+          const t = -s + (2 * s * k) / 28;
+          push(t, a, b);
+          push(a, t, b);
+          push(a, b, t);
+        }
+  } else if (shape === "ring") {
+    // Torus.
+    for (let i = 0; i < 52; i++)
+      for (let j = 0; j < 9; j++) {
+        const u = (i / 52) * Math.PI * 2;
+        const v = (j / 9) * Math.PI * 2;
+        const r = 0.78 + 0.22 * Math.cos(v);
+        push(Math.cos(u) * r, 0.22 * Math.sin(v), Math.sin(u) * r);
+      }
+  } else if (shape === "helix") {
+    // Double helix with rungs.
+    for (let i = 0; i <= 150; i++) {
+      const t = i / 150;
+      const a = t * Math.PI * 4;
+      const y = (t - 0.5) * 2.2;
+      push(Math.cos(a) * 0.5, y, Math.sin(a) * 0.5);
+      push(Math.cos(a + Math.PI) * 0.5, y, Math.sin(a + Math.PI) * 0.5);
+      if (i % 10 === 0)
+        for (let k = 1; k < 8; k++) {
+          const f = k / 8;
+          push(Math.cos(a) * 0.5 * (1 - 2 * f), y, Math.sin(a) * 0.5 * (1 - 2 * f));
+        }
+    }
+  } else {
+    // Wave surface: a flat grid of points; its height is animated per frame.
+    for (let i = 0; i < 22; i++) for (let j = 0; j < 22; j++) push(i / 10.5 - 1, 0, j / 10.5 - 1);
+  }
+  return new Float32Array(pts);
 }
-const BYTE_COUNT = 18;
 
 export function GridBackdrop() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -47,25 +95,18 @@ export function GridBackdrop() {
       Math.random() * 9 - 2.6,
       Math.random() * 16 - 6,
     ]);
+    const clouds = Object.fromEntries(ORDER.map((s) => [s, build(s)])) as Record<Shape, Float32Array>;
 
-    // Floating bytes: each sits in a side gutter at a random height and depth. Deeper ones are
-    // smaller, fainter and scroll more slowly (parallax).
-    const mono = (() => {
-      const probe = document.createElement("span");
-      probe.className = "font-mono";
-      document.body.appendChild(probe);
-      const family = getComputedStyle(probe).fontFamily;
-      probe.remove();
-      return family || "monospace";
-    })();
-    const code = Array.from({ length: BYTE_COUNT }, (_, i) => ({
-      text: makeBytes(),
-      accent: Math.random() < 0.3, // some fragments glow green
-      left: i % 2 === 0, // alternate gutters
-      x: Math.random(), // position inside the gutter
-      y: (i + 0.3 + Math.random() * 0.4) / BYTE_COUNT, // own vertical slot, so fragments never pile up
-      depth: 0.25 + Math.random() * 0.75, // 0.25 far … 1 near (size and brightness)
-    }));
+    // Where each shape sits on the page: from the About section to the end, every SHAPE_SPACING.
+    let anchors: { shape: Shape; y: number; left: boolean }[] = [];
+    const placeShapes = () => {
+      const start = (document.getElementById("about")?.getBoundingClientRect().top ?? 0) + window.scrollY;
+      const end = document.documentElement.scrollHeight;
+      anchors = [];
+      for (let y = start + 300, i = 0; y < end; y += SHAPE_SPACING, i++) {
+        anchors.push({ shape: ORDER[i % ORDER.length], y, left: i % 2 === 1 });
+      }
+    };
 
     let w = 0;
     let h = 0;
@@ -76,19 +117,55 @@ export function GridBackdrop() {
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      draw();
+      placeShapes();
+      draw(0);
     };
 
-    const draw = () => {
+    /** One dot shape at screen (sx, sy) with radius R, rotated and animated for time t. */
+    const drawShape = (shape: Shape, sx: number, sy: number, R: number, t: number, scroll: number, stride: number) => {
+      const pts = clouds[shape];
+      // Each shape has its own motion.
+      let rx = 0.35;
+      let ry = t * 0.25;
+      let rz = 0;
+      if (shape === "cube") [rx, ry, rz] = [t * 0.31, t * 0.23, t * 0.17];
+      if (shape === "ring") [rx, ry, rz] = [1.1 + Math.sin(t * 0.6) * 0.25, t * 0.5, 0.2];
+      if (shape === "helix") [rx, ry, rz] = [0.15, scroll * 0.004 + t * 0.15, 0.3]; // twists as you scroll
+      if (shape === "wave") [rx, ry, rz] = [0.95, t * 0.1, 0];
+      const [cx, sxr] = [Math.cos(rx), Math.sin(rx)];
+      const [cy, syr] = [Math.cos(ry), Math.sin(ry)];
+      const [cz, szr] = [Math.cos(rz), Math.sin(rz)];
+      for (let i = 0; i < pts.length; i += 3 * stride) {
+        const x0 = pts[i];
+        const z0 = pts[i + 2];
+        const y0 = shape === "wave" ? 0.18 * Math.sin(3 * x0 + t * 1.6) * Math.cos(3 * z0 + t * 1.2) : pts[i + 1];
+        // Rotate around Y, then X, then Z.
+        const x1 = x0 * cy + z0 * syr;
+        const z1 = -x0 * syr + z0 * cy;
+        const y2 = y0 * cx - z1 * sxr;
+        const z2 = y0 * sxr + z1 * cx;
+        const x3 = x1 * cz - y2 * szr;
+        const y3 = x1 * szr + y2 * cz;
+        const p = 3.2 / (3.2 + z2); // perspective
+        const near = (1 - z2) / 2; // 0 back … 1 front
+        const a = SHAPE_ALPHA * (0.25 + near * 0.75);
+        ctx.fillStyle = near > 0.8 ? `rgba(170,255,214,${a})` : `rgba(110,226,106,${a})`;
+        const size = 1 + near * 1.1;
+        ctx.fillRect(sx + x3 * R * p - size / 2, sy - y3 * R * p - size / 2, size, size);
+      }
+    };
+
+    const draw = (time: number) => {
+      const t = reduce ? 0 : time / 1000;
+      const scroll = window.scrollY;
       const f = Math.min(w, h * 1.6) * 0.8;
-      const cx = w / 2;
-      const cy = h * 0.42; // horizon a little above centre
+      const hx = w / 2;
+      const hy = h * 0.42; // horizon a little above centre
       const project = (x: number, y: number, z: number) => {
         const zz = CAM_Z - z;
-        return zz <= 0.3 ? null : ([cx + (x * f) / zz, cy - (y * f) / zz, zz] as const);
+        return zz <= 0.3 ? null : ([hx + (x * f) / zz, hy - (y * f) / zz, zz] as const);
       };
-      // Scrolling moves you forward over the floor (wraps every grid cell).
-      const travel = reduce ? 0 : (window.scrollY * 0.004) % 1;
+      const travel = reduce ? 0 : (scroll * 0.004) % 1; // forward motion over the floor
 
       ctx.clearRect(0, 0, w, h);
       ctx.globalCompositeOperation = "source-over";
@@ -118,6 +195,7 @@ export function GridBackdrop() {
         ctx.stroke();
       }
 
+      // Additive blending makes overlapping dots glow.
       ctx.globalCompositeOperation = "lighter";
       for (const p of dust) {
         const q = project(p[0], p[1], p[2]);
@@ -126,62 +204,34 @@ export function GridBackdrop() {
         ctx.fillRect(q[0], q[1], 1.3, 1.3);
       }
 
-      // Floating bytes, in the side gutters on wide screens (fewer and fainter on phones).
-      ctx.globalCompositeOperation = "source-over";
-      ctx.textBaseline = "middle";
+      // Dot shapes at the right edge (both margins on very wide screens), drawn only on screen.
       const narrow = w < 900;
-      // Real empty margin either side of the 1600px content column (only on very wide screens).
       const margin = (w - 1600) / 2;
-      const bothSides = margin > 200;
-      const gutter = bothSides ? margin : Math.max(160, w * 0.2);
-      const span = h + 240; // wrap distance
-      const scroll = reduce ? 0 : window.scrollY;
-      code.forEach((c, i) => {
-        if (narrow && i % 3 !== 0) return;
-        const size = Math.round(10 + c.depth * 5);
-        const yy = (((c.y * span - scroll * (0.3 + c.depth * 0.06)) % span) + span) % span - 120;
-        const alpha = (narrow ? 0.5 : 1) * CODE_ALPHA * (0.45 + c.depth * 0.55);
-        ctx.font = `${size}px ${mono}`;
-        // Keep the text inside its gutter.
-        const width = ctx.measureText(c.text).width;
-        const room = Math.max(0, gutter - width - 24);
-        let xx = 16 + c.x * room;
-        // Right edge by default (sections leave it mostly empty); left too only when there is a
-        // genuine margin; on phones, hugging the right edge.
-        if (!(bothSides && c.left)) xx = w - 16 - width - c.x * room;
-        if (narrow) xx = w - 12 - width - c.x * 24;
-        // Soft fade in and out at the top and bottom of the screen.
-        const edge = Math.min(1, Math.max(0, Math.min(yy, h - yy) / 140));
-        ctx.fillStyle = c.accent
-          ? `rgba(110,226,106,${alpha * 1.2 * edge})`
-          : `rgba(238,242,238,${alpha * edge})`;
-        ctx.fillText(c.text, xx, yy);
-      });
+      const bothSides = margin > 260;
+      const R = narrow ? 70 : Math.min(170, Math.max(110, w * 0.09));
+      const stride = narrow ? 2 : 1; // half the dots on phones
+      for (const a of anchors) {
+        const sy = a.y - scroll * PARALLAX - (h * (1 - PARALLAX)) / 2;
+        if (sy < -R * 1.5 || sy > h + R * 1.5) continue;
+        const sx = bothSides
+          ? a.left
+            ? margin / 2
+            : w - margin / 2
+          : w - R * (narrow ? 0.35 : 0.6); // partly off the edge, so it never sits behind text
+        drawShape(a.shape, sx, sy, R, t, scroll, stride);
+      }
     };
 
-    // Run only while the hero is off screen and the tab is visible.
+    // Animate only while the hero is off screen and the tab is visible.
     let raf = 0;
     let running = false;
     let heroOnScreen = true;
-    const loop = () => {
-      // Now and then a bit flips (or a hex digit changes), so the data feels live.
-      if (Math.random() < 0.08) {
-        const c = code[Math.floor(Math.random() * code.length)];
-        const chars = [...c.text];
-        const from = Math.floor(Math.random() * chars.length);
-        // First digit at or after a random position (skipping the "0x" prefix).
-        const idx = chars.findIndex((ch, j) => j >= from && j > (c.text.startsWith("0x") ? 1 : -1) && /[0-9A-F]/.test(ch));
-        if (idx >= 0) {
-          const isBin = /^[01 ]+$/.test(c.text);
-          chars[idx] = isBin ? (chars[idx] === "0" ? "1" : "0") : "0123456789ABCDEF"[Math.floor(Math.random() * 16)];
-          c.text = chars.join("");
-        }
-      }
+    const loop = (time: number) => {
       for (const p of dust) {
         p[1] += 0.003;
         if (p[1] > 6.5) p[1] = FLOOR_Y;
       }
-      draw();
+      draw(time);
       raf = requestAnimationFrame(loop);
     };
     const update = () => {
@@ -195,6 +245,16 @@ export function GridBackdrop() {
         cancelAnimationFrame(raf);
       }
     };
+    // With reduced motion there is no loop, so keep shapes in step with the page on scroll.
+    let pending = false;
+    const onScroll = () => {
+      if (running || pending) return;
+      pending = true;
+      requestAnimationFrame(() => {
+        pending = false;
+        draw(0);
+      });
+    };
 
     const hero = document.querySelector('section[aria-labelledby="hero-title"]');
     const io = new IntersectionObserver(([e]) => {
@@ -206,14 +266,20 @@ export function GridBackdrop() {
       heroOnScreen = false;
       update();
     }
+    // Section heights can change after images load; re-place shapes when the page resizes.
+    const ro = new ResizeObserver(placeShapes);
+    ro.observe(document.body);
 
     resize();
     window.addEventListener("resize", resize);
+    window.addEventListener("scroll", onScroll, { passive: true });
     document.addEventListener("visibilitychange", update);
     return () => {
       cancelAnimationFrame(raf);
       io.disconnect();
+      ro.disconnect();
       window.removeEventListener("resize", resize);
+      window.removeEventListener("scroll", onScroll);
       document.removeEventListener("visibilitychange", update);
     };
   }, []);
