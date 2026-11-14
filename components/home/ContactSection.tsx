@@ -1,5 +1,6 @@
 import { ButtonLink } from "@/components/ButtonLink";
 import { ContactForm } from "@/components/ContactForm";
+import { CopyEmail } from "@/components/CopyEmail";
 import { Reveal } from "@/components/Reveal";
 import { site, socials } from "@/data/site";
 import { Section } from "./Section";
@@ -13,12 +14,7 @@ export function ContactSection() {
             I&apos;m looking for a full-stack software engineering internship from March to August 2027. Email me
             or send a message.
           </p>
-          <a
-            href={`mailto:${site.email}`}
-            className="mt-6 inline-block break-all text-2xl font-semibold tracking-tight hover:text-accent sm:text-3xl"
-          >
-            {site.email}
-          </a>
+          <CopyEmail email={site.email} />
           <ul className="mt-8 flex flex-wrap gap-3">
             {socials.map((s) => (
               <li key={s.label}>
