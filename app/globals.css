@@ -64,8 +64,10 @@ body {
   filter: blur(48px);
 }
 
-/* Hero banner: green letters with a golden band sweeping through them. */
-/* The golden band crosses in the first 40% of the cycle (~1.8s), then pauses. */
+/* Hero banner: a white shine sweeps through the green letters.
+   It lives on its own top layer with normal blending (the green layer uses mix-blend-color,
+   which can only change hue, so a white band there would just look grey).
+   The shine crosses in the first 40% of the cycle (~1.8s), then pauses. */
 @keyframes glint {
   0% {
     background-position: 100% 0;
@@ -75,27 +77,32 @@ body {
     background-position: 0% 0;
   }
 }
-/* Applied per name copy (not the whole track) so the band moves at a readable speed. */
-.glint .banner-name {
+/* Applied per name copy (not the whole track) so the band moves at a readable speed.
+   Transparent letters except for the band, so only the shine shows on this layer. */
+.shine .banner-name {
   color: transparent;
   background-image: linear-gradient(
     100deg,
-    #6ee26a 0%,
-    #6ee26a 34%,
-    #c8961e 42%,
-    #ffd66b 50%,
-    #c8961e 58%,
-    #6ee26a 66%,
-    #6ee26a 100%
+    transparent 0%,
+    transparent 38%,
+    rgb(255 255 255 / 0.55) 44%,
+    #ffffff 50%,
+    rgb(255 255 255 / 0.55) 56%,
+    transparent 62%,
+    transparent 100%
   );
   background-size: 300% 100%;
+  background-position: 100% 0;
   background-clip: text;
   -webkit-background-clip: text;
   animation: glint 4.5s cubic-bezier(0.45, 0, 0.25, 1) infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .glint .banner-name,
+  .shine .banner-name {
+    animation: none !important;
+    visibility: hidden;
+  }
   .halo {
     animation: none !important;
   }

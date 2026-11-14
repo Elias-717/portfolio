@@ -69,10 +69,10 @@ export function Hero() {
           />
 
           {/*
-            The moving banner, two layers moving together:
+            The moving banner, three layers moving together:
             1. off-white with mix-blend-difference, so the letters invert over the face;
-            2. green (with a golden band sweeping through) using mix-blend-color, which tints
-               layer 1 green without changing its lightness.
+            2. green using mix-blend-color, which tints layer 1 green without changing its lightness;
+            3. a white shine sweeping through (normal blending, so it reads as true white).
             No transform on this wrapper: it would isolate the blend modes from the photo.
           */}
           <div
@@ -81,7 +81,7 @@ export function Hero() {
           >
             <VelocityMarquee
               className="text-[24vw] font-medium leading-none tracking-[-0.05em] sm:text-[clamp(4.5rem,15vw,14rem)]"
-              layers={["mix-blend-difference text-[#e8ece8]", "mix-blend-color glint"]}
+              layers={["mix-blend-difference text-[#e8ece8]", "mix-blend-color text-accent", "shine"]}
             >
               <BannerRun />
             </VelocityMarquee>
