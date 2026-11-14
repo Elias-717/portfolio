@@ -83,7 +83,19 @@ function Stop({ m, onOpen }: { m: Milestone; onOpen: (photos: Photo[], i: number
           <span className={m.upcoming ? "text-muted" : "text-accent"}>{m.kind}</span>
           <span className="text-muted md:hidden">{m.dates}</span>
         </p>
-        <h4 className="mt-2 text-2xl font-semibold tracking-[-0.02em] sm:text-3xl">{m.title}</h4>
+        <h4 className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-2xl font-semibold tracking-[-0.02em] sm:text-3xl">
+          {m.title}
+          {/* Organisation logo beside the title. Decorative: the org is named in text just below. */}
+          {m.logo ? (
+            <Image
+              src={m.logo.src}
+              alt=""
+              width={m.logo.width}
+              height={m.logo.height}
+              className="h-7 w-auto rounded-md sm:h-8"
+            />
+          ) : null}
+        </h4>
         <p className="mt-1 text-muted">{m.org}</p>
         <ul className="mt-4 max-w-3xl space-y-1.5 text-fg/85">
           {m.points.map((p) => (

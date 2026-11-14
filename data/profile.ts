@@ -52,6 +52,8 @@ export interface Milestone extends Role {
   photos?: Photo[];
   /** Still ahead (e.g. graduation): drawn as an open node on the line. */
   upcoming?: boolean;
+  /** Organisation logo shown beside the title (decorative; the org is named in text). */
+  logo?: { src: string; width: number; height: number };
 }
 
 /**
@@ -131,13 +133,6 @@ export const journey: Milestone[] = [
         alt: "The Microsoft Excel class in a computer lab: the session lead at the front with a laptop, students at their workstations.",
         caption: "Co-lecturing the Microsoft Excel class",
       },
-      {
-        src: "/experience/team-united-casual.webp",
-        width: 1600,
-        height: 1064,
-        alt: "Team United members smiling in a group selfie on campus.",
-        caption: "Team United, off the clock",
-      },
     ],
   },
   {
@@ -145,6 +140,7 @@ export const journey: Milestone[] = [
     title: "Maybank #Mbassador 2026",
     org: "Maybank",
     dates: "Apr 2026 – present",
+    logo: { src: "/logos/maybank.webp", width: 480, height: 164 },
     points: ["Selected to represent Maybank's brand initiatives on campus and drive student engagement."],
   },
   {
@@ -160,15 +156,51 @@ export const journey: Milestone[] = [
 export interface Certification {
   name: string;
   issuer?: string;
-  // TODO: credential URL for each certification.
+  date?: string;
+  /** Public verification page. */
   url?: string;
+  /** Issuer logo in public/logos (single-colour SVG, tinted by the page). */
+  logo?: "ibm" | "udacity" | "microsoft";
 }
 
-// TODO: Elias will send the full certification list with issuers, dates and credential links.
+// Titles, issuers and dates read from each verification page (Nov 2026).
 export const certifications: Certification[] = [
-  { name: "React", issuer: "IBM on Coursera" },
-  { name: "Node.js", issuer: "IBM on Coursera" },
+  {
+    name: "Developing Back-End Apps with Node.js and Express",
+    issuer: "IBM · Coursera",
+    date: "Oct 2026",
+    url: "https://www.coursera.org/account/accomplishments/verify/66PTUE0WYS03",
+    logo: "ibm",
+  },
+  {
+    name: "Developing Front-End Apps with React",
+    issuer: "IBM · Coursera",
+    date: "Oct 2026",
+    url: "https://www.coursera.org/account/accomplishments/verify/RSBQJW47VXXE",
+    logo: "ibm",
+  },
+  {
+    name: "Introduction to Software Engineering",
+    issuer: "IBM · Coursera",
+    date: "Sep 2026",
+    url: "https://www.coursera.org/account/accomplishments/verify/2UNOY1TYXC4W",
+    logo: "ibm",
+  },
+  {
+    name: "AWS AI Practitioner Challenge",
+    issuer: "Udacity",
+    date: "Jun 2026",
+    url: "https://www.udacity.com/certificate/e/a8870c16-3cba-11f1-a11d-47caa5554bc2",
+    logo: "udacity",
+  },
+  {
+    name: "AI For MY Future",
+    issuer: "Microsoft · PepperLab",
+    date: "Apr 2025",
+    // TODO: this host did not resolve when checked (Nov 2026); Elias to confirm the link works.
+    url: "https://pepper-s-site-1c7b.thinkific.com/certificates/e7mmiqb7uz",
+    logo: "microsoft",
+  },
   { name: "Learn Accessible Web Design" },
-  { name: "AI For MY Future" },
   { name: "Teaching English as a Second Language" },
 ];

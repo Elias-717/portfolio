@@ -123,10 +123,11 @@ dialog[open].window-in {
   }
 }
 .cert-track {
-  animation: cert-scroll 70s linear infinite;
+  animation: cert-scroll 90s linear infinite;
 }
-.cert-banner:hover .cert-track,
-.cert-banner:focus-within .cert-track {
+/* Keyboard focus on a link pauses (hover only slows it down; see CertBanner). */
+.cert-banner:focus-within .cert-track,
+.cert-banner[data-paused="true"] .cert-track {
   animation-play-state: paused;
 }
 @media (prefers-reduced-motion: reduce) {
