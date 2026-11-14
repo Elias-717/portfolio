@@ -7,6 +7,7 @@ import { Tag } from "@/components/Tag";
 import type { Project } from "@/data/projects";
 import { projects, statusLabel } from "@/data/projects";
 import { Block } from "./Block";
+import { PhotoMosaic } from "./PhotoMosaic";
 
 export function CaseStudy({ project: p }: { project: Project }) {
   const more = projects.filter((x) => x.slug !== p.slug);
@@ -83,6 +84,13 @@ export function CaseStudy({ project: p }: { project: Project }) {
             ))}
           </ul>
         </Block>
+
+        {p.recognition?.length ? (
+          <Block title="Recognition" wide>
+            {p.award ? <p className="mb-6 text-fg">{p.award}</p> : null}
+            <PhotoMosaic photos={p.recognition} />
+          </Block>
+        ) : null}
 
         {p.screens.length > 0 ? (
           <Block title="Key screens" wide>

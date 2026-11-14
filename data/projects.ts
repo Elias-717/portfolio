@@ -1,6 +1,8 @@
 // Project content. Every fact comes from the ABOUT_ME.md brief, the resume, or interview answers.
 // Missing assets and links are marked TODO.
 
+import { mmcPhotos, type Photo } from "./profile";
+
 export type DemoType = "browser" | "phone" | "none";
 export type Status = "live" | "in-development" | "concept";
 
@@ -35,6 +37,8 @@ export interface Project {
   features: string[];
   decisions: { title: string; body: string }[];
   results?: { title: string; body: string[]; note?: string };
+  /** Award evidence photos, shown in a Recognition section on the case study. */
+  recognition?: Photo[];
   credits?: string;
   stack: string[];
   links: { live?: string; code?: string; guest?: string };
@@ -67,6 +71,7 @@ export const projects: Project[] = [
     caseStudy: true,
     award: "2nd Place Prize, Catalyst: Igniting Future Innovation (MMC Upstart 2026)",
     awardShort: "2nd Place · MMC Upstart 2026",
+    recognition: mmcPhotos,
     problem:
       "Volunteer slots at AIU go to whoever replies first in WhatsApp and Telegram groups. In a 20-student survey, 7 of 13 applicants had been turned away at least once, and 4 of 13 volunteers never received a certificate.",
     solution:

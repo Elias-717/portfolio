@@ -60,6 +60,31 @@ export interface Milestone extends Role {
  * Leadership and education as one timeline, oldest first. Photos are Elias's own evidence
  * (originals kept outside the repo in ../evidence-originals). Only events he took part in.
  */
+/** MMC Upstart 2026 evidence, shared by the timeline and the Voluntree case study. */
+export const mmcPhotos: Photo[] = [
+  {
+    src: "/experience/mmc-team.webp",
+    width: 1600,
+    height: 1200,
+    alt: "The Voluntree team holding the Catalyst: Igniting Future Innovation 2nd Place prize board with an official at Albukhary International University.",
+    caption: "The Voluntree team with the 2nd Place prize",
+  },
+  {
+    src: "/experience/mmc-stage.webp",
+    width: 1600,
+    height: 1321,
+    alt: "The Voluntree team on stage with the 2nd Place board and two officials, under the Albukhary International University sign.",
+    caption: "On stage at the MMC Upstart 2026 awards",
+  },
+  {
+    src: "/experience/mmc-presenting.webp",
+    width: 1600,
+    height: 1066,
+    alt: "Elias speaking into a microphone on stage in front of Albukhary International University banners.",
+    caption: "Presenting on stage at MMC Upstart 2026",
+  },
+];
+
 // AIU's navy lettering needs a light backing to read on the dark page.
 const AIU_LOGO = { src: "/logos/aiu.webp", width: 240, height: 220, light: true };
 
@@ -148,6 +173,16 @@ export const journey: Milestone[] = [
     dates: "Apr 2026 – present",
     logo: { src: "/logos/maybank.webp", width: 480, height: 164 },
     points: ["Selected to represent Maybank's brand initiatives on campus and drive student engagement."],
+  },
+  {
+    kind: "Award",
+    title: "2nd Place, MMC Upstart 2026",
+    org: "Catalyst: Igniting Future Innovation · Albukhary International University",
+    dates: "Oct 2026",
+    points: [
+      "Led a team of four to 2nd place with Voluntree, a platform that fills campus volunteer slots fairly.",
+    ],
+    photos: mmcPhotos,
   },
   {
     kind: "Education",
