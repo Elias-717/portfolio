@@ -34,9 +34,13 @@ function Slice({ index, count, progress }: { index: number; count: number; progr
       style={{ top: `${(index / count) * 100}%`, height: `calc(${100 / count}% + 1px)` }}
       className="pointer-events-none absolute inset-x-0 z-10 overflow-hidden"
     >
-      <motion.div style={{ y }} className="absolute inset-0 bg-black will-change-transform">
-        <div className="absolute inset-x-0 top-full h-8 bg-gradient-to-b from-black to-transparent" />
-      </motion.div>
+      {/* The panel is the band's height plus its 2rem soft edge, so at -100% the edge is
+          fully hidden too (the hero looks untouched at rest), and at 0 the edge hangs
+          below the band where overflow-hidden clips it, leaving the band solid black. */}
+      <motion.div
+        style={{ y, background: "linear-gradient(to bottom, #000 calc(100% - 2rem), transparent)" }}
+        className="absolute inset-x-0 top-0 h-[calc(100%+2rem)] will-change-transform"
+      />
     </div>
   );
 }
