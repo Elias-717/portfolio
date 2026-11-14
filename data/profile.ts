@@ -246,9 +246,10 @@ export const certifications: Certification[] = [
   {
     name: "HTML and CSS for Web Designers: From Basics to Beautiful",
     issuer: "Udemy",
+    date: "Mar 2025",
     url: "https://www.udemy.com/certificate/UC-cead3f14-e653-414a-ac67-cb5fabc1a4be/",
     logo: "udemy",
   },
-  { name: "Learn Accessible Web Design", issuer: "Scrimba", logo: "scrimba" },
+  { name: "Learn Accessible Web Design", issuer: "Scrimba", date: "May 2026", logo: "scrimba" },
   { name: "Teaching English as a Second Language" },
 ];
