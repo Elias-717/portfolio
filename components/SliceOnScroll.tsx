@@ -9,62 +9,23 @@ export const PinProgressContext = createContext<MotionValue<number> | null>(null
 /** Space kept between the end of the revealed content and whatever follows the pinned block. */
 const AFTER_GAP = 8;
 
-// Blinds close top to bottom, one after another. The first starts at FIRST, each next one
-// STAGGER later, and each takes DURATION. FIRST is a short beat where the hero just shrinks,
-// so the blinds don't fire on the very first scroll tick. All are closed by ~0.56 of the
-// pinned stretch, as the next section fades in.
-const FIRST = 0.06;
-const STAGGER = 0.04;
-const DURATION = 0.3;
-
-/** Ease-out (cubic): moves straight away on the first scroll tick, then settles into place. */
-const ease = (t: number) => 1 - (1 - t) ** 3;
-
-function Slice({ index, count, progress }: { index: number; count: number; progress: MotionValue<number> }) {
-  const start = FIRST + index * STAGGER;
-  // Function transform: a 0..1 eased fill, mapped to a slide down from above the band.
-  const y = useTransform(progress, (p) => {
-    const t = Math.min(1, Math.max(0, (p - start) / DURATION));
-    return `${-100 * (1 - ease(t))}%`;
-  });
-  return (
-    // The band clips a black panel that slides down into it. Sliding (not scaling) keeps
-    // the panel's soft leading edge the same size the whole way, and is cheap to animate.
-    <div
-      aria-hidden
-      style={{ top: `${(index / count) * 100}%`, height: `calc(${100 / count}% + 1px)` }}
-      className="pointer-events-none absolute inset-x-0 z-10 overflow-hidden"
-    >
-      {/* The panel is the band's height plus its 2rem soft edge, so at -100% the edge is
-          fully hidden too (the hero looks untouched at rest), and at 0 the edge hangs
-          below the band where overflow-hidden clips it, leaving the band solid black. */}
-      <motion.div
-        style={{ y, background: "linear-gradient(to bottom, #000 calc(100% - 2rem), transparent)" }}
-        className="absolute inset-x-0 top-0 h-[calc(100%+2rem)] will-change-transform"
-      />
-    </div>
-  );
-}
-
 /**
  * Pins its content for a short stretch of scrolling. While pinned, the content shrinks
- * and dims and horizontal bars grow across it until it's fully sliced away, so the
- * effect plays on screen in both scroll directions. `frameClassName` sizes the pinned
- * frame (e.g. "h-svh"). Reduced-motion visitors get the content without pinning or bars.
+ * and dims while `reveal` fades in over it, so the effect plays on screen in both scroll
+ * directions. `frameClassName` sizes the pinned frame (e.g. "h-svh"). Reduced-motion
+ * visitors get the content without pinning.
  */
 export function SliceOnScroll({
   children,
   reveal,
   revealReduced,
-  slices = 6,
   frameClassName = "h-svh",
 }: {
   children: ReactNode;
-  /** Content that fades in inside the frame as the slicing finishes (e.g. the next section). */
+  /** Content that fades in inside the frame as the pinned stretch goes on (e.g. the next section). */
   reveal?: ReactNode;
   /** The same content for reduced-motion visitors, shown after the frame in normal flow. */
   revealReduced?: ReactNode;
-  slices?: number;
   frameClassName?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -114,11 +75,6 @@ export function SliceOnScroll({
         <motion.div style={reduce ? undefined : { scale, opacity }} className="absolute inset-0 isolate origin-top">
           {children}
         </motion.div>
-        {reduce
-          ? null
-          : Array.from({ length: slices }, (_, i) => (
-              <Slice key={i} index={i} count={slices} progress={scrollYProgress} />
-            ))}
         {reveal ? (
           <motion.div
             ref={revealRef}
