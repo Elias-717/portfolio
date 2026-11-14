@@ -116,6 +116,24 @@ dialog[open].window-in {
   animation: window-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+/* Contact: social rings bob gently, each out of phase (delay set inline). */
+@keyframes ring-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+.ring-float {
+  animation: ring-float 4.2s ease-in-out infinite;
+}
+.ring-float:hover,
+.ring-float:focus-within {
+  animation-play-state: paused;
+}
+
 dialog::backdrop {
   background: rgb(0 0 0 / 0.8);
 }

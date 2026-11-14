@@ -1,3 +1,4 @@
+import { Enter } from "@/components/Animate";
 import { ButtonLink } from "@/components/ButtonLink";
 import { ContactForm } from "@/components/ContactForm";
 import { CopyEmail } from "@/components/CopyEmail";
@@ -17,7 +18,9 @@ export function ContactSection() {
             I&apos;m looking for a full-stack software engineering internship from March to August 2027. Email me
             or send a message.
           </p>
-          <CopyEmail email={site.email} />
+          <Enter variant="slide" delay={0.1}>
+            <CopyEmail email={site.email} />
+          </Enter>
           {/* One even row (LinkedIn and GitHub first: they're what recruiters check). */}
           <ul
             className="mt-10 grid max-w-xl grid-cols-3 gap-4 sm:grid-cols-5"
@@ -25,10 +28,13 @@ export function ContactSection() {
           >
             {[...socials]
               .sort((a, b) => Number(isPrimary(b.label)) - Number(isPrimary(a.label)))
-              .map((s) => (
-                <li key={s.label} className="flex justify-center">
-                  <SocialRing label={s.label} href={s.href} />
-                </li>
+              .map((s, i) => (
+                <Enter as="li" variant="pop" delay={0.15 + i * 0.09} key={s.label} className="flex justify-center">
+                  {/* Gentle idle float, each ring out of step with its neighbours. */}
+                  <div className="ring-float flex w-full justify-center" style={{ animationDelay: `${-i * 0.7}s` }}>
+                    <SocialRing label={s.label} href={s.href} />
+                  </div>
+                </Enter>
               ))}
           </ul>
           <div className="mt-10">
