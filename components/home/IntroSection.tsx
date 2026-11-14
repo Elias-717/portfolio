@@ -2,6 +2,7 @@
 
 import { useContext } from "react";
 import { ButtonLink } from "@/components/ButtonLink";
+import { CodeField } from "@/components/CodeField";
 import { ScrollRevealText, type TextSegment } from "@/components/ScrollRevealText";
 import { PinProgressContext } from "@/components/SliceOnScroll";
 import { site } from "@/data/site";
@@ -26,8 +27,10 @@ export function IntroSection({ labelId = "intro-label" }: { labelId?: string }) 
   // while pinned. Outside it (reduced motion) the text tracks its own scroll position.
   const progress = useContext(PinProgressContext) ?? undefined;
   return (
-    <section aria-labelledby={labelId} className="flex h-full items-center bg-black">
-      <div data-reveal-content className="mx-auto flex w-full max-w-[1600px] flex-col px-4 pb-2 pt-20 sm:px-6 lg:px-10">
+    <section aria-labelledby={labelId} className="relative flex h-full items-center overflow-hidden bg-black">
+      {/* Glowing </> over a grid floor, behind the text. */}
+      <CodeField className="[mask-image:linear-gradient(to_bottom,black_75%,transparent)]" />
+      <div data-reveal-content className="relative mx-auto flex w-full max-w-[1600px] flex-col px-4 pb-2 pt-20 sm:px-6 lg:px-10">
         <p id={labelId} className="font-mono text-sm text-accent">
           <span aria-hidden className="text-accent/60">
             {"// "}
