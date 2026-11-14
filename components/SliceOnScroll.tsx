@@ -9,20 +9,35 @@ export const PinProgressContext = createContext<MotionValue<number> | null>(null
 /** Space kept between the end of the revealed content and whatever follows the pinned block. */
 const AFTER_GAP = 8;
 
-// When each slice starts closing, as a fraction of the scroll through the block.
-// Uneven on purpose so the bars don't close in lockstep.
-const STARTS = [0.12, 0.03, 0.2, 0.08, 0.26, 0.0, 0.16, 0.06, 0.23, 0.13];
+// Blinds close top to bottom, one after another. The first starts at FIRST, each next one
+// STAGGER later, and each takes DURATION. All are closed by ~0.66 of the pinned stretch,
+// so the frame is black just as the next section arrives.
+const FIRST = 0.02;
+const STAGGER = 0.06;
+const DURATION = 0.34;
+
+/** Smooth ease in/out (smootherstep). */
+const ease = (t: number) => t * t * t * (t * (t * 6 - 15) + 10);
 
 function Slice({ index, count, progress }: { index: number; count: number; progress: MotionValue<number> }) {
-  const start = STARTS[index % STARTS.length];
-  // Every bar is closed by ~70% of the pinned stretch, so the frame is black just as the next section arrives.
-  const scaleY = useTransform(progress, [start, start + 0.42], [0, 1]);
+  const start = FIRST + index * STAGGER;
+  // Function transform: a 0..1 eased fill, mapped to a slide down from above the band.
+  const y = useTransform(progress, (p) => {
+    const t = Math.min(1, Math.max(0, (p - start) / DURATION));
+    return `${-100 * (1 - ease(t))}%`;
+  });
   return (
-    <motion.div
+    // The band clips a black panel that slides down into it. Sliding (not scaling) keeps
+    // the panel's soft leading edge the same size the whole way, and is cheap to animate.
+    <div
       aria-hidden
-      style={{ top: `${(index / count) * 100}%`, height: `${100 / count + 0.5}%`, scaleY }}
-      className="pointer-events-none absolute inset-x-0 z-10 bg-black"
-    />
+      style={{ top: `${(index / count) * 100}%`, height: `calc(${100 / count}% + 1px)` }}
+      className="pointer-events-none absolute inset-x-0 z-10 overflow-hidden"
+    >
+      <motion.div style={{ y }} className="absolute inset-0 bg-black will-change-transform">
+        <div className="absolute inset-x-0 top-full h-8 bg-gradient-to-b from-black to-transparent" />
+      </motion.div>
+    </div>
   );
 }
 
@@ -36,7 +51,7 @@ export function SliceOnScroll({
   children,
   reveal,
   revealReduced,
-  slices = 10,
+  slices = 6,
   frameClassName = "h-svh",
 }: {
   children: ReactNode;
