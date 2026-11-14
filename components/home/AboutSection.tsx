@@ -23,17 +23,16 @@ export function AboutSection() {
         </dl>
       </Reveal>
       <div className="grid items-center gap-12 md:grid-cols-[minmax(0,20rem)_1fr] md:gap-16">
-        {/* TODO: replace the emblem with a candid photo of Elias (e.g. presenting or at an event),
-            different from the hero shot. Drop it in public/ and swap src/alt below. */}
+        {/* Portrait, with the emblem's slow halo behind it. */}
         <Reveal className="relative mx-auto w-[min(70vw,20rem)] md:w-full">
           <div aria-hidden className="halo absolute -inset-8 rounded-full" />
           <Image
-            src="/logo.png"
-            alt={`${site.name} emblem`}
-            width={320}
-            height={320}
+            src="/about.webp"
+            alt={`Portrait of ${site.name} in a suit and tie, smiling.`}
+            width={895}
+            height={900}
             sizes="(min-width: 768px) 320px, 70vw"
-            className="relative w-full rounded-full ring-1 ring-accent/20"
+            className="relative w-full rounded-3xl ring-1 ring-accent/20"
           />
         </Reveal>
         <Reveal delay={0.05}>

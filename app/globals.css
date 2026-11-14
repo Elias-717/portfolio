@@ -116,6 +116,41 @@ dialog[open].window-in {
   animation: window-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+/* Certifications banner: two copies of the list slide left by one copy's width, then loop. */
+@keyframes cert-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.cert-track {
+  animation: cert-scroll 70s linear infinite;
+}
+.cert-banner:hover .cert-track,
+.cert-banner:focus-within .cert-track {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cert-banner {
+    mask-image: none !important;
+  }
+  .cert-track {
+    animation: none !important;
+  }
+  .cert-track {
+    width: auto;
+    row-gap: 1.5rem;
+  }
+  .cert-track,
+  .cert-track > div,
+  .cert-track ul {
+    flex-wrap: wrap;
+    row-gap: 1.75rem;
+  }
+  .cert-copy {
+    display: none !important;
+  }
+}
+
 dialog::backdrop {
   background: rgb(0 0 0 / 0.8);
 }
