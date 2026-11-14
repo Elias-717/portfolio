@@ -62,7 +62,7 @@ export const education = {
   degree: "Bachelor of Computer Science (Data Science)",
   school: "Universiti Antarabangsa Albukhary (AIU), Malaysia",
   dates: "2024 – 2027 (expected)",
-  points: ["CGPA 3.83 / 4.00", "Relevant coursework: Data Mining"],
+  points: ["CGPA 3.83 / 4.00"],
 };
 
 export interface Certification {
