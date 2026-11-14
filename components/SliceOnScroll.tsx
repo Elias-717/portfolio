@@ -10,14 +10,14 @@ export const PinProgressContext = createContext<MotionValue<number> | null>(null
 const AFTER_GAP = 8;
 
 // Blinds close top to bottom, one after another. The first starts at FIRST, each next one
-// STAGGER later, and each takes DURATION. All are closed by ~0.66 of the pinned stretch,
-// so the frame is black just as the next section arrives.
-const FIRST = 0.02;
-const STAGGER = 0.06;
-const DURATION = 0.34;
+// STAGGER later, and each takes DURATION. All are closed by ~0.5 of the pinned stretch,
+// just as the next section starts fading in.
+const FIRST = 0;
+const STAGGER = 0.04;
+const DURATION = 0.3;
 
-/** Smooth ease in/out (smootherstep). */
-const ease = (t: number) => t * t * t * (t * (t * 6 - 15) + 10);
+/** Ease-out (cubic): moves straight away on the first scroll tick, then settles into place. */
+const ease = (t: number) => 1 - (1 - t) ** 3;
 
 function Slice({ index, count, progress }: { index: number; count: number; progress: MotionValue<number> }) {
   const start = FIRST + index * STAGGER;
