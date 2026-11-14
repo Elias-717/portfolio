@@ -18,13 +18,16 @@ export function ContactSection() {
             or send a message.
           </p>
           <CopyEmail email={site.email} />
-          {/* LinkedIn and GitHub first and larger: they're what recruiters check. */}
-          <ul className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-4" aria-label="Social profiles">
+          {/* One even row (LinkedIn and GitHub first: they're what recruiters check). */}
+          <ul
+            className="mt-10 grid max-w-xl grid-cols-3 gap-4 sm:grid-cols-5"
+            aria-label="Social profiles"
+          >
             {[...socials]
               .sort((a, b) => Number(isPrimary(b.label)) - Number(isPrimary(a.label)))
               .map((s) => (
-                <li key={s.label}>
-                  <SocialRing label={s.label} href={s.href} size={isPrimary(s.label) ? "lg" : "md"} />
+                <li key={s.label} className="flex justify-center">
+                  <SocialRing label={s.label} href={s.href} />
                 </li>
               ))}
           </ul>
