@@ -92,7 +92,13 @@ function Stop({ m, onOpen }: { m: Milestone; onOpen: (photos: Photo[], i: number
               alt=""
               width={m.logo.width}
               height={m.logo.height}
-              className="h-7 w-auto rounded-md sm:h-8"
+              className={
+                m.logo.light
+                  ? "h-9 w-auto rounded-lg bg-white p-1 sm:h-10"
+                  : m.logo.width / m.logo.height > 2
+                    ? "h-7 w-auto rounded-md sm:h-8" // wide wordmarks (Maybank)
+                    : "h-9 w-auto sm:h-10" // square marks (Team United)
+              }
             />
           ) : null}
         </h4>

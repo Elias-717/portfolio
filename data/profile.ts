@@ -53,18 +53,22 @@ export interface Milestone extends Role {
   /** Still ahead (e.g. graduation): drawn as an open node on the line. */
   upcoming?: boolean;
   /** Organisation logo shown beside the title (decorative; the org is named in text). */
-  logo?: { src: string; width: number; height: number };
+  logo?: { src: string; width: number; height: number; /** Sit on a light backing (dark logos). */ light?: boolean };
 }
 
 /**
  * Leadership and education as one timeline, oldest first. Photos are Elias's own evidence
  * (originals kept outside the repo in ../evidence-originals). Only events he took part in.
  */
+// AIU's navy lettering needs a light backing to read on the dark page.
+const AIU_LOGO = { src: "/logos/aiu.webp", width: 240, height: 220, light: true };
+
 export const journey: Milestone[] = [
   {
     kind: "Education",
     title: "Bachelor of Computer Science (Data Science)",
     org: "Universiti Antarabangsa Albukhary (AIU), Malaysia",
+    logo: AIU_LOGO,
     dates: "2024",
     points: ["Started the degree. CGPA 3.83 / 4.00 so far."],
   },
@@ -72,6 +76,7 @@ export const journey: Milestone[] = [
     kind: "Award",
     title: "Dean's List Award, every semester",
     org: "School of Computing and Informatics, AIU",
+    logo: AIU_LOGO,
     // Confirmed by Elias: on the Dean's List every semester; the photos are from the ceremonies
     // where certificates were presented, not a count of awards.
     dates: "2024 – present",
@@ -104,6 +109,7 @@ export const journey: Milestone[] = [
     kind: "Leadership",
     title: "Head of Public Relations & Media",
     org: "Team United",
+    logo: { src: "/logos/team-united.webp", width: 240, height: 224 },
     dates: "Dec 2025 – present",
     points: [
       "Lead communication and issue resolution for community and advocacy campaigns.",
@@ -147,6 +153,7 @@ export const journey: Milestone[] = [
     kind: "Education",
     title: "Graduation",
     org: "Bachelor of Computer Science, AIU",
+    logo: AIU_LOGO,
     dates: "2027 (expected)",
     points: ["Available for an internship from March to August 2027."],
     upcoming: true,
