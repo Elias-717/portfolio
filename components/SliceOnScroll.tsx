@@ -31,11 +31,19 @@ export function SliceOnScroll({
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.82]);
-  const opacity = useTransform(scrollYProgress, [0, 0.9], [1, 0.3]);
+  // Two beats, never overlapping: the content eases out to black by HIDE_END, then the
+  // reveal fades in from REVEAL_START, so the two are never visible on top of each other.
   // Function transforms (not range arrays) so Motion keeps these on the JS path that tracks
   // the pinned scroll range exactly; the browser-accelerated path got the end state wrong.
-  const revealT = (p: number) => Math.min(1, Math.max(0, (p - 0.45) / 0.3));
+  const HIDE_END = 0.4;
+  const REVEAL_START = 0.45;
+  const hideT = (p: number) => {
+    const t = Math.min(1, Math.max(0, p / HIDE_END));
+    return t * t * (3 - 2 * t); // smoothstep
+  };
+  const scale = useTransform(scrollYProgress, (p) => 1 - 0.08 * hideT(p));
+  const opacity = useTransform(scrollYProgress, (p) => 1 - hideT(p));
+  const revealT = (p: number) => Math.min(1, Math.max(0, (p - REVEAL_START) / 0.3));
   const revealOpacity = useTransform(scrollYProgress, (p) => revealT(p));
   const revealY = useTransform(scrollYProgress, (p) => 40 * (1 - revealT(p)));
   const revealPointer = useTransform(scrollYProgress, (p) => (p > 0.6 ? "auto" : "none"));
