@@ -81,7 +81,7 @@ export const projects: Project[] = [
     decisions: [
       {
         title: "Overbooking is impossible at the database level",
-        body: "PostgreSQL row-level security and locking functions mean capacity is never exceeded, and a repeated approval changes nothing. The schema is built from 12 Supabase migrations and backed by 293 automated tests.",
+        body: "PostgreSQL row-level security and locking functions mean capacity is never exceeded, and a repeated approval changes nothing. The schema is built from 12 Supabase migrations.",
       },
       {
         title: "AI drafts, people decide",
