@@ -1,30 +1,34 @@
 // Skills, experience, education and certifications. Sources: resume and brief.
 
 export const skillGroups: { level: string; items: string[] }[] = [
+  // Confirmed by Elias (2026-11-14): only these are skills he can use and explain unaided.
   {
     level: "Strong",
-    items: ["TypeScript", "JavaScript", "Python", "React", "Next.js", "Node.js", "PostgreSQL", "Supabase", "SQL", "Git"],
+    items: ["JavaScript", "Python", "React", "Node.js", "Express", "SQL", "Git"],
   },
+  // Tools his projects are built with, not claimed as personal expertise. Keep in sync with
+  // the project stacks in data/projects.ts.
   {
-    level: "Working knowledge",
+    level: "Used in my projects",
     items: [
+      "TypeScript",
+      "Next.js",
+      "PostgreSQL",
+      "Supabase",
       "React Native",
       "Expo",
       "Fastify",
-      "Express",
       "SQLite",
       "Drizzle",
       "Zod",
       "Tailwind CSS",
       "Vitest",
       "Playwright",
-      "GitHub Actions CI",
+      "GitHub Actions",
       "Vercel",
+      "Docker",
+      "Azure Container Apps",
     ],
-  },
-  {
-    level: "Familiar",
-    items: ["Docker", "Azure Container Apps"],
   },
 ];
 
