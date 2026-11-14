@@ -160,7 +160,7 @@ export interface Certification {
   /** Public verification page. */
   url?: string;
   /** Issuer logo in public/logos (single-colour SVG, tinted by the page). */
-  logo?: "ibm" | "udacity" | "microsoft";
+  logo?: "ibm" | "udacity" | "microsoft" | "scrimba";
 }
 
 // Titles, issuers and dates read from each verification page (Nov 2026).
@@ -201,6 +201,6 @@ export const certifications: Certification[] = [
     url: "https://pepper-s-site-1c7b.thinkific.com/certificates/e7mmiqb7uz",
     logo: "microsoft",
   },
-  { name: "Learn Accessible Web Design" },
+  { name: "Learn Accessible Web Design", issuer: "Scrimba", logo: "scrimba" },
   { name: "Teaching English as a Second Language" },
 ];

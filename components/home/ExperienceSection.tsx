@@ -1,6 +1,6 @@
 import { Reveal } from "@/components/Reveal";
 import { certifications, journey } from "@/data/profile";
-import { CertBanner } from "./CertBanner";
+import { CertGrid } from "./CertGrid";
 import { Journey } from "./Journey";
 import { Section } from "./Section";
 
@@ -12,7 +12,7 @@ export function ExperienceSection() {
       <Reveal className="mt-24">
         <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-muted">Certifications</h3>
         <div className="mt-6">
-          <CertBanner items={certifications} />
+          <CertGrid items={certifications} />
         </div>
       </Reveal>
     </Section>
