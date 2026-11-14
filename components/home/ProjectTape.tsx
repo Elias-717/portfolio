@@ -3,7 +3,7 @@
 import { motion, useMotionValueEvent, useScroll, useSpring, useTransform, type MotionValue } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { DemoWindow } from "./DemoWindow";
 
 export interface TapeItem {
@@ -37,6 +37,28 @@ const EXTRA = 12; // half a turn of extra ribbon before and after
 
 /** Rotation (deg) that brings the middle of item `i` to the front. */
 const angleFor = (i: number) => (i * SEGS_PER_ITEM + (SEGS_PER_ITEM - 1) / 2) * STEP;
+
+/** Share of each project's scroll span spent holding still at the front. */
+const HOLD = 0.4;
+
+/** Smooth ease in/out (smootherstep): zero velocity and acceleration at both ends. */
+const ease = (t: number) => t * t * t * (t * (t * 6 - 15) + 10);
+
+/**
+ * Maps scroll progress (0..1) to ribbon rotation. Each project holds at the front for
+ * HOLD of its span, and the turns between them ease in and out, so there are no
+ * sudden changes of speed for the spring to smooth over.
+ */
+function rotationFor(p: number, n: number) {
+  const x = Math.min(n - 1, Math.max(0, p * n - 0.5)); // 0 at item 0's centre, n-1 at the last
+  const i = Math.floor(x);
+  const f = x - i;
+  const half = HOLD / 2;
+  const t = f <= half ? 0 : f >= 1 - half ? 1 : (f - half) / (1 - HOLD);
+  const from = angleFor(i);
+  const to = angleFor(Math.min(n - 1, i + 1));
+  return from + (to - from) * ease(t);
+}
 
 /**
  * One static slice of the ribbon. Nothing here changes while scrolling: only the
@@ -94,6 +116,8 @@ function PopCard({
   });
   const scale = useTransform(nearness, [0, 1], [0.9, 1]);
   const pointerEvents = useTransform(nearness, (v) => (v > 0.6 ? "auto" : "none"));
+  // Fully faded cards drop out of compositing instead of being blended at 0 opacity.
+  const visibility = useTransform(nearness, (v) => (v > 0.001 ? "visible" : "hidden"));
 
   const opensSite = !item.teaser && !item.demoUrl && item.external;
   const label = item.teaser
@@ -118,12 +142,12 @@ function PopCard({
       aria-label={aria}
       tabIndex={isActive ? 0 : -1}
       aria-hidden={!isActive}
-      style={{ opacity: nearness, scale, pointerEvents }}
+      style={{ opacity: nearness, scale, pointerEvents, visibility, willChange: "transform, opacity" }}
       className="group absolute inset-0 overflow-hidden rounded-2xl ring-2 ring-accent/70 shadow-[0_0_60px_-10px_rgb(110_226_106/0.55)] transition-shadow duration-300 hover:ring-accent hover:shadow-[0_0_90px_-10px_rgb(110_226_106/0.8)]"
     >
       <Image src={item.cover} alt="" fill sizes="650px" loading="eager" className="object-cover object-top" />
       <span aria-hidden className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent" />
-      <span className="absolute bottom-5 left-1/2 inline-flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-black/70 px-4 py-2 text-sm font-medium text-fg ring-1 ring-white/15 backdrop-blur transition group-hover:bg-accent group-hover:text-accent-ink">
+      <span className="absolute bottom-5 left-1/2 inline-flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-black/80 px-4 py-2 text-sm font-medium text-fg ring-1 ring-white/15 transition group-hover:bg-accent group-hover:text-accent-ink">
         <span aria-hidden className="h-2 w-2 animate-pulse rounded-full bg-accent group-hover:bg-accent-ink" />
         {label}
       </span>
@@ -141,17 +165,10 @@ export function ProjectTape({ items, className = "" }: { items: TapeItem[]; clas
   const [active, setActive] = useState(0);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
-  // Hold each project at the front for a while, then turn to the next one.
-  const input: number[] = [];
-  const output: number[] = [];
-  items.forEach((_, i) => {
-    const start = i / n;
-    const end = (i + 1) / n;
-    input.push(start + (end - start) * 0.25, start + (end - start) * 0.75);
-    output.push(angleFor(i), angleFor(i));
-  });
-  const target = useTransform(scrollYProgress, [0, ...input, 1], [angleFor(0), ...output, angleFor(n - 1)]);
-  const rotation = useSpring(target, { stiffness: 140, damping: 30, mass: 0.6 });
+  // Hold each project at the front for a while, then ease round to the next one.
+  const target = useTransform(scrollYProgress, (p) => rotationFor(p, n));
+  // Light, near-critically damped spring: smooths coarse mouse-wheel steps without lag.
+  const rotation = useSpring(target, { stiffness: 170, damping: 26, mass: 0.8, restDelta: 0.001 });
   const rotateY = useTransform(rotation, (r) => -r);
   const y = useTransform(rotation, (r) => -(r / STEP) * DROP);
 
@@ -179,7 +196,14 @@ export function ProjectTape({ items, className = "" }: { items: TapeItem[]; clas
 
   const current = items[active];
   const projectCount = items.filter((it) => !it.teaser).length;
-  const slices = Array.from({ length: n * SEGS_PER_ITEM + EXTRA * 2 }, (_, k) => k - EXTRA);
+  // The ribbon never changes, so don't re-render its slices when the active project does.
+  const ribbon = useMemo(
+    () =>
+      Array.from({ length: n * SEGS_PER_ITEM + EXTRA * 2 }, (_, k) => k - EXTRA).map((k) => (
+        <Slice key={k} index={k} items={items} />
+      )),
+    [items, n],
+  );
 
   return (
     <div ref={ref} className={`relative ${className}`} style={{ height: `${n * 70}svh` }}>
@@ -202,9 +226,7 @@ export function ProjectTape({ items, className = "" }: { items: TapeItem[]; clas
                 style={{ rotateY, y, transformStyle: "preserve-3d", willChange: "transform" }}
                 className="relative h-0 w-0"
               >
-                {slices.map((k) => (
-                  <Slice key={k} index={k} items={items} />
-                ))}
+                {ribbon}
               </motion.div>
             </div>
           </div>
@@ -245,15 +267,16 @@ export function ProjectTape({ items, className = "" }: { items: TapeItem[]; clas
 
           <div />
 
-          <ol className="space-y-6 text-right">
+          <ol className="space-y-3 text-right">
             {items.map((item, i) => (
               <li key={item.slug}>
+                {/* Size changes via transform (not font-size) so switching projects never reflows the pinned panel. */}
                 <button
                   type="button"
                   onClick={() => jumpTo(i)}
                   aria-current={i === active ? "true" : undefined}
-                  className={`ml-auto block text-right uppercase tracking-[-0.02em] transition-all duration-300 ${
-                    i === active ? "text-3xl font-semibold text-fg 2xl:text-4xl" : "text-lg text-muted/60 hover:text-fg 2xl:text-xl"
+                  className={`ml-auto block origin-right text-right text-3xl font-semibold uppercase tracking-[-0.02em] transition-[transform,color] duration-300 ease-out 2xl:text-4xl ${
+                    i === active ? "text-fg" : "scale-[0.6] text-muted/60 hover:text-fg"
                   }`}
                 >
                   {item.title}
