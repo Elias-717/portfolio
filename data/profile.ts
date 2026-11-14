@@ -160,7 +160,7 @@ export interface Certification {
   /** Public verification page. */
   url?: string;
   /** Issuer logo in public/logos (single-colour SVG, tinted by the page). */
-  logo?: "ibm" | "udacity" | "microsoft" | "scrimba";
+  logo?: "ibm" | "udacity" | "microsoft" | "scrimba" | "udemy";
 }
 
 // Titles, issuers and dates read from each verification page (Nov 2026).
@@ -200,6 +200,12 @@ export const certifications: Certification[] = [
     // TODO: this host did not resolve when checked (Nov 2026); Elias to confirm the link works.
     url: "https://pepper-s-site-1c7b.thinkific.com/certificates/e7mmiqb7uz",
     logo: "microsoft",
+  },
+  {
+    name: "HTML and CSS for Web Designers: From Basics to Beautiful",
+    issuer: "Udemy",
+    url: "https://www.udemy.com/certificate/UC-cead3f14-e653-414a-ac67-cb5fabc1a4be/",
+    logo: "udemy",
   },
   { name: "Learn Accessible Web Design", issuer: "Scrimba", logo: "scrimba" },
   { name: "Teaching English as a Second Language" },
