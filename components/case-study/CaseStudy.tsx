@@ -8,6 +8,7 @@ import type { Project } from "@/data/projects";
 import { projects, statusLabel } from "@/data/projects";
 import { Block } from "./Block";
 import { PhotoMosaic } from "./PhotoMosaic";
+import { Story } from "./Story";
 
 export function CaseStudy({ project: p }: { project: Project }) {
   const more = projects.filter((x) => x.slug !== p.slug);
@@ -84,6 +85,12 @@ export function CaseStudy({ project: p }: { project: Project }) {
             ))}
           </ul>
         </Block>
+
+        {p.story ? (
+          <Block title={p.story.title} wide>
+            <Story story={p.story} />
+          </Block>
+        ) : null}
 
         {p.recognition?.length ? (
           <Block title="Recognition" wide>

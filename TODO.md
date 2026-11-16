@@ -26,8 +26,9 @@ Everything still missing before (or after) launch. Search the code for `TODO` to
 - [x] Insightly now allows embedding by the portfolio (insightly PR #9, merged)
 
 ## Brokely (`public/projects/brokely/`)
-- [ ] Poster (phone screenshot, synthetic data only)
-- [ ] Screenshots: Home with mascot, quick add, Insights, Bills, sync status
+- [x] Poster: Welcome screen with the mascot (emulator, made-up data)
+- [x] Screenshots (made-up student "Sara", 17 Nov): quick start, Home, quick add, money in, Mark paid, debts, Insights, Records, plan, grow card, dark Home; used in the new "How a student uses it" story section
+- [ ] Optional: Backup / sync status screen (needs a test account, not your real one)
 - [ ] Screen recording: log a purchase offline, then sync (`demo.mp4`)
 - [ ] Mascot stage images and an architecture diagram
 - [ ] Try `npx expo export -p web`; if it works, deploy and set `demo.url`

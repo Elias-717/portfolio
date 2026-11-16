@@ -37,6 +37,12 @@ export interface Project {
   features: string[];
   decisions: { title: string; body: string }[];
   results?: { title: string; body: string[]; note?: string };
+  /** A use case told as steps, each beside its phone screen ("How a student uses it"). */
+  story?: {
+    title: string;
+    intro?: string;
+    steps: { when?: string; title: string; body: string; screen?: Screen }[];
+  };
   /** Award evidence photos, shown in a Recognition section on the case study. */
   recognition?: Photo[];
   credits?: string;
@@ -280,52 +286,141 @@ export const projects: Project[] = [
     highlight: "Student spending planner, essentials first",
     title: "Brokely",
     oneLine:
-      "A student-first expenditure planner for Android, with a broccoli mascot that grows from good money habits.",
+      "A student-first spending planner for Android, with a broccoli mascot that grows from good money habits.",
     year: "2026 – present",
     role: "Solo developer and product owner",
     status: "in-development",
-    statusNote: "Release 0.1 is in testing, with a first pilot planned at AIU.",
+    statusNote:
+      "Release 0.1 is in testing on a Samsung Galaxy A26, with a pilot of 5 to 10 AIU students planned next. Screens below use made-up demo data.",
     featured: true,
     caseStudy: true,
     problem:
-      "University students need to plan spending, cover essentials like meals and laundry first, and track money owed between friends, without bank logins or a shaming tone.",
+      "Students at AIU live on meal money from family, small part-time pay and Touch 'n Go transfers between friends. Budgeting apps ask for bank logins, track a balance the student never sees, and shame overspending. What students need is simpler: cover meals, laundry and the phone bill first, know what they can spend today, and remember who owes whom.",
     solution:
-      "Brokely is an offline-first Android app for planning student spending. It works without a connection, syncs safely when one returns, and rewards good habits with a broccoli mascot that grows.",
+      "Brokely plans spending instead of tracking a bank balance. A short chat sets up the month, essentials come first, and every day Home shows one honest number: what you can spend today. It works fully offline, backs up when a connection returns, and never asks for a bank login, PIN or OTP.",
     features: [
-      "Home screen with the broccoli mascot.",
-      "Quick-add keypad for logging a purchase.",
-      "Insights with a spending doughnut chart.",
-      "Bills tracking.",
-      "Backup and sync status.",
+      "Quick start as a chat with Brokely: one number and two dates, then essentials one card at a time.",
+      '"To spend today" on Home, worked out from what is left after bills and set-asides.',
+      "Logging in a few taps: a keypad with a built-in calculator, categories ordered by use, and Undo instead of confirm dialogs.",
+      "Money in that does something: it goes to the plan, to today, to savings or to paying a friend back.",
+      "Bills with Mark paid, so a bill is never counted twice.",
+      "Debts with friends: split a bill, lend, borrow and pay back, with an optional pay-back date.",
+      "Insights with an honest forecast, shown as a range and only once there is enough data.",
+      "A broccoli mascot with 3 growth stages and 4 moods that grows from days logged, never from spending less.",
     ],
+    story: {
+      title: "How a student uses it",
+      intro:
+        "Sara is a made-up first-year student at AIU with RM600 for November. This is her month in Brokely.",
+      steps: [
+        {
+          when: "Getting started · about a minute",
+          title: "A plan from one chat",
+          body: "She starts mid-month. Brokely asks what she has left for the rest of November, but she chooses to plan the whole month and types RM600. Next it asks whether she owes anyone from before, so any payback comes off the budget first. Home then suggests essentials one card at a time: meals, laundry, phone.",
+          screen: {
+            src: "/projects/brokely/screen-quick-start.webp",
+            alt: "Quick start chat where Brokely asks how much money Sara has for the month",
+          },
+        },
+        {
+          when: "Every morning",
+          title: "One number for today",
+          body: "Home shows what she can spend today and what each day after today gets. Bills still to come and savings are already taken out, so the number is honest.",
+          screen: {
+            src: "/projects/brokely/screen-home.webp",
+            alt: "Brokely Home with the mascot, the amount to spend today and what is left in the plan",
+          },
+        },
+        {
+          when: "Lunch",
+          title: "Logged before the food arrives",
+          body: 'The + button opens a keypad. Type 7.50, tap Meals, done. Undo stays on screen for five seconds instead of an "Are you sure?" dialog, and it all works with no signal.',
+          screen: {
+            src: "/projects/brokely/screen-quick-add.webp",
+            alt: "Quick add sheet with a keypad and category chips",
+          },
+        },
+        {
+          when: "Day 9",
+          title: "Money in goes somewhere",
+          body: "Her family sends RM100. Brokely asks where it goes: the plan, today, savings or paying someone back, and shows the new budget before she saves.",
+          screen: {
+            src: "/projects/brokely/screen-money-in.webp",
+            alt: "Money in sheet with a Goes to row set to this month's plan",
+          },
+        },
+        {
+          when: "Laundry day",
+          title: "Paid once, never counted twice",
+          body: "The weekly wash waits under Still to come. Mark paid turns it into one record, with an amount she can change.",
+          screen: {
+            src: "/projects/brokely/screen-bills.webp",
+            alt: "Bills screen with the laundry bill and a Mark paid button",
+          },
+        },
+        {
+          when: "Movie night",
+          title: "Who owes whom",
+          body: "She splits a RM50 movie night with Aina. Only her half counts as spending; Aina's half waits in Debts with a pay-back date.",
+          screen: {
+            src: "/projects/brokely/screen-debts.webp",
+            alt: "Debts screen with money owed to Sara and money she owes",
+          },
+        },
+        {
+          when: "Mid-month",
+          title: "Where it went, honestly",
+          body: "Insights shows spending by category. The forecast appears only from day 14 and only when most days are logged, and it is a range, not a promise.",
+          screen: {
+            src: "/projects/brokely/screen-insights.webp",
+            alt: "Insights with a spending doughnut chart by category",
+          },
+        },
+      ],
+    },
     decisions: [
       {
-        title: "Money as whole sen",
-        body: "Money is stored as whole sen, never floating-point ringgit, with rounding only for display.",
+        title: "Money is whole sen, never floating-point ringgit",
+        body: "Every amount is an integer number of sen, and rounding happens only for display, so sums are always exact.",
       },
       {
         title: "Business rules traced to a specification",
-        body: "Every business rule lives in a pure, unit-tested domain package, traced to requirement IDs in a written specification.",
+        body: "I wrote a product requirements document and a software requirements specification (now v1.9) with numbered rules and acceptance tests. Every rule lives in a pure, unit-tested domain package and names its requirement ID, and 139 product decisions are logged with their reasons.",
       },
       {
         title: "Offline-first sync",
-        body: "Every record is written with a phone-generated ID through an outbox, then synced to a Fastify and PostgreSQL API with idempotent pushes and conflict handling. I tested the sync between two simulated phones.",
+        body: "Every record gets a phone-generated UUIDv7 and is written with an outbox entry in one SQLite transaction. A Fastify and PostgreSQL API accepts idempotent pushes with versioned writes, delete markers and a conflict screen. The sync acceptance tests passed between two real phones.",
+      },
+      {
+        title: "Measured, then made faster",
+        body: "A test counts database queries per synced change. One transaction per push with grouped lookups cut it from 7.7 to 2.1 queries per change, taking a first backup from about 34 seconds to about 9.",
       },
       {
         title: "Automated deployment",
-        body: "The API deploys automatically to Azure Container Apps from GitHub Actions. The repository is a pnpm monorepo with separate app, API, domain, contracts and local-database packages.",
+        body: "Every push to main runs format, lint, typecheck and tests, builds a Docker image and deploys it to Azure Container Apps through OpenID Connect, with no stored cloud password. The repository is a pnpm monorepo with app, API, domain, contracts and local-database packages.",
       },
     ],
-    credits: "Mascot artwork is AI-generated.",
+    results: {
+      title: "Where it stands",
+      body: [
+        "All of release 0.1 works on one phone, offline and without an account. The 0.1 screen checks passed on the reference phone, and the sync acceptance tests passed between two real phones.",
+        "About 530 automated tests cover the domain rules, the phone database, the sync contracts and the API.",
+        "In progress: reading Touch 'n Go transfer notifications on the phone. Nothing counts until the student confirms it.",
+      ],
+      note: "No student pilot has run yet, so these are engineering checks, not user results.",
+    },
+    credits: "Mascot artwork is AI-generated. Screens use made-up demo data.",
     stack: [
       "React Native",
       "Expo",
-      "SQLite",
+      "TypeScript",
+      "SQLite (expo-sqlite)",
       "Drizzle",
       "Fastify",
       "PostgreSQL (Supabase)",
       "Zod",
       "Vitest",
+      "Docker",
       "GitHub Actions",
       "Azure Container Apps",
     ],
@@ -334,13 +429,36 @@ export const projects: Project[] = [
     },
     demo: {
       type: "phone",
-      // TODO: Expo web build URL, if `npx expo export -p web` works. Otherwise leave undefined (screenshots + video only).
       url: undefined,
-      poster: "/projects/brokely/poster.webp", // Illustrative poster; TODO: real phone screenshot (synthetic data)
+      poster: "/projects/brokely/poster.webp",
       video: undefined, // TODO: public/projects/brokely/demo.mp4 (log a purchase offline, then sync)
     },
-    // TODO: screenshots (synthetic data) — Home with mascot, quick add, Insights, Bills, sync status; mascot stages; architecture diagram.
-    screens: [],
+    screens: [
+      {
+        src: "/projects/brokely/screen-records.webp",
+        alt: "Records grouped by day with filters",
+        caption: "Records by day, with edit history and refunds.",
+        mobile: true,
+      },
+      {
+        src: "/projects/brokely/screen-plan.webp",
+        alt: "Your plan with amounts per category",
+        caption: "The plan: essentials first, then the rest.",
+        mobile: true,
+      },
+      {
+        src: "/projects/brokely/screen-grow.webp",
+        alt: "Brokely's growth path from sprout to full broccoli",
+        caption: "Brokely grows from days logged, never from spending less.",
+        mobile: true,
+      },
+      {
+        src: "/projects/brokely/screen-home-dark.webp",
+        alt: "Brokely Home in dark mode",
+        caption: "Dark mode follows the phone.",
+        mobile: true,
+      },
+    ],
   },
   {
     slug: "sanaa-house",
