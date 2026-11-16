@@ -76,10 +76,18 @@ export function CaseStudy({ project: p }: { project: Project }) {
 
         <Block title="The solution">
           <p>{p.solution}</p>
-          <ul className="mt-6 space-y-3">
-            {p.features.map((f) => (
-              <li key={f} className="flex gap-3">
-                <span aria-hidden className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+          <ul className="mt-8 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2">
+            {p.features.map((f, i) => (
+              <li
+                key={f}
+                className="group flex gap-4 bg-bg p-5 text-base transition-colors duration-300 hover:bg-surface sm:p-6 sm:odd:last:col-span-2"
+              >
+                <span
+                  aria-hidden
+                  className="font-mono text-xs leading-7 text-muted transition-colors duration-300 group-hover:text-accent"
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
                 <span>{f}</span>
               </li>
             ))}
@@ -87,7 +95,7 @@ export function CaseStudy({ project: p }: { project: Project }) {
         </Block>
 
         {p.story ? (
-          <Block title={p.story.title} wide>
+          <Block title={p.story.title} full>
             <Story story={p.story} />
           </Block>
         ) : null}

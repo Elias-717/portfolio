@@ -41,6 +41,8 @@ export interface Project {
   story?: {
     title: string;
     intro?: string;
+    /** Optional character who walks the visitor through the steps (e.g. Brokely's mascot). */
+    guide?: { src: string; alt: string; name: string };
     steps: { when?: string; title: string; body: string; screen?: Screen }[];
   };
   /** Award evidence photos, shown in a Recognition section on the case study. */
@@ -312,6 +314,11 @@ export const projects: Project[] = [
       title: "How a student uses it",
       intro:
         "Sara is a made-up first-year student at AIU with RM600 for November. This is her month in Brokely.",
+      guide: {
+        src: "/projects/brokely/mascot.webp",
+        alt: "Brokely, the app's broccoli mascot, pointing and smiling",
+        name: "Brokely",
+      },
       steps: [
         {
           when: "Getting started · about a minute",
