@@ -316,7 +316,7 @@ export const projects: Project[] = [
         {
           when: "Getting started · about a minute",
           title: "A plan from one chat",
-          body: "She starts mid-month. Brokely asks what she has left for the rest of November, but she chooses to plan the whole month and types RM600. Next it asks whether she owes anyone from before, so any payback comes off the budget first. Home then suggests essentials one card at a time: meals, laundry, phone.",
+          body: "Brokely knows the date and offers to plan just the rest of November, but she chooses to plan the whole month and types RM600. Next it asks whether she owes anyone from before, so any payback comes off the budget first. Then it suggests essentials one card at a time: meals, laundry, phone.",
           screen: {
             src: "/projects/brokely/screen-quick-start.webp",
             alt: "Quick start chat where Brokely asks how much money Sara has for the month",
@@ -325,7 +325,7 @@ export const projects: Project[] = [
         {
           when: "Every morning",
           title: "One number for today",
-          body: "Home shows what she can spend today and what each day after today gets. Bills still to come and savings are already taken out, so the number is honest.",
+          body: "Home shows what she can spend today and what each day after today gets. Bills still to come and savings are already taken out, so the number is honest. Her plan has grown to RM700 since she set it up, and the plan keeps every version.",
           screen: {
             src: "/projects/brokely/screen-home.webp",
             alt: "Brokely Home with the mascot, the amount to spend today and what is left in the plan",
@@ -334,16 +334,16 @@ export const projects: Project[] = [
         {
           when: "Lunch",
           title: "Logged before the food arrives",
-          body: 'The + button opens a keypad. Type 7.50, tap Meals, done. Undo stays on screen for five seconds instead of an "Are you sure?" dialog, and it all works with no signal.',
+          body: 'The + button opens a keypad. Type 7.50, pick Meals, done. Undo stays on screen for five seconds instead of an "Are you sure?" dialog, and it all works with no signal.',
           screen: {
             src: "/projects/brokely/screen-quick-add.webp",
-            alt: "Quick add sheet with a keypad and category chips",
+            alt: "Quick add sheet with RM7.50 typed on the keypad and Meals chosen as the category",
           },
         },
         {
-          when: "Day 9",
+          when: "Day 16",
           title: "Money in goes somewhere",
-          body: "Her family sends RM100. Brokely asks where it goes: the plan, today, savings or paying someone back, and shows the new budget before she saves.",
+          body: "Her family sends RM100. Brokely asks where it goes: the plan, today, savings or paying someone back, and shows the new budget (RM700 to RM800) before she saves.",
           screen: {
             src: "/projects/brokely/screen-money-in.webp",
             alt: "Money in sheet with a Goes to row set to this month's plan",

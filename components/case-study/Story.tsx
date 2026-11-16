@@ -8,7 +8,13 @@ export function Story({ story }: { story: NonNullable<Project["story"]> }) {
       {story.intro ? <p>{story.intro}</p> : null}
       <ol className="space-y-12 sm:space-y-16">
         {story.steps.map((step, i) => (
-          <li key={step.title} className="grid items-center gap-6 sm:grid-cols-[minmax(0,220px)_1fr] sm:gap-10">
+          // Alternate sides on wider screens: the narrow column follows the phone so text never squeezes into it.
+          <li
+            key={step.title}
+            className={`grid items-center gap-6 sm:gap-10 ${
+              i % 2 ? "sm:grid-cols-[1fr_minmax(0,220px)]" : "sm:grid-cols-[minmax(0,220px)_1fr]"
+            }`}
+          >
             {step.screen ? (
               <figure className={`w-[min(60vw,220px)] ${i % 2 ? "sm:order-2" : ""}`}>
                 <div className="relative aspect-[390/844] overflow-hidden rounded-[1.75rem] border border-line bg-surface">
@@ -24,7 +30,7 @@ export function Story({ story }: { story: NonNullable<Project["story"]> }) {
             ) : (
               <div aria-hidden />
             )}
-            <div className={i % 2 ? "sm:order-1" : ""}>
+            <div className={`max-w-xl ${i % 2 ? "sm:order-1 sm:justify-self-end" : ""}`}>
               <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
                 {step.when ?? `Step ${i + 1}`}
               </p>
