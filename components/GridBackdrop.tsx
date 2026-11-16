@@ -10,7 +10,8 @@ import { useEffect, useRef, useState } from "react";
  * Fixed behind everything; sections with their own black background (hero, projects) cover it.
  *
  * Cost control: shape points are built once; only shapes on screen are drawn (at most ~1k dots a
- * frame, half on phones); hidden and paused while the hero is on screen or the tab is hidden.
+ * frame, half on phones); hidden and paused while the hero is on screen or the tab is hidden,
+ * and paused while a full-screen opaque frame (marked data-covers-backdrop) covers it.
  * With prefers-reduced-motion nothing animates: the scene is redrawn only when you scroll.
  */
 
@@ -222,10 +223,12 @@ export function GridBackdrop() {
       }
     };
 
-    // Animate only while the hero is off screen and the tab is visible.
+    // Animate only while the hero is off screen, no full-screen opaque frame (the pinned
+    // projects section) covers the canvas, and the tab is visible.
     let raf = 0;
     let running = false;
     let heroOnScreen = true;
+    let covered = false;
     const loop = (time: number) => {
       for (const p of dust) {
         p[1] += 0.003;
@@ -236,7 +239,7 @@ export function GridBackdrop() {
     };
     const update = () => {
       setVisible(!heroOnScreen);
-      const should = !heroOnScreen && !document.hidden && !reduce;
+      const should = !heroOnScreen && !covered && !document.hidden && !reduce;
       if (should && !running) {
         running = true;
         raf = requestAnimationFrame(loop);
@@ -246,9 +249,10 @@ export function GridBackdrop() {
       }
     };
     // With reduced motion there is no loop, so keep shapes in step with the page on scroll.
+    // Never redraw while the canvas can't be seen (hero on screen or covered).
     let pending = false;
     const onScroll = () => {
-      if (running || pending) return;
+      if (!reduce || heroOnScreen || covered || pending) return;
       pending = true;
       requestAnimationFrame(() => {
         pending = false;
@@ -266,6 +270,19 @@ export function GridBackdrop() {
       heroOnScreen = false;
       update();
     }
+    const onScreenCovers = new Set<Element>();
+    const coverIo = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.intersectionRatio >= 0.98) onScreenCovers.add(e.target);
+          else onScreenCovers.delete(e.target);
+        }
+        covered = onScreenCovers.size > 0;
+        update();
+      },
+      { threshold: [0, 0.98] },
+    );
+    document.querySelectorAll("[data-covers-backdrop]").forEach((el) => coverIo.observe(el));
     // Section heights can change after images load; re-place shapes when the page resizes.
     const ro = new ResizeObserver(placeShapes);
     ro.observe(document.body);
@@ -277,6 +294,7 @@ export function GridBackdrop() {
     return () => {
       cancelAnimationFrame(raf);
       io.disconnect();
+      coverIo.disconnect();
       ro.disconnect();
       window.removeEventListener("resize", resize);
       window.removeEventListener("scroll", onScroll);
