@@ -72,9 +72,6 @@ function Stop({ m, onOpen }: { m: Milestone; onOpen: (photos: Photo[], i: number
                 : "border-line bg-bg"
           }`}
         >
-          {reached && !m.upcoming ? (
-            <span className="absolute inset-0 animate-ping rounded-full bg-accent/50 [animation-iteration-count:1]" />
-          ) : null}
         </span>
       </span>
 

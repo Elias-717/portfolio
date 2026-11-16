@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { Enter } from "@/components/Animate";
 import { PhotoViewer } from "@/components/PhotoViewer";
 import type { Photo } from "@/data/profile";
 
@@ -17,10 +16,7 @@ export function PhotoMosaic({ photos }: { photos: Photo[] }) {
     <>
       <ul className="grid gap-3 sm:grid-cols-[1.6fr_1fr] sm:grid-rows-2 sm:gap-4">
         {photos.map((p, i) => (
-          <Enter
-            as="li"
-            variant="rise"
-            delay={i * 0.1}
+          <li
             key={p.src}
             className={i === 0 ? "sm:row-span-2" : ""}
           >
@@ -46,7 +42,7 @@ export function PhotoMosaic({ photos }: { photos: Photo[] }) {
                 ⤢
               </span>
             </button>
-          </Enter>
+          </li>
         ))}
       </ul>
       <PhotoViewer

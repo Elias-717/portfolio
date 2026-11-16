@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { Project } from "@/data/projects";
 import { statusLabel } from "@/data/projects";
-import { Reveal } from "./Reveal";
 import { Tag } from "./Tag";
 
 /** Editorial list of projects: year, title + outcome, tags. Case studies link inward; others link out. */
@@ -9,12 +8,11 @@ export function ProjectList({ projects, headingLevel = "h3" }: { projects: Proje
   const Heading = headingLevel;
   return (
     <ul className="border-t border-line">
-      {projects.map((p, i) => {
+      {projects.map((p) => {
         const href = p.caseStudy ? `/projects/${p.slug}` : (p.links.live ?? p.links.code ?? "#");
         const external = !p.caseStudy;
         return (
           <li key={p.slug} className="border-b border-line">
-            <Reveal delay={i * 0.05}>
               <Link
                 href={href}
                 {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
@@ -42,7 +40,6 @@ export function ProjectList({ projects, headingLevel = "h3" }: { projects: Proje
                   {external ? "↗" : "→"}
                 </span>
               </Link>
-            </Reveal>
           </li>
         );
       })}

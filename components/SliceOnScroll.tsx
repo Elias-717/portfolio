@@ -1,10 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
-import { createContext, useEffect, useRef, useState, type ReactNode } from "react";
-
-/** Scroll progress (0 to 1) of the pinned block, for content revealed inside it. */
-export const PinProgressContext = createContext<MotionValue<number> | null>(null);
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 /** Space kept between the end of the revealed content and whatever follows the pinned block. */
 const AFTER_GAP = 8;
@@ -89,7 +86,7 @@ export function SliceOnScroll({
             style={{ opacity: revealOpacity, y: revealY, pointerEvents: revealPointer }}
             className="absolute inset-0 z-20 motion-reduce:hidden"
           >
-            <PinProgressContext.Provider value={scrollYProgress}>{reveal}</PinProgressContext.Provider>
+            {reveal}
           </motion.div>
         ) : null}
       </div>

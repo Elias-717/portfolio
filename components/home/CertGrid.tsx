@@ -1,4 +1,3 @@
-import { Enter } from "@/components/Animate";
 import type { Certification } from "@/data/profile";
 
 // Layout: 2 columns on phones, 4 from lg. Cells are padded to a full row with decorative filler.
@@ -56,7 +55,7 @@ export function CertGrid({ items }: { items: Certification[] }) {
   const rowsLg = total / COLS_LG;
 
   return (
-    <ul className="grid grid-cols-2 gap-px border border-line bg-line [perspective:1200px] lg:grid-cols-4">
+    <ul className="grid grid-cols-2 gap-px border border-line bg-line lg:grid-cols-4">
       {Array.from({ length: total }, (_, i) => {
         const c = items[i];
         // Checkerboard tones and corner marks, worked out for each breakpoint's column count.
@@ -69,26 +68,24 @@ export function CertGrid({ items }: { items: Certification[] }) {
           toneBase ? "bg-surface" : "bg-bg",
           toneLg ? "lg:bg-surface" : "lg:bg-bg",
         );
-        // Diagonal ripple: cells further from the top-left corner arrive later.
-        const wave = (Math.floor(i / COLS_LG) + (i % COLS_LG)) * 0.08;
         const plus = <Plus className={cx(plusBase ? "block" : "hidden", plusLg ? "lg:block" : "lg:hidden")} />;
 
         if (!c) {
           // Filler to complete the last row: a faint hatch, hidden from assistive tech.
           return (
-            <Enter as="li" variant="tilt" delay={wave} hidden key={`filler-${i}`} className={cx(cell, "min-h-48")}>
+            <li aria-hidden key={`filler-${i}`} className={cx(cell, "min-h-48")}>
               <span className="absolute inset-0 opacity-40 [background:repeating-linear-gradient(135deg,transparent_0_10px,var(--color-line)_10px_11px)]" />
               {plus}
-            </Enter>
+            </li>
           );
         }
 
         const meta = [c.issuer, c.date].filter(Boolean).join(" · ");
         const body = (
           <>
-            <Enter as="span" variant="pop" delay={wave + 0.25} className="block w-fit">
+            <span className="block w-fit">
               <Logo name={c.logo} />
-            </Enter>
+            </span>
             <span className="mt-auto flex flex-col gap-2 pt-10">
               {meta ? <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted">{meta}</span> : null}
               <span className="text-base font-semibold leading-snug tracking-[-0.01em] text-fg sm:text-lg">{c.name}</span>
@@ -103,7 +100,7 @@ export function CertGrid({ items }: { items: Certification[] }) {
         const inner = "group flex h-full min-h-48 flex-col p-5 transition-colors duration-300 sm:p-7";
 
         return (
-          <Enter as="li" variant="tilt" delay={wave} key={`${c.issuer}-${c.name}`} className={cell}>
+          <li key={`${c.issuer}-${c.name}`} className={cell}>
             {c.url ? (
               <a
                 href={c.url}
@@ -118,7 +115,7 @@ export function CertGrid({ items }: { items: Certification[] }) {
               <div className={inner}>{body}</div>
             )}
             {plus}
-          </Enter>
+          </li>
         );
       })}
     </ul>
